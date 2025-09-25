@@ -1,10 +1,17 @@
 [ {
   "courseId" : "DEMO101",
   "courseName" : "OOP Demonstration",
-  "description" : "Course for OOP demo",
-  "credits" : 3,
-  "teacherId" : null,
-  "maxEnrollment" : 20,
-  "enrolledStudents" : [ ],
-  "active" : true
+  "creditHours" : 0,
+  "facultyName" : null,
+  "classDays" : null,
+  "classTimes" : null,
+  "classDates" : null
+}, {
+  "courseId" : "LMS101",
+  "courseName" : "Object-Oriented Programming",
+  "creditHours" : 3,
+  "facultyName" : "Prof. Bob Johnson",
+  "classDays" : "Mon/Wed/Fri",
+  "classTimes" : "10:00-11:00",
+  "classDates" : "Fall 2025"
 } ]

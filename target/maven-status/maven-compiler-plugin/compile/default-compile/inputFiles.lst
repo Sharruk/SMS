@@ -14,7 +14,6 @@
 /home/runner/workspace/src/main/java/sms/data/Repository.java
 /home/runner/workspace/src/main/java/sms/domain/StudentTable.java
 /home/runner/workspace/src/main/java/sms/domain/Principal.java
-/home/runner/workspace/src/main/java/sms/services/AdminService.java
 /home/runner/workspace/src/main/java/sms/domain/Student.java
 /home/runner/workspace/src/main/java/sms/exceptions/RepositoryException.java
 /home/runner/workspace/src/main/java/sms/data/TeacherRepository.java

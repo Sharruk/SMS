@@ -1,0 +1,12 @@
+[ {
+  "userId" : 2001,
+  "name" : "Prof. Bob Johnson",
+  "email" : "bob.johnson@lms.edu",
+  "username" : "bob",
+  "id" : "T2001",
+  "courses" : [ ],
+  "batches" : [ ],
+  "students" : [ ],
+  "role" : "TEACHER",
+  "passwordForAuth" : "teacher123"
+} ]

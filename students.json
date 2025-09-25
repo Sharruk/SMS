@@ -1,15 +1,12 @@
 [ {
-  "userId" : "demo_user1",
-  "firstName" : "Alice",
-  "lastName" : "Johnson",
-  "email" : "alice@email.com",
-  "studentId" : "STU999",
-  "major" : "Computer Science",
-  "year" : 2,
-  "gpa" : 3.85,
-  "enrolledCourses" : [ ],
+  "userId" : 3002,
+  "name" : "Charlie Brown",
+  "email" : "charlie@student.edu",
+  "username" : "charlie",
+  "id" : "S3001",
+  "dept" : null,
+  "batch" : null,
+  "courses" : [ ],
   "role" : "STUDENT",
-  "passwordForAuth" : "pass123",
-  "active" : true,
-  "fullName" : "Alice Johnson"
+  "passwordForAuth" : "student123"
 } ]

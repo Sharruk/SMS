@@ -452,6 +452,8 @@ public class Main {
         } catch (ValidationException e) {
             System.out.println("Validation error: " + e.getMessage());
             e.log();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
@@ -467,9 +469,8 @@ public class Main {
             List<Course> results = student.search("Demo");
             System.out.println("Student search results: " + results.size() + " courses found");
             
-        } catch (ValidationException e) {
-            System.out.println("Validation error: " + e.getMessage());
-            e.log();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
