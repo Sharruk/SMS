@@ -14,4 +14,12 @@
   "classDays" : "Mon/Wed/Fri",
   "classTimes" : "10:00-11:00",
   "classDates" : "Fall 2025"
+}, {
+  "courseId" : "LMS101",
+  "courseName" : "Object-Oriented Programming",
+  "creditHours" : 3,
+  "facultyName" : "Prof. Bob Johnson",
+  "classDays" : "Mon/Wed/Fri",
+  "classTimes" : "10:00-11:00",
+  "classDates" : "Fall 2025"
 } ]

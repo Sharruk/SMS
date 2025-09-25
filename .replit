@@ -16,10 +16,10 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "SMS Java Application"
+args = "LMS Java Application"
 
 [[workflows.workflow]]
-name = "SMS Java Application"
+name = "LMS Java Application"
 author = "agent"
 
 [[workflows.workflow.tasks]]

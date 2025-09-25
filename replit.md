@@ -1,8 +1,8 @@
-# Student Management System (SMS)
+# Learning Management System (LMS)
 
 ## Overview
 
-This is a complete Java-based Student Management System built with a layered architecture, following object-oriented programming principles. The system provides a console-based interface for managing students, courses, and enrollment processes with JSON file persistence. It demonstrates comprehensive OOP concepts including inheritance, polymorphism, encapsulation, generics, and custom exception handling.
+This is a comprehensive Java-based Learning Management System built with a layered architecture, following object-oriented programming principles and implementing a complete PlantUML class diagram specification. The system provides a console-based interface for managing students, courses, teachers, admins, and principals with JSON file persistence. It demonstrates comprehensive OOP concepts including inheritance, polymorphism, encapsulation, generics, custom exception handling, search/sort interfaces, upload services, and role-based access control.
 
 ## User Preferences
 
@@ -13,42 +13,60 @@ Preferred communication style: Simple, everyday language.
 ### Technology Stack
 - **Java 17+**: Core programming language
 - **Maven**: Build system and dependency management
-- **Jackson Databind**: JSON serialization/deserialization
-- **Console Interface**: Text-based user interaction
+- **Jackson Databind**: JSON serialization/deserialization with polymorphic type handling
+- **Console Interface**: Text-based user interaction with comprehensive menu system
 
 ### Package Structure
-- **sms.domain**: Core entities (User, Student, Teacher, Course)
-- **sms.exceptions**: Custom exception classes (AuthenticationException, RepositoryException)
-- **sms.data**: Data access layer with generic Repository interface and implementations
-- **sms.services**: Business logic layer (AdminService, UploadService)
-- **sms.app**: Main application entry point with console interface
+- **sms.domain**: Core entities (User abstract class, Admin, Teacher, Student, Principal, Course, Department, Batch, Attendance, StudentTable)
+- **sms.exceptions**: Complete exception hierarchy (BaseException, AuthenticationException, ValidationException, NotFoundException, RepositoryException, UploadException, AuthorizationException)
+- **sms.data**: Data access layer with generic Repository<T> interface and implementations (StudentRepository, TeacherRepository, AdminRepository, CourseRepository)
+- **sms.services**: Business logic layer (UploadService<T> interface, FileUploadService implementation)
+- **sms.search**: Search capability interfaces (Searchable<T>)
+- **sms.sort**: Sort capability interfaces (Sortable<T>)
+- **sms.app**: Main application entry point with comprehensive console interface and OOP demonstration
 
 ### Core Entities
-**User (Abstract Class)**: Base class with common user attributes and abstract methods for polymorphism
-**Student**: Extends User with academic-specific fields (GPA, major, year, enrolled courses)
-**Teacher**: Extends User with teaching-specific fields (department, specialization, salary, teaching courses)
-**Course**: Standalone entity with enrollment management and capacity controls
+**User (Abstract Class)**: Base class with common user attributes, abstract getRole() method, login/logout/upload methods
+**Admin**: Extends User with comprehensive management capabilities (manage students, teachers, courses, batches), implements Searchable<Object> and Sortable<Object>
+**Teacher**: Extends User with teaching-specific fields and methods (create assignments, mark attendance, view students), implements Searchable<Student> and Sortable<Student>
+**Student**: Extends User with academic-specific fields (department, batch, courses), implements Searchable<Course> and Sortable<Course>
+**Principal**: Extends User with administrative oversight (manage admins, appoint teachers, assign courses, view reports)
+**Course**: Comprehensive course entity with scheduling information (courseId, courseName, creditHours, facultyName, classDays, classTimes, classDates)
+**Department**: Academic department with name and courses
+**Batch**: Student cohort with year range
+**Attendance**: Attendance tracking entity
+**StudentTable**: Student data table entity
 
 ### Data Persistence
-- **JSON Files**: students.json, courses.json for data storage
+- **JSON Files**: students.json, teachers.json, admins.json, courses.json for data storage
 - **Generic Repository Pattern**: Type-safe CRUD operations using Repository<T> interface
-- **Jackson Integration**: Automatic JSON serialization with proper type handling
+- **Jackson Integration**: Polymorphic JSON serialization with @JsonTypeInfo and @JsonTypeName annotations
+- **Error Recovery**: Graceful handling of JSON parsing errors with empty repository initialization
 
 ### Key Features
-- **OOP Demonstration**: Critical demonstrateOopFeatures() method showcasing all OOP principles
-- **Console Menu System**: Interactive text-based interface with multiple management options
-- **Error Handling**: Comprehensive custom exception handling with try-catch-finally blocks
-- **Data Management**: Upload/download capabilities and sample data generation
+- **Comprehensive OOP Demonstration**: Critical demonstrateOopFeatures() method showcasing all OOP principles with inheritance hierarchy, polymorphism, encapsulation, generics, and exception handling
+- **Role-based Access Control**: Each user role has specific capabilities and access levels
+- **Search and Sort Interfaces**: Role-based search and sort capabilities (Admin searches everything, Teacher searches students, Student searches courses)
+- **Upload Service**: File upload with validation, storage, and metadata management
+- **Interactive Console Menu**: Complete menu system for testing all features
+- **Exception Hierarchy**: Comprehensive custom exception handling with structured metadata and logging
+- **Generic Repository**: Type-safe repository pattern with CRUD operations
 
 ## Recent Changes
 
 ### September 25, 2025
-- **Complete System Implementation**: Built entire Java SMS with layered architecture
-- **OOP Features Integration**: Implemented comprehensive OOP demonstration method
-- **Security Enhancements**: Added @JsonIgnore annotations for password fields
-- **Jackson Configuration**: Fixed deserialization issues with FAIL_ON_UNKNOWN_PROPERTIES
-- **Maven Setup**: Configured build system with Java 17 and Jackson dependencies
-- **Workflow Configuration**: Set up console-based execution workflow
+- **Complete LMS Implementation**: Built comprehensive Java LMS based on PlantUML specification
+- **Full Domain Model**: Implemented all domain classes with proper inheritance hierarchy
+- **Exception Hierarchy**: Created complete exception hierarchy with BaseException and all specific exceptions
+- **Repository Layer**: Implemented generic Repository<T> interface with type-safe CRUD operations
+- **Search/Sort Interfaces**: Added role-based search and sort capabilities
+- **Upload Service**: Integrated file upload service with validation and error handling
+- **Role-based Access**: Implemented Principal, Admin, Teacher, Student roles with specific capabilities
+- **OOP Features**: Comprehensive demonstration of inheritance, polymorphism, encapsulation, generics, exception handling
+- **JSON Persistence**: Enhanced Jackson configuration for polymorphic serialization
+- **Interactive Console**: Complete menu system for feature demonstration
+- **Maven Configuration**: Updated with proper Java 17 and Jackson dependencies
+- **System Testing**: Successful compilation and execution with all features working
 
 ## External Dependencies
 
@@ -57,9 +75,80 @@ Preferred communication style: Simple, everyday language.
 - **Java 17**: Target JDK version
 
 ### Libraries
-- **Jackson Databind 2.15.2**: JSON processing and object mapping
+- **Jackson Databind 2.15.2**: JSON processing and polymorphic object mapping
 - **Jackson Annotations**: Type handling and serialization control
 
 ### Runtime Environment
-- **Console/Terminal**: Text-based user interface
-- **File System**: JSON file persistence (students.json, courses.json)
+- **Console/Terminal**: Interactive text-based user interface
+- **File System**: JSON file persistence with error recovery
+- **Upload Directory**: File upload storage and management
+
+## Architecture Highlights
+
+### OOP Principles Demonstrated
+1. **Inheritance**: Complete User hierarchy with Admin, Teacher, Student, Principal
+2. **Polymorphism**: Overridden methods called via User reference
+3. **Encapsulation**: Private fields with public getters/setters
+4. **Generics**: Repository<T> interface with type safety
+5. **Exception Handling**: Custom exception hierarchy with try-catch-finally blocks
+
+### Design Patterns
+- **Repository Pattern**: Generic Repository<T> interface for data access
+- **Strategy Pattern**: Role-based access with different capabilities per user type
+- **Template Method**: Abstract User class with concrete implementations
+- **Factory Pattern**: Jackson polymorphic deserialization
+
+### Security Features
+- **Password Protection**: @JsonIgnore annotations prevent password serialization
+- **File Validation**: Upload service validates file types and sizes
+- **Role-based Access**: Each user type has restricted access to relevant data
+- **Exception Logging**: Comprehensive error tracking and logging
+
+## System Capabilities
+
+### Principal Access
+- Add and manage admins
+- Appoint teachers
+- Assign courses to teachers
+- View system reports
+
+### Admin Access
+- Register and manage students
+- Manage teachers and courses
+- Assign batches and courses
+- Set default passwords
+- Verify admissions
+- Search and sort all system entities
+
+### Teacher Access
+- Create assignments
+- Mark attendance
+- View assigned students
+- View submitted assignments
+- Change password
+- Search and sort assigned students
+
+### Student Access
+- View assignments and grades
+- Mark own attendance
+- View attendance records
+- Change password
+- Search and sort enrolled courses
+
+## Usage Instructions
+
+1. **Compile**: `mvn clean compile`
+2. **Run**: `mvn exec:java -Dexec.mainClass="sms.app.Main"`
+3. **Features**: The system will automatically demonstrate all OOP features and then provide an interactive menu
+4. **Data Files**: JSON files are created automatically for data persistence
+5. **Upload Directory**: Files are uploaded to the uploads/ directory
+
+## Testing and Quality Assurance
+
+- **Compilation**: Successfully compiles with Java 17 and Maven
+- **Execution**: Runs without errors and demonstrates all features
+- **OOP Compliance**: All OOP principles properly implemented and demonstrated
+- **Exception Handling**: Comprehensive exception hierarchy with proper error recovery
+- **Role-based Security**: Each user type has appropriate access restrictions
+- **Data Persistence**: JSON serialization/deserialization working correctly
+- **Interactive Interface**: Complete console menu system for feature testing
