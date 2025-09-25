@@ -13,6 +13,7 @@ public abstract class User {
     private String firstName;
     private String lastName;
     private String email;
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private String password;
     private boolean isActive;
 
@@ -65,6 +66,12 @@ public abstract class User {
         this.email = email;
     }
 
+    // Public method for authentication service access
+    public String getPasswordForAuth() {
+        return password;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonIgnore
     public String getPassword() {
         return password;
     }

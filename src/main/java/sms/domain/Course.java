@@ -53,6 +53,7 @@ public class Course {
         }
     }
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     public int getAvailableSlots() {
         return maxEnrollment - enrolledStudents.size();
     }

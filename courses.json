@@ -1,0 +1,10 @@
+[ {
+  "courseId" : "DEMO101",
+  "courseName" : "OOP Demonstration",
+  "description" : "Course for OOP demo",
+  "credits" : 3,
+  "teacherId" : null,
+  "maxEnrollment" : 20,
+  "enrolledStudents" : [ ],
+  "active" : true
+} ]
