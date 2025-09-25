@@ -1,6 +1,6 @@
 package sms.exceptions;
 
-public class RepositoryException extends Exception {
+public class RepositoryException extends BaseException {
     private String operation;
     private String entityType;
 
@@ -32,24 +32,13 @@ public class RepositoryException extends Exception {
         return operation;
     }
 
-    public void setOperation(String operation) {
-        this.operation = operation;
-    }
-
     public String getEntityType() {
         return entityType;
     }
 
-    public void setEntityType(String entityType) {
-        this.entityType = entityType;
-    }
-
     @Override
-    public String toString() {
-        return "RepositoryException{" +
-                "operation='" + operation + '\'' +
-                ", entityType='" + entityType + '\'' +
-                ", message='" + getMessage() + '\'' +
-                '}';
+    public void log() {
+        super.log();
+        System.err.println("Operation: " + operation + ", Entity: " + entityType);
     }
 }

@@ -1,8 +1,9 @@
 package sms.data;
 
 import sms.exceptions.RepositoryException;
+import sms.exceptions.ValidationException;
+import sms.exceptions.NotFoundException;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Generic Repository interface for CRUD operations
@@ -11,59 +12,41 @@ import java.util.Optional;
 public interface Repository<T> {
     
     /**
-     * Save an entity to the repository
-     * @param entity The entity to save
-     * @return The saved entity
-     * @throws RepositoryException if save operation fails
+     * Add an entity to the repository
+     * @param item The entity to add
+     * @throws RepositoryException if add operation fails
+     * @throws ValidationException if item validation fails
      */
-    T save(T entity) throws RepositoryException;
-    
-    /**
-     * Find an entity by its ID
-     * @param id The ID to search for
-     * @return Optional containing the entity if found, empty otherwise
-     * @throws RepositoryException if find operation fails
-     */
-    Optional<T> findById(String id) throws RepositoryException;
-    
-    /**
-     * Find all entities in the repository
-     * @return List of all entities
-     * @throws RepositoryException if find operation fails
-     */
-    List<T> findAll() throws RepositoryException;
+    void add(T item) throws RepositoryException, ValidationException;
     
     /**
      * Update an existing entity
-     * @param entity The entity to update
-     * @return The updated entity
+     * @param item The entity to update
      * @throws RepositoryException if update operation fails
+     * @throws NotFoundException if entity is not found
      */
-    T update(T entity) throws RepositoryException;
+    void update(T item) throws RepositoryException, NotFoundException;
     
     /**
-     * Delete an entity by its ID
-     * @param id The ID of the entity to delete
-     * @return true if deleted successfully, false otherwise
+     * Delete an entity
+     * @param item The entity to delete
      * @throws RepositoryException if delete operation fails
+     * @throws NotFoundException if entity is not found
      */
-    boolean deleteById(String id) throws RepositoryException;
+    void delete(T item) throws RepositoryException, NotFoundException;
     
     /**
-     * Load all entities from persistent storage
-     * @throws RepositoryException if load operation fails
+     * Get all entities in the repository
+     * @return List of all entities
+     * @throws RepositoryException if retrieval operation fails
      */
-    void loadAll() throws RepositoryException;
+    List<T> getAll() throws RepositoryException;
     
     /**
-     * Save all entities to persistent storage
-     * @throws RepositoryException if save operation fails
+     * Find entities based on criteria
+     * @param criteria The search criteria
+     * @return List of entities matching the criteria
+     * @throws RepositoryException if find operation fails
      */
-    void saveAll() throws RepositoryException;
-    
-    /**
-     * Get the total count of entities
-     * @return The count of entities
-     */
-    long count();
+    List<T> find(String criteria) throws RepositoryException;
 }

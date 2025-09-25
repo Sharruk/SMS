@@ -1,73 +1,53 @@
 package sms.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Course {
     private String courseId;
     private String courseName;
-    private String description;
-    private int credits;
-    private String teacherId;
-    private int maxEnrollment;
-    private List<String> enrolledStudents;
-    private boolean isActive;
+    private int creditHours;
+    private String facultyName;
+    private String classDays;
+    private String classTimes;
+    private String classDates;
 
     // Default constructor for Jackson
-    public Course() {
-        this.enrolledStudents = new ArrayList<>();
-    }
+    public Course() {}
 
-    public Course(String courseId, String courseName, String description, int credits, int maxEnrollment) {
+    @JsonCreator
+    public Course(@JsonProperty("courseId") String courseId,
+                 @JsonProperty("courseName") String courseName,
+                 @JsonProperty("creditHours") int creditHours,
+                 @JsonProperty("facultyName") String facultyName,
+                 @JsonProperty("classDays") String classDays,
+                 @JsonProperty("classTimes") String classTimes,
+                 @JsonProperty("classDates") String classDates) {
         this.courseId = courseId;
         this.courseName = courseName;
-        this.description = description;
-        this.credits = credits;
-        this.maxEnrollment = maxEnrollment;
-        this.enrolledStudents = new ArrayList<>();
-        this.isActive = true;
+        this.creditHours = creditHours;
+        this.facultyName = facultyName;
+        this.classDays = classDays;
+        this.classTimes = classTimes;
+        this.classDates = classDates;
     }
 
-    public boolean enrollStudent(String studentId) {
-        if (enrolledStudents.size() >= maxEnrollment) {
-            System.out.println("Course is full. Cannot enroll student: " + studentId);
-            return false;
-        }
-        if (!enrolledStudents.contains(studentId)) {
-            enrolledStudents.add(studentId);
-            System.out.println("Student " + studentId + " enrolled in course: " + courseId);
-            return true;
-        } else {
-            System.out.println("Student " + studentId + " is already enrolled in course: " + courseId);
-            return false;
-        }
-    }
-
-    public boolean dropStudent(String studentId) {
-        if (enrolledStudents.remove(studentId)) {
-            System.out.println("Student " + studentId + " dropped from course: " + courseId);
-            return true;
-        } else {
-            System.out.println("Student " + studentId + " is not enrolled in course: " + courseId);
-            return false;
-        }
-    }
-
-    @com.fasterxml.jackson.annotation.JsonIgnore
-    public int getAvailableSlots() {
-        return maxEnrollment - enrolledStudents.size();
+    // Simplified constructor
+    public Course(String courseId, String courseName, int creditHours) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.creditHours = creditHours;
     }
 
     public void displayCourseInfo() {
         System.out.println("=== Course Information ===");
         System.out.println("Course ID: " + courseId);
         System.out.println("Course Name: " + courseName);
-        System.out.println("Description: " + description);
-        System.out.println("Credits: " + credits);
-        System.out.println("Teacher ID: " + (teacherId != null ? teacherId : "Not Assigned"));
-        System.out.println("Enrollment: " + enrolledStudents.size() + "/" + maxEnrollment);
-        System.out.println("Available Slots: " + getAvailableSlots());
-        System.out.println("Status: " + (isActive ? "Active" : "Inactive"));
+        System.out.println("Credit Hours: " + creditHours);
+        System.out.println("Faculty: " + (facultyName != null ? facultyName : "Not Assigned"));
+        System.out.println("Class Days: " + (classDays != null ? classDays : "TBD"));
+        System.out.println("Class Times: " + (classTimes != null ? classTimes : "TBD"));
+        System.out.println("Class Dates: " + (classDates != null ? classDates : "TBD"));
     }
 
     // Getters and Setters
@@ -87,52 +67,44 @@ public class Course {
         this.courseName = courseName;
     }
 
-    public String getDescription() {
-        return description;
+    public int getCreditHours() {
+        return creditHours;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCreditHours(int creditHours) {
+        this.creditHours = creditHours;
     }
 
-    public int getCredits() {
-        return credits;
+    public String getFacultyName() {
+        return facultyName;
     }
 
-    public void setCredits(int credits) {
-        this.credits = credits;
+    public void setFacultyName(String facultyName) {
+        this.facultyName = facultyName;
     }
 
-    public String getTeacherId() {
-        return teacherId;
+    public String getClassDays() {
+        return classDays;
     }
 
-    public void setTeacherId(String teacherId) {
-        this.teacherId = teacherId;
+    public void setClassDays(String classDays) {
+        this.classDays = classDays;
     }
 
-    public int getMaxEnrollment() {
-        return maxEnrollment;
+    public String getClassTimes() {
+        return classTimes;
     }
 
-    public void setMaxEnrollment(int maxEnrollment) {
-        this.maxEnrollment = maxEnrollment;
+    public void setClassTimes(String classTimes) {
+        this.classTimes = classTimes;
     }
 
-    public List<String> getEnrolledStudents() {
-        return enrolledStudents;
+    public String getClassDates() {
+        return classDates;
     }
 
-    public void setEnrolledStudents(List<String> enrolledStudents) {
-        this.enrolledStudents = enrolledStudents;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
+    public void setClassDates(String classDates) {
+        this.classDates = classDates;
     }
 
     @Override
@@ -140,9 +112,21 @@ public class Course {
         return "Course{" +
                 "courseId='" + courseId + '\'' +
                 ", courseName='" + courseName + '\'' +
-                ", credits=" + credits +
-                ", enrollment=" + enrolledStudents.size() + "/" + maxEnrollment +
-                ", isActive=" + isActive +
+                ", creditHours=" + creditHours +
+                ", facultyName='" + facultyName + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Course course = (Course) obj;
+        return courseId != null ? courseId.equals(course.courseId) : course.courseId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return courseId != null ? courseId.hashCode() : 0;
     }
 }
