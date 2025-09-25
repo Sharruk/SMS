@@ -22,9 +22,9 @@ args = "LMS Java Application"
 name = "LMS Java Application"
 author = "agent"
 
+[workflows.workflow.metadata]
+outputType = "console"
+
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "mvn exec:java -Dexec.mainClass=\"sms.app.Main\""
-
-[workflows.workflow.metadata]
-outputType = "console"
