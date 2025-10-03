@@ -54,6 +54,17 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+### October 3, 2025
+- **Principal Role Enhancement**: Enhanced Principal class with comprehensive menu-driven interface for managing system entities
+- **Admin Management**: Add/View/Remove admins with full CRUD operations persisting to JSON
+- **Teacher Management**: Appoint/View/Remove teachers with repository integration
+- **Course Management**: Create/Assign/View/Remove courses with teacher assignment capabilities
+- **Student Viewing**: View all registered students from repository
+- **Comprehensive Reports**: Enhanced reporting system showing statistics from all four repositories
+- **Repository Integration**: All interactive menu operations work directly with repositories (bypass local lists)
+- **Data Integrity**: Fixed OOP demo to prevent persistent storage pollution (demo uses in-memory objects only)
+- **Clean Persistence**: All CRUD operations properly persist to JSON files without duplication
+
 ### September 25, 2025
 - **Complete LMS Implementation**: Built comprehensive Java LMS based on PlantUML specification
 - **Full Domain Model**: Implemented all domain classes with proper inheritance hierarchy
