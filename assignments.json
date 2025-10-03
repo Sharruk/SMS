@@ -1,0 +1,8 @@
+[ {
+  "id" : 1,
+  "courseId" : "ICS",
+  "teacherId" : 666,
+  "title" : "IPC",
+  "description" : "learn IPC",
+  "dueDate" : "2025-10-31"
+} ]

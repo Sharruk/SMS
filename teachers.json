@@ -1,1 +1,20 @@
-[]
+[ {
+  "userId" : 666,
+  "name" : "Sachin",
+  "email" : "sachin@gmail.com",
+  "username" : "sachin",
+  "id" : "T666",
+  "courses" : [ {
+    "courseId" : "ICS",
+    "courseName" : "OS",
+    "creditHours" : 80,
+    "facultyName" : "Sachin",
+    "classDays" : "Fir",
+    "classTimes" : "9:00-10:00",
+    "classDates" : "Fall 2025"
+  } ],
+  "batches" : [ ],
+  "students" : [ ],
+  "role" : "TEACHER",
+  "passwordForAuth" : "12345"
+} ]
