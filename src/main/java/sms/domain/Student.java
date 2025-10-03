@@ -163,4 +163,48 @@ public class Student extends User implements Searchable<Course>, Sortable<Course
                 ", courses=" + courses.size() +
                 '}';
     }
+
+    public void showMenu() {
+        System.out.println("\n==================================================");
+        System.out.println("         STUDENT MENU");
+        System.out.println("==================================================");
+        System.out.println("1. Assignment Management");
+        System.out.println("2. View Grades");
+        System.out.println("3. Messaging");
+        System.out.println("4. Dashboard");
+        System.out.println("5. View My Courses");
+        System.out.println("0. Logout");
+        System.out.println("==================================================");
+        System.out.print("Choose an option: ");
+    }
+
+    public void showAssignmentManagementMenu() {
+        System.out.println("\n=== Assignment Management ===");
+        System.out.println("1. View Assignments");
+        System.out.println("2. Submit Assignment");
+        System.out.println("3. Update Submission");
+        System.out.println("4. Delete Submission");
+        System.out.println("0. Back to Main Menu");
+        System.out.print("Choose an option: ");
+    }
+
+    public void showMessagingMenu() {
+        System.out.println("\n=== Messaging ===");
+        System.out.println("1. View All Messages");
+        System.out.println("2. Send Message to Teacher");
+        System.out.println("3. View Unread Messages");
+        System.out.println("4. Mark Messages as Read");
+        System.out.println("0. Back to Main Menu");
+        System.out.print("Choose an option: ");
+    }
+
+    public void showDashboard() {
+        System.out.println("\n" + "=".repeat(60));
+        System.out.println("   STUDENT DASHBOARD - " + getName());
+        System.out.println("=".repeat(60));
+        System.out.println("Student ID: " + getUserId());
+        System.out.println("Email: " + getEmail());
+        System.out.println("Courses Enrolled: " + courses.size());
+        System.out.println("=".repeat(60));
+    }
 }

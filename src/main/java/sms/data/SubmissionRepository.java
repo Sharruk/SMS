@@ -73,7 +73,6 @@ public class SubmissionRepository implements Repository<Submission> {
         }
     }
 
-    @Override
     public Submission getById(int id) throws RepositoryException {
         return submissions.stream()
                 .filter(s -> s.getSubmissionId() == id)
@@ -84,6 +83,16 @@ public class SubmissionRepository implements Repository<Submission> {
     @Override
     public List<Submission> getAll() throws RepositoryException {
         return new ArrayList<>(submissions);
+    }
+
+    @Override
+    public List<Submission> find(String criteria) throws RepositoryException {
+        String lowerCriteria = criteria.toLowerCase();
+        return submissions.stream()
+                .filter(s -> s.getFileName().toLowerCase().contains(lowerCriteria) ||
+                           String.valueOf(s.getStudentId()).contains(lowerCriteria) ||
+                           String.valueOf(s.getAssignmentId()).contains(lowerCriteria))
+                .collect(Collectors.toList());
     }
 
     public int getNextSubmissionId() {
