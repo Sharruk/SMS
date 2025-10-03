@@ -1,1 +1,12 @@
-[ ]
+[ {
+  "userId" : 901,
+  "name" : "a9",
+  "email" : "a9@gmail.com",
+  "username" : "a9",
+  "managedStudents" : [ ],
+  "managedTeachers" : [ ],
+  "managedCourses" : [ ],
+  "managedBatches" : [ ],
+  "role" : "ADMIN",
+  "passwordForAuth" : "a9"
+} ]
