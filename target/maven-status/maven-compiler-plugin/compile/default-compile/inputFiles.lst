@@ -11,8 +11,8 @@
 /home/runner/workspace/src/main/java/sms/search/Searchable.java
 /home/runner/workspace/src/main/java/sms/app/Main.java
 /home/runner/workspace/src/main/java/sms/exceptions/BaseException.java
-/home/runner/workspace/src/main/java/sms/data/Repository.java
 /home/runner/workspace/src/main/java/sms/data/MessageRepository.java
+/home/runner/workspace/src/main/java/sms/data/Repository.java
 /home/runner/workspace/src/main/java/sms/domain/StudentTable.java
 /home/runner/workspace/src/main/java/sms/domain/Principal.java
 /home/runner/workspace/src/main/java/sms/domain/Message.java
@@ -22,8 +22,8 @@
 /home/runner/workspace/src/main/java/sms/domain/Attendance.java
 /home/runner/workspace/src/main/java/sms/exceptions/ValidationException.java
 /home/runner/workspace/src/main/java/sms/services/UploadService.java
-/home/runner/workspace/src/main/java/sms/domain/User.java
 /home/runner/workspace/src/main/java/sms/domain/Admin.java
+/home/runner/workspace/src/main/java/sms/domain/User.java
 /home/runner/workspace/src/main/java/sms/exceptions/NotFoundException.java
 /home/runner/workspace/src/main/java/sms/domain/Batch.java
 /home/runner/workspace/src/main/java/sms/sort/Sortable.java
