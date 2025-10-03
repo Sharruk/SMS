@@ -1,12 +1,1 @@
-[ {
-  "userId" : 3002,
-  "name" : "Charlie Brown",
-  "email" : "charlie@student.edu",
-  "username" : "charlie",
-  "id" : "S3001",
-  "dept" : null,
-  "batch" : null,
-  "courses" : [ ],
-  "role" : "STUDENT",
-  "passwordForAuth" : "student123"
-} ]
+[]

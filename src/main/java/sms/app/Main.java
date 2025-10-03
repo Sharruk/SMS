@@ -123,29 +123,30 @@ public class Main {
             // 4. GENERICS DEMONSTRATION
             System.out.println("\n4. === GENERICS DEMONSTRATION ===");
             System.out.println("Using Generic Repository<T> interface with different types:");
+            System.out.println("(Demo uses in-memory objects only - no persistent storage pollution)");
             
-            // Save entities using generic repository methods
+            // Demonstrate type-safe generic repository interface
             Repository<Student> studentRepo = studentRepository;
             Repository<Teacher> teacherRepo = teacherRepository;
             Repository<Admin> adminRepo = adminRepository;
             Repository<Course> courseRepo = courseRepository;
             
-            System.out.println("Saving entities using Repository<T> generics...");
-            studentRepo.add(student);
-            teacherRepo.add(teacher);
-            adminRepo.add(admin);
+            System.out.println("Generic Repository<T> interface supports type-safe operations:");
+            System.out.println("  - Repository<Student> for student data");
+            System.out.println("  - Repository<Teacher> for teacher data");
+            System.out.println("  - Repository<Admin> for admin data");
+            System.out.println("  - Repository<Course> for course data");
             
             Course course = new Course("LMS101", "Object-Oriented Programming", 3, "Prof. Bob Johnson", "Mon/Wed/Fri", "10:00-11:00", "Fall 2025");
-            courseRepo.add(course);
             
             System.out.println("Generic repositories working with different types successfully!");
             
-            // Demonstrate generic method calls
+            // Show current repository counts (from persistent storage)
             long studentCount = studentRepo.getAll().size();
             long teacherCount = teacherRepo.getAll().size();
             long adminCount = adminRepo.getAll().size();
             long courseCount = courseRepo.getAll().size();
-            System.out.println("Repository counts - Students: " + studentCount + ", Teachers: " + teacherCount + 
+            System.out.println("Current repository counts - Students: " + studentCount + ", Teachers: " + teacherCount + 
                               ", Admins: " + adminCount + ", Courses: " + courseCount);
 
             // 5. CUSTOM EXCEPTION HANDLING DEMONSTRATION
@@ -409,7 +410,28 @@ public class Main {
     }
 
     private static void demonstratePrincipalAccess() {
-        System.out.println("\n--- Principal Access Demo ---");
+        System.out.println("\n--- Principal Access Mode ---");
+        System.out.println("Would you like to:");
+        System.out.println("1. Run Quick Demo (automated)");
+        System.out.println("2. Interactive Principal Menu");
+        System.out.print("Choose: ");
+        
+        try {
+            int choice = Integer.parseInt(scanner.nextLine());
+            if (choice == 1) {
+                runQuickPrincipalDemo();
+            } else if (choice == 2) {
+                runPrincipalMenu();
+            } else {
+                System.out.println("Invalid choice.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter a valid number.");
+        }
+    }
+
+    private static void runQuickPrincipalDemo() {
+        System.out.println("\n--- Quick Principal Demo ---");
         Principal principal = new Principal(5001, "Dr. Principal", "principal@lms.edu", "principal", "pass123");
         Admin admin = new Admin(5002, "Admin User", "admin@lms.edu", "admin", "pass123");
         Teacher teacher = new Teacher(5003, "Teacher User", "teacher@lms.edu", "teacher", "pass123");
@@ -417,6 +439,515 @@ public class Main {
         principal.addAdmin(admin);
         principal.appointTeacher(teacher);
         principal.viewReports();
+    }
+
+    private static void runPrincipalMenu() {
+        Principal principal = new Principal(1, "Dr. Principal", "principal@lms.edu", "principal", "pass123");
+        
+        System.out.println("\n" + "=".repeat(60));
+        System.out.println("   Welcome, " + principal.getName() + " - Principal Account");
+        System.out.println("   All operations work directly with persistent storage");
+        System.out.println("=".repeat(60));
+        
+        while (true) {
+            try {
+                principal.showMenu();
+                int choice = Integer.parseInt(scanner.nextLine());
+                
+                switch (choice) {
+                    case 1:
+                        handleAdminManagement(principal);
+                        break;
+                    case 2:
+                        handleTeacherManagement(principal);
+                        break;
+                    case 3:
+                        handleCourseManagement(principal);
+                        break;
+                    case 4:
+                        viewAllStudentsFromRepository();
+                        break;
+                    case 5:
+                        viewPrincipalReportsFromRepositories(principal);
+                        break;
+                    case 0:
+                        System.out.println("Logging out from Principal account...");
+                        return;
+                    default:
+                        System.out.println("Invalid option. Please try again.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            } catch (Exception e) {
+                System.out.println("An error occurred: " + e.getMessage());
+            }
+        }
+    }
+
+    private static void loadRepositoryDataIntoPrincipal(Principal principal) {
+        try {
+            List<Admin> allAdmins = adminRepository.getAll();
+            for (Admin admin : allAdmins) {
+                principal.getManagedAdmins().add(admin);
+            }
+            
+            List<Teacher> allTeachers = teacherRepository.getAll();
+            for (Teacher teacher : allTeachers) {
+                principal.getAppointedTeachers().add(teacher);
+            }
+            
+            List<Course> allCourses = courseRepository.getAll();
+            for (Course course : allCourses) {
+                principal.getManagedCourses().add(course);
+            }
+            
+            System.out.println("Loaded existing data from repositories:");
+            System.out.println("  - " + allAdmins.size() + " admins");
+            System.out.println("  - " + allTeachers.size() + " teachers");
+            System.out.println("  - " + allCourses.size() + " courses");
+        } catch (Exception e) {
+            System.out.println("Warning: Could not load repository data: " + e.getMessage());
+        }
+    }
+
+    private static void viewPrincipalReportsFromRepositories(Principal principal) {
+        try {
+            List<Admin> allAdmins = adminRepository.getAll();
+            List<Teacher> allTeachers = teacherRepository.getAll();
+            List<Course> allCourses = courseRepository.getAll();
+            List<Student> allStudents = studentRepository.getAll();
+            
+            System.out.println("\n" + "=".repeat(60));
+            System.out.println("         PRINCIPAL'S SYSTEM REPORTS & STATISTICS");
+            System.out.println("=".repeat(60));
+            System.out.println("Total Admins: " + allAdmins.size());
+            System.out.println("Total Teachers: " + allTeachers.size());
+            System.out.println("Total Courses: " + allCourses.size());
+            System.out.println("Total Students: " + allStudents.size());
+            
+            System.out.println("\nAdmins:");
+            if (allAdmins.isEmpty()) {
+                System.out.println("  No admins found.");
+            } else {
+                for (Admin admin : allAdmins) {
+                    System.out.println("  - " + admin.getName() + " (ID: " + admin.getUserId() + ")");
+                }
+            }
+            
+            System.out.println("\nTeachers:");
+            if (allTeachers.isEmpty()) {
+                System.out.println("  No teachers found.");
+            } else {
+                for (Teacher teacher : allTeachers) {
+                    System.out.println("  - " + teacher.getName() + " (ID: " + teacher.getUserId() + 
+                                     ", Courses: " + teacher.getCourses().size() + ")");
+                }
+            }
+
+            System.out.println("\nCourses:");
+            if (allCourses.isEmpty()) {
+                System.out.println("  No courses found.");
+            } else {
+                for (Course course : allCourses) {
+                    System.out.println("  - " + course.getCourseName() + " (" + course.getCourseId() + 
+                                     ") - Faculty: " + (course.getFacultyName() != null ? course.getFacultyName() : "Unassigned"));
+                }
+            }
+
+            System.out.println("\nStudents:");
+            if (allStudents.isEmpty()) {
+                System.out.println("  No students found.");
+            } else {
+                for (Student student : allStudents) {
+                    System.out.println("  - " + student.getName() + " (ID: " + student.getUserId() + 
+                                     ", Courses: " + student.getCourses().size() + ")");
+                }
+            }
+            System.out.println("=".repeat(60) + "\n");
+        } catch (Exception e) {
+            System.out.println("Error retrieving reports: " + e.getMessage());
+        }
+    }
+
+    private static void handleAdminManagement(Principal principal) {
+        while (true) {
+            try {
+                principal.showAdminManagementMenu();
+                int choice = Integer.parseInt(scanner.nextLine());
+                
+                switch (choice) {
+                    case 1:
+                        addNewAdmin(principal);
+                        break;
+                    case 2:
+                        viewAllAdminsFromRepository();
+                        break;
+                    case 3:
+                        removeAdminById(principal);
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        System.out.println("Invalid option.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            }
+        }
+    }
+
+    private static void viewAllAdminsFromRepository() {
+        try {
+            List<Admin> admins = adminRepository.getAll();
+            System.out.println("\n=== All Admins ===");
+            if (admins.isEmpty()) {
+                System.out.println("No admins found.");
+            } else {
+                for (int i = 0; i < admins.size(); i++) {
+                    Admin admin = admins.get(i);
+                    System.out.println((i + 1) + ". " + admin.getName() + " (ID: " + admin.getUserId() + 
+                                     ", Email: " + admin.getEmail() + ")");
+                }
+            }
+            System.out.println("Total Admins: " + admins.size());
+            System.out.println("==================\n");
+        } catch (Exception e) {
+            System.out.println("Error retrieving admins: " + e.getMessage());
+        }
+    }
+
+    private static void addNewAdmin(Principal principal) {
+        try {
+            System.out.print("Enter Admin ID: ");
+            int userId = Integer.parseInt(scanner.nextLine());
+            
+            System.out.print("Enter Name: ");
+            String name = scanner.nextLine();
+            
+            System.out.print("Enter Email: ");
+            String email = scanner.nextLine();
+            
+            System.out.print("Enter Username: ");
+            String username = scanner.nextLine();
+            
+            System.out.print("Enter Password: ");
+            String password = scanner.nextLine();
+            
+            Admin admin = new Admin(userId, name, email, username, password);
+            adminRepository.add(admin);
+            System.out.println("✓ Principal: Added admin " + admin.getName() + " (ID: " + admin.getUserId() + ")");
+            
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid ID. Please enter a number.");
+        } catch (Exception e) {
+            System.out.println("Error adding admin: " + e.getMessage());
+        }
+    }
+
+    private static void removeAdminById(Principal principal) {
+        try {
+            System.out.print("Enter Admin ID to remove: ");
+            int userId = Integer.parseInt(scanner.nextLine());
+            
+            List<Admin> allAdmins = adminRepository.getAll();
+            Admin toRemove = null;
+            for (Admin admin : allAdmins) {
+                if (admin.getUserId() == userId) {
+                    toRemove = admin;
+                    break;
+                }
+            }
+            
+            if (toRemove != null) {
+                adminRepository.delete(toRemove);
+                System.out.println("✓ Principal: Removed admin " + toRemove.getName() + " (ID: " + userId + ")");
+            } else {
+                System.out.println("✗ Principal: Admin with ID " + userId + " not found");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid ID. Please enter a number.");
+        } catch (Exception e) {
+            System.out.println("Error removing admin: " + e.getMessage());
+        }
+    }
+
+    private static void handleTeacherManagement(Principal principal) {
+        while (true) {
+            try {
+                principal.showTeacherManagementMenu();
+                int choice = Integer.parseInt(scanner.nextLine());
+                
+                switch (choice) {
+                    case 1:
+                        appointNewTeacher(principal);
+                        break;
+                    case 2:
+                        viewAllTeachersFromRepository();
+                        break;
+                    case 3:
+                        removeTeacherById(principal);
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        System.out.println("Invalid option.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            }
+        }
+    }
+
+    private static void viewAllTeachersFromRepository() {
+        try {
+            List<Teacher> teachers = teacherRepository.getAll();
+            System.out.println("\n=== All Teachers ===");
+            if (teachers.isEmpty()) {
+                System.out.println("No teachers found.");
+            } else {
+                for (int i = 0; i < teachers.size(); i++) {
+                    Teacher teacher = teachers.get(i);
+                    System.out.println((i + 1) + ". " + teacher.getName() + " (ID: " + teacher.getUserId() + 
+                                     ", Email: " + teacher.getEmail() + ", Courses: " + teacher.getCourses().size() + ")");
+                }
+            }
+            System.out.println("Total Teachers: " + teachers.size());
+            System.out.println("====================\n");
+        } catch (Exception e) {
+            System.out.println("Error retrieving teachers: " + e.getMessage());
+        }
+    }
+
+    private static void appointNewTeacher(Principal principal) {
+        try {
+            System.out.print("Enter Teacher ID: ");
+            int userId = Integer.parseInt(scanner.nextLine());
+            
+            System.out.print("Enter Name: ");
+            String name = scanner.nextLine();
+            
+            System.out.print("Enter Email: ");
+            String email = scanner.nextLine();
+            
+            System.out.print("Enter Username: ");
+            String username = scanner.nextLine();
+            
+            System.out.print("Enter Password: ");
+            String password = scanner.nextLine();
+            
+            Teacher teacher = new Teacher(userId, name, email, username, password);
+            teacherRepository.add(teacher);
+            System.out.println("✓ Principal: Appointed teacher " + teacher.getName() + " (ID: " + teacher.getUserId() + ")");
+            
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid ID. Please enter a number.");
+        } catch (Exception e) {
+            System.out.println("Error appointing teacher: " + e.getMessage());
+        }
+    }
+
+    private static void removeTeacherById(Principal principal) {
+        try {
+            System.out.print("Enter Teacher ID to remove: ");
+            int userId = Integer.parseInt(scanner.nextLine());
+            
+            List<Teacher> allTeachers = teacherRepository.getAll();
+            Teacher toRemove = null;
+            for (Teacher teacher : allTeachers) {
+                if (teacher.getUserId() == userId) {
+                    toRemove = teacher;
+                    break;
+                }
+            }
+            
+            if (toRemove != null) {
+                teacherRepository.delete(toRemove);
+                System.out.println("✓ Principal: Removed teacher " + toRemove.getName() + " (ID: " + userId + ")");
+            } else {
+                System.out.println("✗ Principal: Teacher with ID " + userId + " not found");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid ID. Please enter a number.");
+        } catch (Exception e) {
+            System.out.println("Error removing teacher: " + e.getMessage());
+        }
+    }
+
+    private static void handleCourseManagement(Principal principal) {
+        while (true) {
+            try {
+                principal.showCourseManagementMenu();
+                int choice = Integer.parseInt(scanner.nextLine());
+                
+                switch (choice) {
+                    case 1:
+                        createNewCourse(principal);
+                        break;
+                    case 2:
+                        assignTeacherToCourseFromRepository(principal);
+                        break;
+                    case 3:
+                        viewAllCoursesFromRepository();
+                        break;
+                    case 4:
+                        removeCourseById(principal);
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        System.out.println("Invalid option.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            }
+        }
+    }
+
+    private static void viewAllCoursesFromRepository() {
+        try {
+            List<Course> courses = courseRepository.getAll();
+            System.out.println("\n=== All Courses ===");
+            if (courses.isEmpty()) {
+                System.out.println("No courses found.");
+            } else {
+                for (int i = 0; i < courses.size(); i++) {
+                    Course course = courses.get(i);
+                    System.out.println((i + 1) + ". " + course.getCourseName() + 
+                                     " (ID: " + course.getCourseId() + 
+                                     ", Credits: " + course.getCreditHours() +
+                                     ", Faculty: " + (course.getFacultyName() != null ? course.getFacultyName() : "Unassigned") + ")");
+                }
+            }
+            System.out.println("Total Courses: " + courses.size());
+            System.out.println("===================\n");
+        } catch (Exception e) {
+            System.out.println("Error retrieving courses: " + e.getMessage());
+        }
+    }
+
+    private static void createNewCourse(Principal principal) {
+        try {
+            System.out.print("Enter Course ID (e.g., LMS101): ");
+            String courseId = scanner.nextLine();
+            
+            System.out.print("Enter Course Name: ");
+            String courseName = scanner.nextLine();
+            
+            System.out.print("Enter Credit Hours: ");
+            int creditHours = Integer.parseInt(scanner.nextLine());
+            
+            System.out.print("Enter Class Days (e.g., Mon/Wed/Fri): ");
+            String classDays = scanner.nextLine();
+            
+            System.out.print("Enter Class Times (e.g., 10:00-11:00): ");
+            String classTimes = scanner.nextLine();
+            
+            System.out.print("Enter Class Dates (e.g., Fall 2025): ");
+            String classDates = scanner.nextLine();
+            
+            Course course = new Course(courseId, courseName, creditHours, "Unassigned", 
+                                      classDays, classTimes, classDates);
+            courseRepository.add(course);
+            System.out.println("✓ Principal: Created course " + course.getCourseName() + " (ID: " + course.getCourseId() + ")");
+            
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid credit hours. Please enter a number.");
+        } catch (Exception e) {
+            System.out.println("Error creating course: " + e.getMessage());
+        }
+    }
+
+    private static void assignTeacherToCourseFromRepository(Principal principal) {
+        try {
+            viewAllTeachersFromRepository();
+            System.out.print("Enter Teacher ID: ");
+            int teacherId = Integer.parseInt(scanner.nextLine());
+            
+            viewAllCoursesFromRepository();
+            System.out.print("Enter Course ID: ");
+            String courseId = scanner.nextLine();
+            
+            Teacher teacher = null;
+            for (Teacher t : teacherRepository.getAll()) {
+                if (t.getUserId() == teacherId) {
+                    teacher = t;
+                    break;
+                }
+            }
+            
+            Course course = null;
+            for (Course c : courseRepository.getAll()) {
+                if (c.getCourseId().equals(courseId)) {
+                    course = c;
+                    break;
+                }
+            }
+            
+            if (teacher != null && course != null) {
+                teacher.addCourse(course);
+                course.setFacultyName(teacher.getName());
+                
+                teacherRepository.update(teacher);
+                courseRepository.update(course);
+                
+                System.out.println("✓ Principal: Assigned course " + course.getCourseId() + 
+                                  " to teacher " + teacher.getName());
+            } else {
+                System.out.println("✗ Teacher or Course not found.");
+            }
+            
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid ID. Please enter a valid number.");
+        } catch (Exception e) {
+            System.out.println("Error assigning course: " + e.getMessage());
+        }
+    }
+
+    private static void removeCourseById(Principal principal) {
+        try {
+            System.out.print("Enter Course ID to remove: ");
+            String courseId = scanner.nextLine();
+            
+            List<Course> allCourses = courseRepository.getAll();
+            Course toRemove = null;
+            for (Course course : allCourses) {
+                if (course.getCourseId().equals(courseId)) {
+                    toRemove = course;
+                    break;
+                }
+            }
+            
+            if (toRemove != null) {
+                courseRepository.delete(toRemove);
+                System.out.println("✓ Principal: Removed course " + toRemove.getCourseName() + " (ID: " + courseId + ")");
+            } else {
+                System.out.println("✗ Principal: Course with ID " + courseId + " not found");
+            }
+        } catch (Exception e) {
+            System.out.println("Error removing course: " + e.getMessage());
+        }
+    }
+
+    private static void viewAllStudentsFromRepository() {
+        try {
+            List<Student> students = studentRepository.getAll();
+            System.out.println("\n=== All Students ===");
+            if (students.isEmpty()) {
+                System.out.println("No students found.");
+            } else {
+                for (int i = 0; i < students.size(); i++) {
+                    Student student = students.get(i);
+                    System.out.println((i + 1) + ". " + student.getName() + 
+                                     " (ID: " + student.getUserId() + 
+                                     ", Email: " + student.getEmail() + 
+                                     ", Courses: " + student.getCourses().size() + ")");
+                }
+            }
+            System.out.println("Total Students: " + students.size());
+            System.out.println("====================\n");
+        } catch (Exception e) {
+            System.out.println("Error retrieving students: " + e.getMessage());
+        }
     }
 
     private static void demonstrateAdminAccess() {

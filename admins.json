@@ -1,12 +1,1 @@
-[ {
-  "userId" : 1001,
-  "name" : "Dr. Alice Smith",
-  "email" : "alice@lms.edu",
-  "username" : "alice",
-  "managedStudents" : [ ],
-  "managedTeachers" : [ ],
-  "managedCourses" : [ ],
-  "managedBatches" : [ ],
-  "role" : "ADMIN",
-  "passwordForAuth" : "admin123"
-} ]
+[]
