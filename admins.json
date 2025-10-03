@@ -1,1 +1,23 @@
-[]
+[ {
+  "userId" : 101,
+  "name" : "Alice",
+  "email" : "alice@gmail.com",
+  "username" : "Alcie",
+  "managedStudents" : [ ],
+  "managedTeachers" : [ ],
+  "managedCourses" : [ ],
+  "managedBatches" : [ ],
+  "role" : "ADMIN",
+  "passwordForAuth" : "12345"
+}, {
+  "userId" : 902,
+  "name" : "bob",
+  "email" : "bob@gmail.com",
+  "username" : "bob",
+  "managedStudents" : [ ],
+  "managedTeachers" : [ ],
+  "managedCourses" : [ ],
+  "managedBatches" : [ ],
+  "role" : "ADMIN",
+  "passwordForAuth" : "123"
+} ]
