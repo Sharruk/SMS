@@ -173,6 +173,70 @@ public class Teacher extends User implements Searchable<Student>, Sortable<Stude
         this.students = students;
     }
 
+    public void showMenu() {
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("         TEACHER MENU");
+        System.out.println("=".repeat(50));
+        System.out.println("1. Assignment Management");
+        System.out.println("2. Grades Management");
+        System.out.println("3. Messaging System");
+        System.out.println("4. Dashboard");
+        System.out.println("5. View My Courses");
+        System.out.println("6. View My Students");
+        System.out.println("0. Logout");
+        System.out.println("=".repeat(50));
+        System.out.print("Choose an option: ");
+    }
+
+    public void showAssignmentManagementMenu() {
+        System.out.println("\n--- Assignment Management ---");
+        System.out.println("1. Create New Assignment");
+        System.out.println("2. View All My Assignments");
+        System.out.println("3. Update Assignment");
+        System.out.println("4. Delete Assignment");
+        System.out.println("0. Back to Main Menu");
+        System.out.print("Choose an option: ");
+    }
+
+    public void showGradesManagementMenu() {
+        System.out.println("\n--- Grades Management ---");
+        System.out.println("1. Assign Grade to Student");
+        System.out.println("2. Update Student Grade");
+        System.out.println("3. View Grades by Course");
+        System.out.println("4. View All Grades Given");
+        System.out.println("0. Back to Main Menu");
+        System.out.print("Choose an option: ");
+    }
+
+    public void showMessagingMenu() {
+        System.out.println("\n--- Messaging System ---");
+        System.out.println("1. View My Messages");
+        System.out.println("2. Send Message to Students");
+        System.out.println("3. View Unread Messages");
+        System.out.println("4. Mark Messages as Read");
+        System.out.println("0. Back to Main Menu");
+        System.out.print("Choose an option: ");
+    }
+
+    public void showDashboard() {
+        System.out.println("\n" + "=".repeat(60));
+        System.out.println("         TEACHER DASHBOARD - " + getName());
+        System.out.println("=".repeat(60));
+        System.out.println("User ID: " + getUserId());
+        System.out.println("Email: " + getEmail());
+        System.out.println("\nCourse Summary:");
+        System.out.println("  Total Courses: " + courses.size());
+        if (!courses.isEmpty()) {
+            System.out.println("  Courses:");
+            for (Course course : courses) {
+                System.out.println("    - " + course.getCourseName() + " (" + course.getCourseId() + ")");
+            }
+        }
+        System.out.println("\nStudent Summary:");
+        System.out.println("  Total Students: " + students.size());
+        System.out.println("=".repeat(60));
+    }
+
     @Override
     public String toString() {
         return "Teacher{" +
