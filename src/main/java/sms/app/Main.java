@@ -1139,7 +1139,7 @@ public class Main {
                 System.out.println((i + 1) + ". " + a.getName() + " (ID: " + a.getUserId() + ", Email: " + a.getEmail() + ")");
             }
             
-            System.out.print("Enter Admin number to login (or 0 to cancel): ");
+            System.out.print("Enter selection number (1, 2, etc.) to login, or 0 to cancel: ");
             int adminChoice = Integer.parseInt(scanner.nextLine());
             
             if (adminChoice <= 0 || adminChoice > allAdmins.size()) {
