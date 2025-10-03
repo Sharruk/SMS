@@ -2413,7 +2413,28 @@ public class Main {
     }
 
     private static void demonstrateStudentAccess() {
-        System.out.println("\n--- Student Access Demo ---");
+        System.out.println("\n--- Student Access Mode ---");
+        System.out.println("Would you like to:");
+        System.out.println("1. Run Quick Demo (automated)");
+        System.out.println("2. Interactive Student Menu");
+        System.out.print("Choose: ");
+        
+        try {
+            int choice = Integer.parseInt(scanner.nextLine());
+            if (choice == 1) {
+                runQuickStudentDemo();
+            } else if (choice == 2) {
+                runStudentMenu();
+            } else {
+                System.out.println("Invalid choice.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter a valid number.");
+        }
+    }
+
+    private static void runQuickStudentDemo() {
+        System.out.println("\n--- Quick Student Demo ---");
         try {
             Student student = new Student(8001, "Student Demo", "student@lms.edu", "student", "pass123");
             student.viewAssignment();

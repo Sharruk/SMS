@@ -1,0 +1,38 @@
+[
+  {
+    "messageId": 1,
+    "fromUserId": 2001,
+    "fromUserName": "Dr. Robert Johnson",
+    "fromRole": "TEACHER",
+    "toUserId": 1001,
+    "toUserName": "John Smith",
+    "toRole": "STUDENT",
+    "message": "Great work on your last assignment! Keep up the good effort.",
+    "timestamp": "2025-10-03 10:30:00",
+    "read": false
+  },
+  {
+    "messageId": 2,
+    "fromUserId": 2002,
+    "fromUserName": "Dr. Emily Williams",
+    "fromRole": "TEACHER",
+    "toUserId": 1001,
+    "toUserName": "John Smith",
+    "toRole": "STUDENT",
+    "message": "Please review the lecture notes before the next class.",
+    "timestamp": "2025-10-03 14:15:00",
+    "read": false
+  },
+  {
+    "messageId": 3,
+    "fromUserId": 2001,
+    "fromUserName": "Dr. Robert Johnson",
+    "fromRole": "TEACHER",
+    "toUserId": 1002,
+    "toUserName": "Sarah Johnson",
+    "toRole": "STUDENT",
+    "message": "Assignment deadline is approaching. Please submit on time.",
+    "timestamp": "2025-10-03 09:00:00",
+    "read": false
+  }
+]

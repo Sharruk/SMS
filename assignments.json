@@ -1,8 +1,26 @@
-[ {
-  "id" : 1,
-  "courseId" : "ICS",
-  "teacherId" : 666,
-  "title" : "IPC",
-  "description" : "learn IPC",
-  "dueDate" : "2025-10-31"
-} ]
+[
+  {
+    "id": 1,
+    "courseId": "CS101",
+    "teacherId": 2001,
+    "title": "Programming Assignment 1",
+    "description": "Write a program to implement basic algorithms",
+    "dueDate": "2025-10-15"
+  },
+  {
+    "id": 2,
+    "courseId": "CS101",
+    "teacherId": 2001,
+    "title": "Programming Assignment 2",
+    "description": "Object-oriented programming concepts",
+    "dueDate": "2025-10-25"
+  },
+  {
+    "id": 3,
+    "courseId": "CS201",
+    "teacherId": 2002,
+    "title": "Data Structures Project",
+    "description": "Implement linked lists and trees",
+    "dueDate": "2025-11-05"
+  }
+]

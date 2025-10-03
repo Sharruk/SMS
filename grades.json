@@ -1,0 +1,23 @@
+[
+  {
+    "gradeId": 1,
+    "studentId": 1001,
+    "courseId": "CS101",
+    "grade": "A",
+    "semester": "Fall 2025"
+  },
+  {
+    "gradeId": 2,
+    "studentId": 1001,
+    "courseId": "CS201",
+    "grade": "B+",
+    "semester": "Fall 2025"
+  },
+  {
+    "gradeId": 3,
+    "studentId": 1002,
+    "courseId": "CS101",
+    "grade": "A-",
+    "semester": "Fall 2025"
+  }
+]
