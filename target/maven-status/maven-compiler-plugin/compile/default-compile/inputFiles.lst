@@ -6,6 +6,7 @@
 /home/runner/workspace/src/main/java/sms/data/AdminRepository.java
 /home/runner/workspace/src/main/java/sms/exceptions/AuthorizationException.java
 /home/runner/workspace/src/main/java/sms/data/GradeRepository.java
+/home/runner/workspace/src/main/java/sms/data/SubmissionRepository.java
 /home/runner/workspace/src/main/java/sms/domain/Course.java
 /home/runner/workspace/src/main/java/sms/domain/Teacher.java
 /home/runner/workspace/src/main/java/sms/domain/Department.java
@@ -20,6 +21,7 @@
 /home/runner/workspace/src/main/java/sms/domain/Message.java
 /home/runner/workspace/src/main/java/sms/domain/Student.java
 /home/runner/workspace/src/main/java/sms/data/AssignmentRepository.java
+/home/runner/workspace/src/main/java/sms/domain/Submission.java
 /home/runner/workspace/src/main/java/sms/exceptions/RepositoryException.java
 /home/runner/workspace/src/main/java/sms/data/TeacherRepository.java
 /home/runner/workspace/src/main/java/sms/domain/Attendance.java

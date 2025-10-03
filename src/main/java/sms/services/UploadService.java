@@ -29,4 +29,10 @@ public interface UploadService<T> {
      * @throws UploadException if metadata saving fails
      */
     void saveMetadata(T file) throws UploadException;
+    
+    /**
+     * Get the upload directory path
+     * @return The upload directory path
+     */
+    String getUploadDirectory();
 }

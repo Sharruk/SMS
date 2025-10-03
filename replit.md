@@ -53,3 +53,29 @@ Preferred communication style: Simple, everyday language.
 ### Runtime Environment
 - **Console/Terminal**: Interactive text-based user interface.
 - **File System**: For JSON file persistence and upload directory management.
+
+## Recent Changes
+
+### 2025-10-03: Replit Environment Setup
+- Fixed compilation errors by adding `getUploadDirectory()` method to `UploadService` interface
+- Successfully compiled the project with Maven
+- Configured workflow "LMS Application" to run the console application
+- Application starts successfully and demonstrates all OOP features on launch
+- JSON data persistence is working (admins.json, courses.json, assignments.json)
+- Console menu system is functional and ready for user interaction
+
+## Running the Application
+
+The application is configured to run automatically via the workflow. When started:
+1. It initializes all repositories and loads data from JSON files
+2. Runs a comprehensive demonstration of OOP features
+3. Presents an interactive menu with options for:
+   - Role-based Access Demo
+   - Search & Sort Demo
+   - File Upload Demo
+   - User Management
+   - Course Management
+   - System Statistics
+
+## Known Issues
+- Existing students.json and teachers.json files are missing the "type" field required by Jackson's polymorphic deserialization. The system handles this gracefully by starting with empty repositories for these entities. To fix, add `"type": "student"` or `"type": "teacher"` to each JSON object, or delete the files to let the system recreate them.

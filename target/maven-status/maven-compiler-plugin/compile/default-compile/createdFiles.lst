@@ -1,3 +1,4 @@
+sms/data/SubmissionRepository$1.class
 sms/data/TeacherRepository$1.class
 sms/data/AdminRepository.class
 sms/exceptions/ValidationException.class
@@ -36,5 +37,7 @@ sms/exceptions/UploadException.class
 sms/data/StudentRepository.class
 sms/data/MessageRepository$1.class
 sms/data/StudentRepository$1.class
+sms/data/SubmissionRepository.class
 sms/exceptions/RepositoryException.class
+sms/domain/Submission.class
 sms/exceptions/NotFoundException.class
