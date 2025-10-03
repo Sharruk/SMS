@@ -54,6 +54,15 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+### October 3, 2025 - Replit Environment Setup
+- **GitHub Import**: Successfully imported project to Replit environment
+- **Java Setup**: Java 19 (GraalVM) and Maven 3.9.9 installed and configured
+- **Build Configuration**: Maven build successful with all dependencies downloaded
+- **Workflow Setup**: Console application configured to run via Maven exec plugin
+- **JSON Fix**: Fixed admins.json to include required "type" field for polymorphic deserialization
+- **Application Status**: LMS running successfully with interactive console menu
+- **Data Loading**: All repositories loading correctly (2 admins, 3 courses, 0 students, 0 teachers)
+
 ### October 3, 2025 (Latest Update)
 - **Admin Menu System**: Complete interactive Admin menu with repository-based operations
   - Admin selection from repository (not hard-coded)
@@ -165,11 +174,24 @@ Preferred communication style: Simple, everyday language.
 
 ## Usage Instructions
 
+### Running in Replit
+The application is configured to run automatically in Replit:
+1. Click the "Run" button at the top of the Replit interface
+2. The workflow "LMS Application" will start automatically
+3. The console will show the OOP features demonstration followed by an interactive menu
+4. Use the console to interact with the menu options
+
+### Running Manually (Terminal)
 1. **Compile**: `mvn clean compile`
 2. **Run**: `mvn exec:java -Dexec.mainClass="sms.app.Main"`
 3. **Features**: The system will automatically demonstrate all OOP features and then provide an interactive menu
 4. **Data Files**: JSON files are created automatically for data persistence
 5. **Upload Directory**: Files are uploaded to the uploads/ directory
+
+### Important Notes for Replit
+- The application is a console-based interactive system (not a web application)
+- JSON data files must include a "type" field for polymorphic deserialization (e.g., "type": "admin", "type": "student")
+- The workflow is configured to use Maven exec plugin for optimal performance
 
 ## Testing and Quality Assurance
 
