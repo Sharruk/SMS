@@ -1,1 +1,17 @@
-[]
+[ {
+  "courseId" : "ICS101",
+  "courseName" : "Java",
+  "creditHours" : 90,
+  "facultyName" : "mark",
+  "classDays" : "Mon/Tues/Wed",
+  "classTimes" : "11:00-12:00",
+  "classDates" : "Fall 2025"
+}, {
+  "courseId" : "ICS101",
+  "courseName" : "OOP",
+  "creditHours" : 90,
+  "facultyName" : "Unassigned",
+  "classDays" : "Mon",
+  "classTimes" : "10:00-11:00",
+  "classDates" : "Fall 2025"
+} ]

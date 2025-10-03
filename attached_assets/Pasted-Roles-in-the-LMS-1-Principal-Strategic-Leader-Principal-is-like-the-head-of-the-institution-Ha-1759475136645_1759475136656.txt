@@ -1,0 +1,150 @@
+Roles in the LMS
+1. Principal (Strategic Leader)
+
+Principal is like the head of the institution.
+
+Has full authority: can do anything Admin can.
+
+But usually does not micromanage.
+
+Focuses on high-level decisions, monitoring, and communication.
+
+✅ Principal Can Do
+
+Admin Management
+
+Create admins, remove admins.
+
+Reassign responsibilities if Admin leaves.
+
+High-Level Oversight
+
+View full reports (all students, teachers, courses, attendance, grades).
+
+Audit the system (check logs, verify course/teacher/student counts).
+
+Approve/deny major changes (e.g., removing a whole department).
+
+Emergency Operations
+
+If needed, Principal can:
+
+Add/remove students
+
+Add/remove teachers
+
+Create/remove courses
+
+Assign courses
+(but normally lets Admin handle this)
+
+Messaging Feature (NEW)
+
+Send announcements/instructions to Admins and Teachers.
+Examples:
+
+“New semester begins on Oct 5. Prepare course schedules.”
+
+“Submit attendance summary by Friday.”
+
+“Admin, please remove inactive courses.”
+
+❌ Principal Usually Doesn’t Do
+
+Daily student registrations.
+
+Routine teacher/course assignments.
+
+Entering attendance or grades.
+
+Small updates (like changing a student’s email).
+(These are Admin/Teacher tasks.)
+
+2. Admin (Day-to-Day Operator)
+
+Admin is like the system manager.
+
+Handles all operational tasks.
+
+Reports to Principal.
+
+Makes sure teachers and students are properly managed.
+
+✅ Admin Can Do
+
+Student Management
+
+Register students.
+
+Enroll students into courses/batches.
+
+Update student details.
+
+Remove/inactivate students.
+
+Search students.
+
+Teacher Management
+
+Register teachers.
+
+Assign teachers to courses.
+
+Update teacher details.
+
+Remove/inactivate teachers.
+
+Search teachers.
+
+Course & Batch Management
+
+Create new courses.
+
+Assign courses to teachers.
+
+Enroll students in courses.
+
+Update/remove/archive courses.
+
+Attendance & Grades
+
+Collect attendance reports from teachers.
+
+Maintain grade reports uploaded by teachers.
+
+Generate performance summaries.
+
+Reports
+
+Generate operational reports (e.g., “100 students enrolled in 5 courses”).
+
+Share reports with Principal.
+
+❌ Admin Cannot Do
+
+Create/remove other Admins.
+
+Directly override Principal’s instructions.
+
+Send system-wide messages to all users (restricted to Principal).
+
+Approve strategic changes (like removing a whole department or closing an academic year).
+
+📢 Messaging Feature (NEW)
+✅ How It Works
+
+Principal → Admin/Teacher messaging system
+
+Stored as messages.json.
+
+Each message contains:
+
+from (Principal’s ID)
+
+to (Admin ID or Teacher ID)
+
+message (text content)
+
+timestamp
+
+Example Use
