@@ -41,6 +41,7 @@ public class Principal extends User {
         System.out.println("3. Manage Courses");
         System.out.println("4. View Students");
         System.out.println("5. View Reports & Statistics");
+        System.out.println("6. Send Message to Admin/Teacher");
         System.out.println("0. Logout");
         System.out.println("=".repeat(50));
         System.out.print("Choose an option: ");

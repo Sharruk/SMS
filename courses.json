@@ -14,4 +14,12 @@
   "classDays" : "Mon",
   "classTimes" : "10:00-11:00",
   "classDates" : "Fall 2025"
+}, {
+  "courseId" : "ICS",
+  "courseName" : "OS",
+  "creditHours" : 80,
+  "facultyName" : "k7",
+  "classDays" : "Fir",
+  "classTimes" : "9:00-10:00",
+  "classDates" : "Fall 2025"
 } ]

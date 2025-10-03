@@ -54,7 +54,24 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
-### October 3, 2025
+### October 3, 2025 (Latest Update)
+- **Admin Menu System**: Complete interactive Admin menu with repository-based operations
+  - Admin selection from repository (not hard-coded)
+  - Student Management: Register, Update, Remove, Search, Enroll in Course (all via studentRepository)
+  - Teacher Management: Register, Update, Remove, Search, Assign to Course (all via teacherRepository)
+  - Course Management: Create, Update, Remove, Assign Teacher, Enroll Students (all via courseRepository)
+  - Reports & Statistics: Students per course, teacher workload, course enrollment analytics
+- **Messaging System**: Principal-to-Admin/Teacher messaging with inbox
+  - Message domain class with timestamp, read status, sender/receiver info
+  - MessageRepository for messages.json persistence
+  - Principal can send messages to any admin/teacher in the system
+  - Admin can view messages in inbox and mark as read
+  - All messages persist to messages.json with full metadata
+- **Repository-First Architecture**: All CRUD handlers directly use repositories (studentRepository, teacherRepository, courseRepository, messageRepository)
+- **Admin Authentication**: runAdminMenu loads actual admin from AdminRepository by selection
+- **Data Consistency**: All operations persist immediately to JSON files
+
+### October 3, 2025 (Earlier)
 - **Principal Role Enhancement**: Enhanced Principal class with comprehensive menu-driven interface for managing system entities
 - **Admin Management**: Add/View/Remove admins with full CRUD operations persisting to JSON
 - **Teacher Management**: Appoint/View/Remove teachers with repository integration

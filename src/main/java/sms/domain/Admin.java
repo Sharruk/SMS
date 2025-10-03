@@ -245,6 +245,58 @@ public class Admin extends User implements Searchable<Object>, Sortable<Object> 
         this.managedBatches = managedBatches;
     }
 
+    // ===================== MENU SYSTEM =====================
+    
+    public void showMenu() {
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("         ADMIN MENU");
+        System.out.println("=".repeat(50));
+        System.out.println("1. Student Management");
+        System.out.println("2. Teacher Management");
+        System.out.println("3. Course Management");
+        System.out.println("4. Reports & Statistics");
+        System.out.println("5. View Messages");
+        System.out.println("0. Logout");
+        System.out.println("=".repeat(50));
+        System.out.print("Choose an option: ");
+    }
+
+    public void showStudentManagementMenu() {
+        System.out.println("\n--- Student Management ---");
+        System.out.println("1. Register New Student");
+        System.out.println("2. Update Student Details");
+        System.out.println("3. Remove/Deactivate Student");
+        System.out.println("4. Search Students");
+        System.out.println("5. Enroll Student in Course");
+        System.out.println("6. View All Students");
+        System.out.println("0. Back to Main Menu");
+        System.out.print("Choose an option: ");
+    }
+
+    public void showTeacherManagementMenu() {
+        System.out.println("\n--- Teacher Management ---");
+        System.out.println("1. Register New Teacher");
+        System.out.println("2. Update Teacher Details");
+        System.out.println("3. Remove/Deactivate Teacher");
+        System.out.println("4. Search Teachers");
+        System.out.println("5. Assign Teacher to Course");
+        System.out.println("6. View All Teachers");
+        System.out.println("0. Back to Main Menu");
+        System.out.print("Choose an option: ");
+    }
+
+    public void showCourseManagementMenu() {
+        System.out.println("\n--- Course Management ---");
+        System.out.println("1. Create New Course");
+        System.out.println("2. Update Course Details");
+        System.out.println("3. Remove/Archive Course");
+        System.out.println("4. Assign Course to Teacher");
+        System.out.println("5. Enroll Students in Course");
+        System.out.println("6. View All Courses");
+        System.out.println("0. Back to Main Menu");
+        System.out.print("Choose an option: ");
+    }
+
     @Override
     public String toString() {
         return "Admin{" +
