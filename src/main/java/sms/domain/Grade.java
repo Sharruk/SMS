@@ -22,13 +22,6 @@ public class Grade {
         this.grade = grade;
     }
 
-    public Grade(int studentId, String courseId, int teacherId, String grade) {
-        this.studentId = studentId;
-        this.courseId = courseId;
-        this.teacherId = teacherId;
-        this.grade = grade;
-    }
-
     public int getStudentId() {
         return studentId;
     }

@@ -16,6 +16,8 @@ public class Main {
     private static Repository<Admin> adminRepository;
     private static Repository<Course> courseRepository;
     private static MessageRepository messageRepository;
+    private static AssignmentRepository assignmentRepository;
+    private static GradeRepository gradeRepository;
     private static UploadService<File> uploadService;
     private static Scanner scanner;
 
@@ -53,6 +55,8 @@ public class Main {
         adminRepository = new AdminRepository();
         courseRepository = new CourseRepository();
         messageRepository = new MessageRepository();
+        assignmentRepository = new AssignmentRepository();
+        gradeRepository = new GradeRepository();
         
         // Initialize upload service
         uploadService = new FileUploadService();
@@ -61,7 +65,7 @@ public class Main {
         scanner = new Scanner(System.in);
         
         System.out.println("LMS system initialized successfully!");
-        System.out.println("JSON files: students.json, teachers.json, admins.json, courses.json, messages.json");
+        System.out.println("JSON files: students.json, teachers.json, admins.json, courses.json, messages.json, assignments.json, grades.json");
         
         // Display current system statistics
         displaySystemStatistics();
@@ -995,14 +999,34 @@ public class Main {
     }
 
     private static void demonstrateTeacherAccess() {
-        System.out.println("\n--- Teacher Access Demo ---");
+        System.out.println("\n--- Teacher Access Mode ---");
+        System.out.println("Would you like to:");
+        System.out.println("1. Run Quick Demo (automated)");
+        System.out.println("2. Interactive Teacher Menu");
+        System.out.print("Choose: ");
+        
+        try {
+            int choice = Integer.parseInt(scanner.nextLine());
+            if (choice == 1) {
+                runQuickTeacherDemo();
+            } else if (choice == 2) {
+                runTeacherMenu();
+            } else {
+                System.out.println("Invalid choice.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter a valid number.");
+        }
+    }
+
+    private static void runQuickTeacherDemo() {
+        System.out.println("\n--- Quick Teacher Demo ---");
         try {
             Teacher teacher = new Teacher(7001, "Teacher Demo", "teacher@lms.edu", "teacher", "pass123");
             teacher.createAssignment();
             teacher.viewStudents();
             teacher.viewAllAttendance();
             
-            // Demonstrate search capability
             List<Student> results = teacher.search("Demo");
             System.out.println("Teacher search results: " + results.size() + " students found");
             
@@ -1011,6 +1035,709 @@ public class Main {
             e.log();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    private static void runTeacherMenu() {
+        try {
+            List<Teacher> allTeachers = teacherRepository.getAll();
+            
+            if (allTeachers.isEmpty()) {
+                System.out.println("\nNo teachers found in the system. Please create a teacher first.");
+                System.out.print("Create a new teacher? (yes/no): ");
+                String response = scanner.nextLine();
+                if (response.equalsIgnoreCase("yes")) {
+                    System.out.print("Enter Teacher ID: ");
+                    int userId = Integer.parseInt(scanner.nextLine());
+                    System.out.print("Enter Name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter Email: ");
+                    String email = scanner.nextLine();
+                    System.out.print("Enter Username: ");
+                    String username = scanner.nextLine();
+                    System.out.print("Enter Password: ");
+                    String password = scanner.nextLine();
+                    
+                    Teacher newTeacher = new Teacher(userId, name, email, username, password);
+                    teacherRepository.add(newTeacher);
+                    allTeachers.add(newTeacher);
+                } else {
+                    return;
+                }
+            }
+            
+            System.out.println("\n=== Select Teacher Account ===");
+            for (int i = 0; i < allTeachers.size(); i++) {
+                Teacher t = allTeachers.get(i);
+                System.out.println((i + 1) + ". " + t.getName() + " (ID: " + t.getUserId() + ", Email: " + t.getEmail() + ")");
+            }
+            
+            System.out.print("Enter selection number (1, 2, etc.) to login, or 0 to cancel: ");
+            int teacherChoice = Integer.parseInt(scanner.nextLine());
+            
+            if (teacherChoice <= 0 || teacherChoice > allTeachers.size()) {
+                System.out.println("Invalid selection.");
+                return;
+            }
+            
+            Teacher teacher = allTeachers.get(teacherChoice - 1);
+            loadTeacherCourses(teacher);
+            loadStudentsForTeacher(teacher);
+            
+            System.out.println("\n" + "=".repeat(60));
+            System.out.println("   Welcome, " + teacher.getName() + " - Teacher Account");
+            System.out.println("   User ID: " + teacher.getUserId());
+            System.out.println("   Courses: " + teacher.getCourses().size());
+            System.out.println("   Students: " + teacher.getStudents().size());
+            System.out.println("   All operations work directly with persistent storage");
+            System.out.println("=".repeat(60));
+            
+            while (true) {
+                try {
+                    teacher.showMenu();
+                    int choice = Integer.parseInt(scanner.nextLine());
+                    
+                    switch (choice) {
+                        case 1:
+                            handleAssignmentManagement(teacher);
+                            break;
+                        case 2:
+                            handleGradesManagement(teacher);
+                            break;
+                        case 3:
+                            handleMessaging(teacher);
+                            break;
+                        case 4:
+                            teacher.showDashboard();
+                            break;
+                        case 5:
+                            viewTeacherCourses(teacher);
+                            break;
+                        case 6:
+                            viewTeacherStudents(teacher);
+                            break;
+                        case 0:
+                            System.out.println("Logging out from Teacher account...");
+                            return;
+                        default:
+                            System.out.println("Invalid option. Please try again.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Please enter a valid number.");
+                } catch (Exception e) {
+                    System.out.println("An error occurred: " + e.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private static void loadTeacherCourses(Teacher teacher) {
+        try {
+            List<Course> allCourses = courseRepository.getAll();
+            for (Course course : allCourses) {
+                if (String.valueOf(teacher.getUserId()).equals(course.getFacultyName()) || 
+                    teacher.getName().equals(course.getFacultyName())) {
+                    teacher.addCourse(course);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Warning: Could not load courses: " + e.getMessage());
+        }
+    }
+
+    private static void loadStudentsForTeacher(Teacher teacher) {
+        try {
+            List<Student> allStudents = studentRepository.getAll();
+            for (Student student : allStudents) {
+                for (Course teacherCourse : teacher.getCourses()) {
+                    for (Course studentCourse : student.getCourses()) {
+                        if (teacherCourse.getCourseId().equals(studentCourse.getCourseId())) {
+                            teacher.addStudent(student);
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Warning: Could not load students: " + e.getMessage());
+        }
+    }
+
+    private static void handleAssignmentManagement(Teacher teacher) {
+        while (true) {
+            try {
+                teacher.showAssignmentManagementMenu();
+                int choice = Integer.parseInt(scanner.nextLine());
+                
+                switch (choice) {
+                    case 1:
+                        createAssignment(teacher);
+                        break;
+                    case 2:
+                        viewTeacherAssignments(teacher);
+                        break;
+                    case 3:
+                        updateAssignment(teacher);
+                        break;
+                    case 4:
+                        deleteAssignment(teacher);
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        System.out.println("Invalid option.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+    }
+
+    private static void createAssignment(Teacher teacher) {
+        try {
+            if (teacher.getCourses().isEmpty()) {
+                System.out.println("You have no courses assigned. Cannot create assignments.");
+                return;
+            }
+            
+            System.out.println("\n--- Create New Assignment ---");
+            System.out.println("Your Courses:");
+            for (int i = 0; i < teacher.getCourses().size(); i++) {
+                Course c = teacher.getCourses().get(i);
+                System.out.println((i + 1) + ". " + c.getCourseName() + " (" + c.getCourseId() + ")");
+            }
+            
+            System.out.print("Select course (1, 2, etc.): ");
+            int courseChoice = Integer.parseInt(scanner.nextLine());
+            if (courseChoice < 1 || courseChoice > teacher.getCourses().size()) {
+                System.out.println("Invalid course selection.");
+                return;
+            }
+            
+            Course selectedCourse = teacher.getCourses().get(courseChoice - 1);
+            
+            System.out.print("Enter Assignment Title: ");
+            String title = scanner.nextLine();
+            
+            System.out.print("Enter Description: ");
+            String description = scanner.nextLine();
+            
+            System.out.print("Enter Due Date (YYYY-MM-DD): ");
+            String dueDate = scanner.nextLine();
+            
+            int assignmentId = assignmentRepository.getNextAssignmentId();
+            Assignment assignment = new Assignment(assignmentId, selectedCourse.getCourseId(), 
+                                                  teacher.getUserId(), title, description, dueDate);
+            
+            assignmentRepository.add(assignment);
+            System.out.println("Assignment created successfully! ID: " + assignmentId);
+            
+        } catch (Exception e) {
+            System.out.println("Error creating assignment: " + e.getMessage());
+        }
+    }
+
+    private static void viewTeacherAssignments(Teacher teacher) {
+        try {
+            List<Assignment> assignments = assignmentRepository.getAssignmentsByTeacherId(teacher.getUserId());
+            
+            if (assignments.isEmpty()) {
+                System.out.println("\nNo assignments found.");
+                return;
+            }
+            
+            System.out.println("\n=== Your Assignments ===");
+            for (Assignment a : assignments) {
+                System.out.println("ID: " + a.getId());
+                System.out.println("  Course: " + a.getCourseId());
+                System.out.println("  Title: " + a.getTitle());
+                System.out.println("  Description: " + a.getDescription());
+                System.out.println("  Due Date: " + a.getDueDate());
+                System.out.println();
+            }
+            System.out.println("Total: " + assignments.size() + " assignments");
+            
+        } catch (Exception e) {
+            System.out.println("Error viewing assignments: " + e.getMessage());
+        }
+    }
+
+    private static void updateAssignment(Teacher teacher) {
+        try {
+            List<Assignment> assignments = assignmentRepository.getAssignmentsByTeacherId(teacher.getUserId());
+            
+            if (assignments.isEmpty()) {
+                System.out.println("No assignments to update.");
+                return;
+            }
+            
+            System.out.println("\n--- Update Assignment ---");
+            for (int i = 0; i < assignments.size(); i++) {
+                Assignment a = assignments.get(i);
+                System.out.println((i + 1) + ". " + a.getTitle() + " (Course: " + a.getCourseId() + ", Due: " + a.getDueDate() + ")");
+            }
+            
+            System.out.print("Select assignment to update (1, 2, etc.): ");
+            int choice = Integer.parseInt(scanner.nextLine());
+            if (choice < 1 || choice > assignments.size()) {
+                System.out.println("Invalid selection.");
+                return;
+            }
+            
+            Assignment assignment = assignments.get(choice - 1);
+            
+            System.out.print("Enter new title (or press Enter to keep '" + assignment.getTitle() + "'): ");
+            String title = scanner.nextLine();
+            if (!title.trim().isEmpty()) {
+                assignment.setTitle(title);
+            }
+            
+            System.out.print("Enter new description (or press Enter to keep current): ");
+            String description = scanner.nextLine();
+            if (!description.trim().isEmpty()) {
+                assignment.setDescription(description);
+            }
+            
+            System.out.print("Enter new due date (or press Enter to keep '" + assignment.getDueDate() + "'): ");
+            String dueDate = scanner.nextLine();
+            if (!dueDate.trim().isEmpty()) {
+                assignment.setDueDate(dueDate);
+            }
+            
+            assignmentRepository.update(assignment);
+            System.out.println("Assignment updated successfully!");
+            
+        } catch (Exception e) {
+            System.out.println("Error updating assignment: " + e.getMessage());
+        }
+    }
+
+    private static void deleteAssignment(Teacher teacher) {
+        try {
+            List<Assignment> assignments = assignmentRepository.getAssignmentsByTeacherId(teacher.getUserId());
+            
+            if (assignments.isEmpty()) {
+                System.out.println("No assignments to delete.");
+                return;
+            }
+            
+            System.out.println("\n--- Delete Assignment ---");
+            for (int i = 0; i < assignments.size(); i++) {
+                Assignment a = assignments.get(i);
+                System.out.println((i + 1) + ". " + a.getTitle() + " (Course: " + a.getCourseId() + ")");
+            }
+            
+            System.out.print("Select assignment to delete (1, 2, etc.): ");
+            int choice = Integer.parseInt(scanner.nextLine());
+            if (choice < 1 || choice > assignments.size()) {
+                System.out.println("Invalid selection.");
+                return;
+            }
+            
+            Assignment assignment = assignments.get(choice - 1);
+            System.out.print("Are you sure you want to delete '" + assignment.getTitle() + "'? (yes/no): ");
+            String confirm = scanner.nextLine();
+            
+            if (confirm.equalsIgnoreCase("yes")) {
+                assignmentRepository.delete(assignment);
+                System.out.println("Assignment deleted successfully!");
+            } else {
+                System.out.println("Deletion cancelled.");
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Error deleting assignment: " + e.getMessage());
+        }
+    }
+
+    private static void handleGradesManagement(Teacher teacher) {
+        while (true) {
+            try {
+                teacher.showGradesManagementMenu();
+                int choice = Integer.parseInt(scanner.nextLine());
+                
+                switch (choice) {
+                    case 1:
+                        assignGrade(teacher);
+                        break;
+                    case 2:
+                        updateGrade(teacher);
+                        break;
+                    case 3:
+                        viewGradesByCourse(teacher);
+                        break;
+                    case 4:
+                        viewAllTeacherGrades(teacher);
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        System.out.println("Invalid option.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+    }
+
+    private static void assignGrade(Teacher teacher) {
+        try {
+            if (teacher.getCourses().isEmpty()) {
+                System.out.println("You have no courses assigned.");
+                return;
+            }
+            
+            if (teacher.getStudents().isEmpty()) {
+                System.out.println("You have no students enrolled in your courses.");
+                return;
+            }
+            
+            System.out.println("\n--- Assign Grade ---");
+            System.out.println("Your Courses:");
+            for (int i = 0; i < teacher.getCourses().size(); i++) {
+                Course c = teacher.getCourses().get(i);
+                System.out.println((i + 1) + ". " + c.getCourseName() + " (" + c.getCourseId() + ")");
+            }
+            
+            System.out.print("Select course (1, 2, etc.): ");
+            int courseChoice = Integer.parseInt(scanner.nextLine());
+            if (courseChoice < 1 || courseChoice > teacher.getCourses().size()) {
+                System.out.println("Invalid course selection.");
+                return;
+            }
+            
+            Course selectedCourse = teacher.getCourses().get(courseChoice - 1);
+            
+            System.out.println("\nStudents in your courses:");
+            for (int i = 0; i < teacher.getStudents().size(); i++) {
+                Student s = teacher.getStudents().get(i);
+                System.out.println((i + 1) + ". " + s.getName() + " (ID: " + s.getUserId() + ")");
+            }
+            
+            System.out.print("Select student (1, 2, etc.): ");
+            int studentChoice = Integer.parseInt(scanner.nextLine());
+            if (studentChoice < 1 || studentChoice > teacher.getStudents().size()) {
+                System.out.println("Invalid student selection.");
+                return;
+            }
+            
+            Student selectedStudent = teacher.getStudents().get(studentChoice - 1);
+            
+            System.out.print("Enter grade (A, A-, B+, B, B-, C+, C, C-, D, F): ");
+            String gradeValue = scanner.nextLine();
+            
+            Grade existingGrade = gradeRepository.getGradeByStudentAndCourse(
+                selectedStudent.getUserId(), selectedCourse.getCourseId());
+            
+            if (existingGrade != null) {
+                System.out.println("Grade already exists. Use update option to modify.");
+                return;
+            }
+            
+            Grade grade = new Grade(selectedStudent.getUserId(), selectedCourse.getCourseId(), 
+                                   teacher.getUserId(), gradeValue);
+            
+            gradeRepository.add(grade);
+            System.out.println("Grade assigned successfully!");
+            
+        } catch (Exception e) {
+            System.out.println("Error assigning grade: " + e.getMessage());
+        }
+    }
+
+    private static void updateGrade(Teacher teacher) {
+        try {
+            List<Grade> grades = gradeRepository.getGradesByTeacherId(teacher.getUserId());
+            
+            if (grades.isEmpty()) {
+                System.out.println("No grades to update.");
+                return;
+            }
+            
+            System.out.println("\n--- Update Grade ---");
+            for (int i = 0; i < grades.size(); i++) {
+                Grade g = grades.get(i);
+                System.out.println((i + 1) + ". Student ID: " + g.getStudentId() + 
+                                 ", Course: " + g.getCourseId() + ", Grade: " + g.getGrade());
+            }
+            
+            System.out.print("Select grade to update (1, 2, etc.): ");
+            int choice = Integer.parseInt(scanner.nextLine());
+            if (choice < 1 || choice > grades.size()) {
+                System.out.println("Invalid selection.");
+                return;
+            }
+            
+            Grade grade = grades.get(choice - 1);
+            
+            System.out.print("Enter new grade (current: " + grade.getGrade() + "): ");
+            String newGrade = scanner.nextLine();
+            
+            if (!newGrade.trim().isEmpty()) {
+                grade.setGrade(newGrade);
+                gradeRepository.update(grade);
+                System.out.println("Grade updated successfully!");
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Error updating grade: " + e.getMessage());
+        }
+    }
+
+    private static void viewGradesByCourse(Teacher teacher) {
+        try {
+            if (teacher.getCourses().isEmpty()) {
+                System.out.println("You have no courses assigned.");
+                return;
+            }
+            
+            System.out.println("\n--- View Grades by Course ---");
+            System.out.println("Your Courses:");
+            for (int i = 0; i < teacher.getCourses().size(); i++) {
+                Course c = teacher.getCourses().get(i);
+                System.out.println((i + 1) + ". " + c.getCourseName() + " (" + c.getCourseId() + ")");
+            }
+            
+            System.out.print("Select course (1, 2, etc.): ");
+            int courseChoice = Integer.parseInt(scanner.nextLine());
+            if (courseChoice < 1 || courseChoice > teacher.getCourses().size()) {
+                System.out.println("Invalid course selection.");
+                return;
+            }
+            
+            Course selectedCourse = teacher.getCourses().get(courseChoice - 1);
+            List<Grade> grades = gradeRepository.getGradesByCourseId(selectedCourse.getCourseId());
+            
+            if (grades.isEmpty()) {
+                System.out.println("\nNo grades found for this course.");
+                return;
+            }
+            
+            System.out.println("\n=== Grades for " + selectedCourse.getCourseName() + " ===");
+            for (Grade g : grades) {
+                System.out.println("Student ID: " + g.getStudentId() + " - Grade: " + g.getGrade());
+            }
+            System.out.println("Total: " + grades.size() + " grades");
+            
+        } catch (Exception e) {
+            System.out.println("Error viewing grades: " + e.getMessage());
+        }
+    }
+
+    private static void viewAllTeacherGrades(Teacher teacher) {
+        try {
+            List<Grade> grades = gradeRepository.getGradesByTeacherId(teacher.getUserId());
+            
+            if (grades.isEmpty()) {
+                System.out.println("\nNo grades found.");
+                return;
+            }
+            
+            System.out.println("\n=== All Your Grades ===");
+            for (Grade g : grades) {
+                System.out.println("Student ID: " + g.getStudentId() + 
+                                 ", Course: " + g.getCourseId() + 
+                                 ", Grade: " + g.getGrade());
+            }
+            System.out.println("Total: " + grades.size() + " grades given");
+            
+        } catch (Exception e) {
+            System.out.println("Error viewing grades: " + e.getMessage());
+        }
+    }
+
+    private static void handleMessaging(Teacher teacher) {
+        while (true) {
+            try {
+                teacher.showMessagingMenu();
+                int choice = Integer.parseInt(scanner.nextLine());
+                
+                switch (choice) {
+                    case 1:
+                        viewTeacherMessages(teacher);
+                        break;
+                    case 2:
+                        sendMessageToStudents(teacher);
+                        break;
+                    case 3:
+                        viewUnreadMessages(teacher);
+                        break;
+                    case 4:
+                        markMessagesAsRead(teacher);
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        System.out.println("Invalid option.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+    }
+
+    private static void viewTeacherMessages(Teacher teacher) {
+        try {
+            List<Message> messages = messageRepository.getMessagesForUser(teacher.getUserId(), "TEACHER");
+            
+            if (messages.isEmpty()) {
+                System.out.println("\nNo messages found.");
+                return;
+            }
+            
+            System.out.println("\n=== Your Messages ===");
+            for (Message m : messages) {
+                System.out.println("ID: " + m.getMessageId());
+                System.out.println("  From: " + m.getFromUserName() + " (" + m.getFromRole() + ")");
+                System.out.println("  Message: " + m.getMessage());
+                System.out.println("  Timestamp: " + m.getTimestamp());
+                System.out.println("  Status: " + (m.isRead() ? "Read" : "Unread"));
+                System.out.println();
+            }
+            System.out.println("Total: " + messages.size() + " messages");
+            
+        } catch (Exception e) {
+            System.out.println("Error viewing messages: " + e.getMessage());
+        }
+    }
+
+    private static void sendMessageToStudents(Teacher teacher) {
+        try {
+            if (teacher.getStudents().isEmpty()) {
+                System.out.println("You have no students enrolled in your courses.");
+                return;
+            }
+            
+            System.out.println("\n--- Send Message to Students ---");
+            System.out.println("Your Students:");
+            for (int i = 0; i < teacher.getStudents().size(); i++) {
+                Student s = teacher.getStudents().get(i);
+                System.out.println((i + 1) + ". " + s.getName() + " (ID: " + s.getUserId() + ")");
+            }
+            
+            System.out.print("Select student (1, 2, etc.): ");
+            int studentChoice = Integer.parseInt(scanner.nextLine());
+            if (studentChoice < 1 || studentChoice > teacher.getStudents().size()) {
+                System.out.println("Invalid student selection.");
+                return;
+            }
+            
+            Student selectedStudent = teacher.getStudents().get(studentChoice - 1);
+            
+            System.out.print("Enter your message: ");
+            String messageContent = scanner.nextLine();
+            
+            int messageId = messageRepository.getNextMessageId();
+            Message message = new Message(messageId, teacher.getUserId(), teacher.getName(), "TEACHER",
+                                         selectedStudent.getUserId(), selectedStudent.getName(), "STUDENT",
+                                         messageContent);
+            
+            messageRepository.add(message);
+            System.out.println("Message sent successfully!");
+            
+        } catch (Exception e) {
+            System.out.println("Error sending message: " + e.getMessage());
+        }
+    }
+
+    private static void viewUnreadMessages(Teacher teacher) {
+        try {
+            List<Message> unreadMessages = messageRepository.getUnreadMessagesForUser(teacher.getUserId(), "TEACHER");
+            
+            if (unreadMessages.isEmpty()) {
+                System.out.println("\nNo unread messages.");
+                return;
+            }
+            
+            System.out.println("\n=== Unread Messages ===");
+            for (Message m : unreadMessages) {
+                System.out.println("ID: " + m.getMessageId());
+                System.out.println("  From: " + m.getFromUserName() + " (" + m.getFromRole() + ")");
+                System.out.println("  Message: " + m.getMessage());
+                System.out.println("  Timestamp: " + m.getTimestamp());
+                System.out.println();
+            }
+            System.out.println("Total: " + unreadMessages.size() + " unread messages");
+            
+        } catch (Exception e) {
+            System.out.println("Error viewing unread messages: " + e.getMessage());
+        }
+    }
+
+    private static void markMessagesAsRead(Teacher teacher) {
+        try {
+            List<Message> unreadMessages = messageRepository.getUnreadMessagesForUser(teacher.getUserId(), "TEACHER");
+            
+            if (unreadMessages.isEmpty()) {
+                System.out.println("No unread messages.");
+                return;
+            }
+            
+            System.out.println("\n--- Mark Messages as Read ---");
+            for (int i = 0; i < unreadMessages.size(); i++) {
+                Message m = unreadMessages.get(i);
+                System.out.println((i + 1) + ". From: " + m.getFromUserName() + " - " + m.getMessage().substring(0, Math.min(50, m.getMessage().length())) + "...");
+            }
+            
+            System.out.print("Select message to mark as read (1, 2, etc., or 'all'): ");
+            String choice = scanner.nextLine();
+            
+            if (choice.equalsIgnoreCase("all")) {
+                for (Message m : unreadMessages) {
+                    m.setRead(true);
+                    messageRepository.update(m);
+                }
+                System.out.println("All messages marked as read!");
+            } else {
+                int msgChoice = Integer.parseInt(choice);
+                if (msgChoice >= 1 && msgChoice <= unreadMessages.size()) {
+                    Message message = unreadMessages.get(msgChoice - 1);
+                    message.setRead(true);
+                    messageRepository.update(message);
+                    System.out.println("Message marked as read!");
+                } else {
+                    System.out.println("Invalid selection.");
+                }
+            }
+            
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input.");
+        } catch (Exception e) {
+            System.out.println("Error marking messages as read: " + e.getMessage());
+        }
+    }
+
+    private static void viewTeacherCourses(Teacher teacher) {
+        System.out.println("\n=== Your Courses ===");
+        if (teacher.getCourses().isEmpty()) {
+            System.out.println("No courses assigned.");
+        } else {
+            for (Course c : teacher.getCourses()) {
+                c.displayCourseInfo();
+                System.out.println();
+            }
+            System.out.println("Total: " + teacher.getCourses().size() + " courses");
+        }
+    }
+
+    private static void viewTeacherStudents(Teacher teacher) {
+        System.out.println("\n=== Your Students ===");
+        if (teacher.getStudents().isEmpty()) {
+            System.out.println("No students enrolled in your courses.");
+        } else {
+            for (Student s : teacher.getStudents()) {
+                System.out.println("- " + s.getName() + " (ID: " + s.getUserId() + ", Email: " + s.getEmail() + ")");
+            }
+            System.out.println("Total: " + teacher.getStudents().size() + " students");
         }
     }
 

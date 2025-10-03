@@ -28,15 +28,6 @@ public class Assignment {
         this.dueDate = dueDate;
     }
 
-    public Assignment(int id, String courseId, int teacherId, String title, String description, String dueDate) {
-        this.id = id;
-        this.courseId = courseId;
-        this.teacherId = teacherId;
-        this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
-    }
-
     public int getId() {
         return id;
     }

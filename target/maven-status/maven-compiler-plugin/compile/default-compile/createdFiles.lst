@@ -4,6 +4,7 @@ sms/exceptions/ValidationException.class
 sms/domain/Course.class
 sms/data/CourseRepository$1.class
 sms/domain/Message.class
+sms/data/AssignmentRepository.class
 sms/domain/Department.class
 sms/services/UploadService.class
 sms/exceptions/AuthenticationException.class
@@ -12,12 +13,16 @@ sms/domain/Batch.class
 sms/data/MessageRepository.class
 sms/domain/Attendance.class
 sms/exceptions/AuthorizationException.class
+sms/data/AssignmentRepository$1.class
 sms/sort/Sortable.class
 sms/domain/Student.class
 sms/data/TeacherRepository.class
 sms/domain/User.class
 sms/data/Repository.class
+sms/data/GradeRepository$1.class
 sms/services/FileUploadService.class
+sms/domain/Grade.class
+sms/domain/Assignment.class
 sms/exceptions/BaseException.class
 sms/domain/Admin.class
 sms/domain/StudentTable.class
@@ -25,6 +30,7 @@ sms/domain/Principal.class
 sms/domain/Teacher.class
 sms/app/Main.class
 sms/data/AdminRepository$1.class
+sms/data/GradeRepository.class
 sms/data/CourseRepository.class
 sms/exceptions/UploadException.class
 sms/data/StudentRepository.class
