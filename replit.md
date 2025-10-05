@@ -57,20 +57,25 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
-### 2025-10-05: Enhanced Input Validation System
-- **Implemented centralized validation system** with `InputValidator` class
-- **Added comprehensive input validation rules**:
-  - Name: Only letters and spaces (no digits, symbols, or punctuation)
-  - Email: Valid email format (user@domain.com)
-  - Username: No spaces allowed, cannot be empty
-  - Password: Minimum 6 characters required
-  - User ID: Must be positive number
-- **Improved exception handling** with user-friendly error messages (⚠️ prefix)
-- **Updated all User constructors** (Student, Teacher, Admin, Principal) to validate on creation
-- **Updated Admin.registerStudent()** method to use centralized validation
-- **All validation exceptions** throw clear, descriptive messages
-- **Created VALIDATION_GUIDE.md** with examples and usage documentation
-- System now prevents invalid user data from entering the application
+### 2025-10-05: Loop-Based Validation with Retry Logic
+- **Implemented loop-based validation with retry** for all registration workflows
+- **Updated all interactive registration methods**:
+  - `appointNewTeacher()` - Principal's teacher appointment (with validation loops)
+  - `addNewAdmin()` - Principal's admin creation (with validation loops)
+  - `registerNewStudent()` - Admin's student registration (with validation loops)
+  - `registerNewTeacher()` - Admin's teacher registration (with validation loops)
+  - `createNewCourse()` - Both Principal and Admin course creation (with validation loops)
+- **Added new validation methods to InputValidator**:
+  - `validateNumericId()` - Validates numeric IDs with proper error messages
+  - `validateCourseId()` - Validates course IDs
+  - `validateCourseName()` - Validates course names
+  - `validateCreditHours()` - Validates credit hours as positive numbers
+- **Updated password validation**: Minimum reduced from 6 to 4 characters per user request
+- **User-friendly retry loops**: Each field prompts user to retry until valid input provided
+- **Consistent error messages**: All errors show ⚠️ icon with "Please try again" prompt
+- **Updated VALIDATION_GUIDE.md** with loop-based validation examples and course validation
+- **Centralized validation system** with `InputValidator` class ensures consistency
+- All validation rules enforced: Name (letters/spaces), Email (valid format), Username (no spaces), Password (min 4 chars), IDs (positive numbers)
 
 ### 2025-10-03: Replit Environment Setup - GitHub Import Completed
 - Successfully imported Java-based LMS project from GitHub

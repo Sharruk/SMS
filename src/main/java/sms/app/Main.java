@@ -5,6 +5,7 @@ import sms.domain.*;
 import sms.exceptions.*;
 import sms.services.FileUploadService;
 import sms.services.UploadService;
+import sms.validation.InputValidator;
 
 import java.io.File;
 import java.util.List;
@@ -643,27 +644,71 @@ public class Main {
 
     private static void addNewAdmin(Principal principal) {
         try {
-            System.out.print("Enter Admin ID: ");
-            int userId = Integer.parseInt(scanner.nextLine());
+            int userId = 0;
+            while (true) {
+                System.out.print("Enter Admin ID: ");
+                String idInput = scanner.nextLine();
+                try {
+                    InputValidator.validateNumericId(idInput);
+                    userId = Integer.parseInt(idInput.trim());
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid ID: ID must be a number. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Name: ");
-            String name = scanner.nextLine();
+            String name = "";
+            while (true) {
+                System.out.print("Enter Name: ");
+                name = scanner.nextLine();
+                try {
+                    InputValidator.validateName(name);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid input: Name should contain only letters and spaces. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Email: ");
-            String email = scanner.nextLine();
+            String email = "";
+            while (true) {
+                System.out.print("Enter Email: ");
+                email = scanner.nextLine();
+                try {
+                    InputValidator.validateEmail(email);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid input: Enter a valid email format. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Username: ");
-            String username = scanner.nextLine();
+            String username = "";
+            while (true) {
+                System.out.print("Enter Username: ");
+                username = scanner.nextLine();
+                try {
+                    InputValidator.validateUsername(username);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Username cannot be empty. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Password: ");
-            String password = scanner.nextLine();
+            String password = "";
+            while (true) {
+                System.out.print("Enter Password: ");
+                password = scanner.nextLine();
+                try {
+                    InputValidator.validatePassword(password);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Password must be at least 4 characters. Please try again.");
+                }
+            }
             
             Admin admin = new Admin(userId, name, email, username, password);
             adminRepository.add(admin);
             System.out.println("✓ Principal: Added admin " + admin.getName() + " (ID: " + admin.getUserId() + ")");
             
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid ID. Please enter a number.");
         } catch (Exception e) {
             System.out.println("Error adding admin: " + e.getMessage());
         }
@@ -745,27 +790,71 @@ public class Main {
 
     private static void appointNewTeacher(Principal principal) {
         try {
-            System.out.print("Enter Teacher ID: ");
-            int userId = Integer.parseInt(scanner.nextLine());
+            int userId = 0;
+            while (true) {
+                System.out.print("Enter Teacher ID: ");
+                String idInput = scanner.nextLine();
+                try {
+                    InputValidator.validateNumericId(idInput);
+                    userId = Integer.parseInt(idInput.trim());
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid ID: ID must be a number. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Name: ");
-            String name = scanner.nextLine();
+            String name = "";
+            while (true) {
+                System.out.print("Enter Name: ");
+                name = scanner.nextLine();
+                try {
+                    InputValidator.validateName(name);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid input: Name should contain only letters and spaces. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Email: ");
-            String email = scanner.nextLine();
+            String email = "";
+            while (true) {
+                System.out.print("Enter Email: ");
+                email = scanner.nextLine();
+                try {
+                    InputValidator.validateEmail(email);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid input: Enter a valid email format. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Username: ");
-            String username = scanner.nextLine();
+            String username = "";
+            while (true) {
+                System.out.print("Enter Username: ");
+                username = scanner.nextLine();
+                try {
+                    InputValidator.validateUsername(username);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Username cannot be empty. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Password: ");
-            String password = scanner.nextLine();
+            String password = "";
+            while (true) {
+                System.out.print("Enter Password: ");
+                password = scanner.nextLine();
+                try {
+                    InputValidator.validatePassword(password);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Password must be at least 4 characters. Please try again.");
+                }
+            }
             
             Teacher teacher = new Teacher(userId, name, email, username, password);
             teacherRepository.add(teacher);
             System.out.println("✓ Principal: Appointed teacher " + teacher.getName() + " (ID: " + teacher.getUserId() + ")");
             
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid ID. Please enter a number.");
         } catch (Exception e) {
             System.out.println("Error appointing teacher: " + e.getMessage());
         }
@@ -852,14 +941,42 @@ public class Main {
 
     private static void createNewCourse(Principal principal) {
         try {
-            System.out.print("Enter Course ID (e.g., LMS101): ");
-            String courseId = scanner.nextLine();
+            String courseId = "";
+            while (true) {
+                System.out.print("Enter Course ID (e.g., LMS101): ");
+                courseId = scanner.nextLine();
+                try {
+                    InputValidator.validateCourseId(courseId);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid Course ID: Course ID cannot be empty. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Course Name: ");
-            String courseName = scanner.nextLine();
+            String courseName = "";
+            while (true) {
+                System.out.print("Enter Course Name: ");
+                courseName = scanner.nextLine();
+                try {
+                    InputValidator.validateCourseName(courseName);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid Course Name: Course Name cannot be empty. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Credit Hours: ");
-            int creditHours = Integer.parseInt(scanner.nextLine());
+            int creditHours = 0;
+            while (true) {
+                System.out.print("Enter Credit Hours: ");
+                String creditInput = scanner.nextLine();
+                try {
+                    InputValidator.validateCreditHours(creditInput);
+                    creditHours = Integer.parseInt(creditInput.trim());
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid Credit Hours: Credit Hours must be a number. Please try again.");
+                }
+            }
             
             System.out.print("Enter Class Days (e.g., Mon/Wed/Fri): ");
             String classDays = scanner.nextLine();
@@ -875,8 +992,6 @@ public class Main {
             courseRepository.add(course);
             System.out.println("✓ Principal: Created course " + course.getCourseName() + " (ID: " + course.getCourseId() + ")");
             
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid credit hours. Please enter a number.");
         } catch (Exception e) {
             System.out.println("Error creating course: " + e.getMessage());
         }
@@ -2669,27 +2784,71 @@ public class Main {
 
     private static void registerNewStudent(Admin admin) {
         try {
-            System.out.print("Enter Student ID: ");
-            int userId = Integer.parseInt(scanner.nextLine());
+            int userId = 0;
+            while (true) {
+                System.out.print("Enter Student ID: ");
+                String idInput = scanner.nextLine();
+                try {
+                    InputValidator.validateNumericId(idInput);
+                    userId = Integer.parseInt(idInput.trim());
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid ID: ID must be a number. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Name: ");
-            String name = scanner.nextLine();
+            String name = "";
+            while (true) {
+                System.out.print("Enter Name: ");
+                name = scanner.nextLine();
+                try {
+                    InputValidator.validateName(name);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid input: Name should contain only letters and spaces. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Email: ");
-            String email = scanner.nextLine();
+            String email = "";
+            while (true) {
+                System.out.print("Enter Email: ");
+                email = scanner.nextLine();
+                try {
+                    InputValidator.validateEmail(email);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid input: Enter a valid email format. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Username: ");
-            String username = scanner.nextLine();
+            String username = "";
+            while (true) {
+                System.out.print("Enter Username: ");
+                username = scanner.nextLine();
+                try {
+                    InputValidator.validateUsername(username);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Username cannot be empty. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Password: ");
-            String password = scanner.nextLine();
+            String password = "";
+            while (true) {
+                System.out.print("Enter Password: ");
+                password = scanner.nextLine();
+                try {
+                    InputValidator.validatePassword(password);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Password must be at least 4 characters. Please try again.");
+                }
+            }
             
             Student student = new Student(userId, name, email, username, password);
             studentRepository.add(student);
             System.out.println("✓ Admin: Registered student " + student.getName() + " (ID: " + student.getUserId() + ")");
             
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid ID. Please enter a number.");
         } catch (Exception e) {
             System.out.println("Error registering student: " + e.getMessage());
         }
@@ -2863,27 +3022,71 @@ public class Main {
 
     private static void registerNewTeacher(Admin admin) {
         try {
-            System.out.print("Enter Teacher ID: ");
-            int userId = Integer.parseInt(scanner.nextLine());
+            int userId = 0;
+            while (true) {
+                System.out.print("Enter Teacher ID: ");
+                String idInput = scanner.nextLine();
+                try {
+                    InputValidator.validateNumericId(idInput);
+                    userId = Integer.parseInt(idInput.trim());
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid ID: ID must be a number. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Name: ");
-            String name = scanner.nextLine();
+            String name = "";
+            while (true) {
+                System.out.print("Enter Name: ");
+                name = scanner.nextLine();
+                try {
+                    InputValidator.validateName(name);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid input: Name should contain only letters and spaces. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Email: ");
-            String email = scanner.nextLine();
+            String email = "";
+            while (true) {
+                System.out.print("Enter Email: ");
+                email = scanner.nextLine();
+                try {
+                    InputValidator.validateEmail(email);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid input: Enter a valid email format. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Username: ");
-            String username = scanner.nextLine();
+            String username = "";
+            while (true) {
+                System.out.print("Enter Username: ");
+                username = scanner.nextLine();
+                try {
+                    InputValidator.validateUsername(username);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Username cannot be empty. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Password: ");
-            String password = scanner.nextLine();
+            String password = "";
+            while (true) {
+                System.out.print("Enter Password: ");
+                password = scanner.nextLine();
+                try {
+                    InputValidator.validatePassword(password);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Password must be at least 4 characters. Please try again.");
+                }
+            }
             
             Teacher teacher = new Teacher(userId, name, email, username, password);
             teacherRepository.add(teacher);
             System.out.println("✓ Admin: Registered teacher " + teacher.getName() + " (ID: " + teacher.getUserId() + ")");
             
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid ID. Please enter a number.");
         } catch (Exception e) {
             System.out.println("Error registering teacher: " + e.getMessage());
         }
@@ -3060,14 +3263,42 @@ public class Main {
 
     private static void createNewCourse(Admin admin) {
         try {
-            System.out.print("Enter Course ID (e.g., LMS101): ");
-            String courseId = scanner.nextLine();
+            String courseId = "";
+            while (true) {
+                System.out.print("Enter Course ID (e.g., LMS101): ");
+                courseId = scanner.nextLine();
+                try {
+                    InputValidator.validateCourseId(courseId);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid Course ID: Course ID cannot be empty. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Course Name: ");
-            String courseName = scanner.nextLine();
+            String courseName = "";
+            while (true) {
+                System.out.print("Enter Course Name: ");
+                courseName = scanner.nextLine();
+                try {
+                    InputValidator.validateCourseName(courseName);
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid Course Name: Course Name cannot be empty. Please try again.");
+                }
+            }
             
-            System.out.print("Enter Credit Hours: ");
-            int creditHours = Integer.parseInt(scanner.nextLine());
+            int creditHours = 0;
+            while (true) {
+                System.out.print("Enter Credit Hours: ");
+                String creditInput = scanner.nextLine();
+                try {
+                    InputValidator.validateCreditHours(creditInput);
+                    creditHours = Integer.parseInt(creditInput.trim());
+                    break;
+                } catch (ValidationException e) {
+                    System.out.println("⚠️ Invalid Credit Hours: Credit Hours must be a number. Please try again.");
+                }
+            }
             
             System.out.print("Enter Class Days (e.g., Mon/Wed/Fri): ");
             String classDays = scanner.nextLine();
@@ -3082,8 +3313,6 @@ public class Main {
             courseRepository.add(course);
             System.out.println("✓ Admin: Created course " + course.getCourseName() + " (ID: " + course.getCourseId() + ")");
             
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid credit hours. Please enter a number.");
         } catch (Exception e) {
             System.out.println("Error creating course: " + e.getMessage());
         }

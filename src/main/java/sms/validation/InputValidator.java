@@ -8,7 +8,7 @@ public class InputValidator {
     private static final Pattern NAME_PATTERN = Pattern.compile("^[a-zA-Z\\s]+$");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^[^\\s]+$");
-    private static final int MIN_PASSWORD_LENGTH = 6;
+    private static final int MIN_PASSWORD_LENGTH = 4;
     
     public static void validateName(String name) throws ValidationException {
         if (name == null || name.trim().isEmpty()) {
@@ -53,6 +53,48 @@ public class InputValidator {
     public static void validateUserId(int userId) throws ValidationException {
         if (userId <= 0) {
             throw new ValidationException("⚠️ Invalid input: User ID must be a positive number", "userId", String.valueOf(userId));
+        }
+    }
+    
+    public static void validateNumericId(String id) throws ValidationException {
+        if (id == null || id.trim().isEmpty()) {
+            throw new ValidationException("⚠️ Invalid ID: ID cannot be empty", "id", id);
+        }
+        
+        try {
+            int numericId = Integer.parseInt(id.trim());
+            if (numericId <= 0) {
+                throw new ValidationException("⚠️ Invalid ID: ID must be a positive number", "id", id);
+            }
+        } catch (NumberFormatException e) {
+            throw new ValidationException("⚠️ Invalid ID: ID must be a number", "id", id);
+        }
+    }
+    
+    public static void validateCourseId(String courseId) throws ValidationException {
+        if (courseId == null || courseId.trim().isEmpty()) {
+            throw new ValidationException("⚠️ Invalid Course ID: Course ID cannot be empty", "courseId", courseId);
+        }
+    }
+    
+    public static void validateCourseName(String courseName) throws ValidationException {
+        if (courseName == null || courseName.trim().isEmpty()) {
+            throw new ValidationException("⚠️ Invalid Course Name: Course Name cannot be empty", "courseName", courseName);
+        }
+    }
+    
+    public static void validateCreditHours(String creditHours) throws ValidationException {
+        if (creditHours == null || creditHours.trim().isEmpty()) {
+            throw new ValidationException("⚠️ Invalid Credit Hours: Credit Hours cannot be empty", "creditHours", creditHours);
+        }
+        
+        try {
+            int credits = Integer.parseInt(creditHours.trim());
+            if (credits <= 0) {
+                throw new ValidationException("⚠️ Invalid Credit Hours: Credit Hours must be a positive number", "creditHours", creditHours);
+            }
+        } catch (NumberFormatException e) {
+            throw new ValidationException("⚠️ Invalid Credit Hours: Credit Hours must be a number", "creditHours", creditHours);
         }
     }
     
