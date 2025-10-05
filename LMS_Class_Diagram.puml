@@ -1,0 +1,605 @@
+@startuml LMS_Class_Diagram
+
+' ========================================
+' Learning Management System (LMS)
+' Complete Class Diagram
+' ========================================
+
+skinparam classAttributeIconSize 0
+skinparam backgroundColor #FFFFFF
+skinparam class {
+    BackgroundColor<<abstract>> #E8F5E9
+    BackgroundColor<<interface>> #E3F2FD
+    BackgroundColor #FFF9C4
+    BorderColor #424242
+    ArrowColor #424242
+}
+
+' ========================================
+' DOMAIN LAYER - USER HIERARCHY
+' ========================================
+
+abstract class User <<abstract>> {
+    - userId: int
+    - name: String
+    - email: String
+    - username: String
+    - password: String
+    __
+    + User()
+    + User(userId, name, email, username, password)
+    + {abstract} getRole(): String
+    + login(): void
+    + logout(): void
+    + upload(File): void
+    + getUserId(): int
+    + getName(): String
+    + getEmail(): String
+    + setUserId(int): void
+    + setName(String): void
+}
+
+class Student {
+    - id: String
+    - dept: Department
+    - batch: Batch
+    - courses: List<Course>
+    __
+    + Student()
+    + Student(userId, name, email, username, password, id)
+    + getRole(): String
+    + enrollInCourse(Course): void
+    + submitAssignment(Assignment): void
+    + viewGrades(): void
+    + getId(): String
+    + getCourses(): List<Course>
+}
+
+class Teacher {
+    - id: String
+    - courses: List<Course>
+    - batches: List<Batch>
+    - students: List<Student>
+    __
+    + Teacher()
+    + Teacher(userId, name, email, username, password, id)
+    + getRole(): String
+    + createAssignment(Assignment): void
+    + assignGrade(Grade): void
+    + takeAttendance(Attendance): void
+    + getId(): String
+    + getCourses(): List<Course>
+}
+
+class Admin {
+    - managedStudents: List<Student>
+    - managedTeachers: List<Teacher>
+    - managedCourses: List<Course>
+    - managedBatches: List<Batch>
+    __
+    + Admin()
+    + Admin(userId, name, email, username, password)
+    + getRole(): String
+    + registerStudent(Student): void
+    + registerTeacher(Teacher): void
+    + createCourse(Course): void
+    + createBatch(Batch): void
+}
+
+class Principal {
+    __
+    + Principal()
+    + Principal(userId, name, email, username, password)
+    + getRole(): String
+    + appointTeacher(Teacher): void
+    + addAdmin(Admin): void
+    + overseeAllOperations(): void
+}
+
+User <|-- Student
+User <|-- Teacher
+User <|-- Admin
+User <|-- Principal
+
+' ========================================
+' DOMAIN LAYER - ACADEMIC ENTITIES
+' ========================================
+
+class Course {
+    - courseId: String
+    - courseName: String
+    - creditHours: int
+    - facultyName: String
+    - classDays: String
+    - classTimes: String
+    - classDates: String
+    __
+    + Course()
+    + Course(courseId, courseName, creditHours, facultyName, classDays, classTimes, classDates)
+    + getCourseId(): String
+    + getCourseName(): String
+    + setCourseId(String): void
+    + setCourseName(String): void
+}
+
+class Assignment {
+    - assignmentId: String
+    - title: String
+    - description: String
+    - dueDate: String
+    - maxMarks: int
+    - courseId: String
+    __
+    + Assignment()
+    + Assignment(assignmentId, title, description, dueDate, maxMarks, courseId)
+    + getAssignmentId(): String
+    + getTitle(): String
+    + getDueDate(): String
+}
+
+class Grade {
+    - gradeId: String
+    - studentId: String
+    - courseId: String
+    - marks: double
+    - grade: String
+    - semester: String
+    __
+    + Grade()
+    + Grade(gradeId, studentId, courseId, marks, grade, semester)
+    + getGradeId(): String
+    + getMarks(): double
+    + getGrade(): String
+}
+
+class Message {
+    - messageId: String
+    - senderId: int
+    - receiverId: int
+    - content: String
+    - timestamp: String
+    - read: boolean
+    __
+    + Message()
+    + Message(messageId, senderId, receiverId, content, timestamp)
+    + getMessageId(): String
+    + getContent(): String
+    + isRead(): boolean
+}
+
+class Batch {
+    - batchId: String
+    - batchName: String
+    - year: int
+    - department: String
+    __
+    + Batch()
+    + Batch(batchId, batchName, year, department)
+    + getBatchId(): String
+    + getBatchName(): String
+}
+
+class Department {
+    - deptId: String
+    - deptName: String
+    - hodName: String
+    __
+    + Department()
+    + Department(deptId, deptName, hodName)
+    + getDeptId(): String
+    + getDeptName(): String
+}
+
+class Attendance {
+    - attendanceId: String
+    - studentId: String
+    - courseId: String
+    - date: String
+    - status: String
+    __
+    + Attendance()
+    + Attendance(attendanceId, studentId, courseId, date, status)
+    + getAttendanceId(): String
+    + getStatus(): String
+}
+
+class Submission {
+    - submissionId: String
+    - assignmentId: String
+    - studentId: String
+    - submissionDate: String
+    - filePath: String
+    - marks: double
+    __
+    + Submission()
+    + Submission(submissionId, assignmentId, studentId, submissionDate, filePath)
+    + getSubmissionId(): String
+    + getMarks(): double
+}
+
+' Relationships between domain entities
+Student "1" *-- "0..*" Course : enrolls in
+Student "1" -- "0..1" Department : belongs to
+Student "1" -- "0..1" Batch : belongs to
+Teacher "1" *-- "0..*" Course : teaches
+Teacher "1" *-- "0..*" Student : manages
+Admin "1" *-- "0..*" Student : manages
+Admin "1" *-- "0..*" Teacher : manages
+Admin "1" *-- "0..*" Course : manages
+Course "1" -- "0..*" Assignment : has
+Assignment "1" -- "0..*" Submission : receives
+
+' ========================================
+' DATA ACCESS LAYER - REPOSITORY PATTERN
+' ========================================
+
+interface Repository<T> <<interface>> {
+    + add(T): void
+    + update(T): void
+    + delete(T): void
+    + getAll(): List<T>
+    + find(String): List<T>
+}
+
+class StudentRepository {
+    - {static} DATA_FILE: String
+    - students: List<Student>
+    - objectMapper: ObjectMapper
+    __
+    + StudentRepository()
+    + add(Student): void
+    + update(Student): void
+    + delete(Student): void
+    + getAll(): List<Student>
+    + find(String): List<Student>
+    - loadAll(): void
+    - saveAll(): void
+}
+
+class TeacherRepository {
+    - {static} DATA_FILE: String
+    - teachers: List<Teacher>
+    - objectMapper: ObjectMapper
+    __
+    + TeacherRepository()
+    + add(Teacher): void
+    + update(Teacher): void
+    + delete(Teacher): void
+    + getAll(): List<Teacher>
+    + find(String): List<Teacher>
+    - loadAll(): void
+    - saveAll(): void
+}
+
+class AdminRepository {
+    - {static} DATA_FILE: String
+    - admins: List<Admin>
+    - objectMapper: ObjectMapper
+    __
+    + AdminRepository()
+    + add(Admin): void
+    + update(Admin): void
+    + delete(Admin): void
+    + getAll(): List<Admin>
+    + find(String): List<Admin>
+    - loadAll(): void
+    - saveAll(): void
+}
+
+class CourseRepository {
+    - {static} DATA_FILE: String
+    - courses: List<Course>
+    - objectMapper: ObjectMapper
+    __
+    + CourseRepository()
+    + add(Course): void
+    + update(Course): void
+    + delete(Course): void
+    + getAll(): List<Course>
+    + find(String): List<Course>
+    - loadAll(): void
+    - saveAll(): void
+}
+
+class AssignmentRepository {
+    - {static} DATA_FILE: String
+    - assignments: List<Assignment>
+    - objectMapper: ObjectMapper
+    __
+    + AssignmentRepository()
+    + add(Assignment): void
+    + update(Assignment): void
+    + delete(Assignment): void
+    + getAll(): List<Assignment>
+    + find(String): List<Assignment>
+    - loadAll(): void
+    - saveAll(): void
+}
+
+class GradeRepository {
+    - {static} DATA_FILE: String
+    - grades: List<Grade>
+    - objectMapper: ObjectMapper
+    __
+    + GradeRepository()
+    + add(Grade): void
+    + update(Grade): void
+    + delete(Grade): void
+    + getAll(): List<Grade>
+    + find(String): List<Grade>
+    - loadAll(): void
+    - saveAll(): void
+}
+
+class MessageRepository {
+    - {static} DATA_FILE: String
+    - messages: List<Message>
+    - objectMapper: ObjectMapper
+    __
+    + MessageRepository()
+    + add(Message): void
+    + update(Message): void
+    + delete(Message): void
+    + getAll(): List<Message>
+    + find(String): List<Message>
+    - loadAll(): void
+    - saveAll(): void
+}
+
+class SubmissionRepository {
+    - {static} DATA_FILE: String
+    - submissions: List<Submission>
+    - objectMapper: ObjectMapper
+    __
+    + SubmissionRepository()
+    + add(Submission): void
+    + update(Submission): void
+    + delete(Submission): void
+    + getAll(): List<Submission>
+    + find(String): List<Submission>
+    - loadAll(): void
+    - saveAll(): void
+}
+
+Repository <|.. StudentRepository
+Repository <|.. TeacherRepository
+Repository <|.. AdminRepository
+Repository <|.. CourseRepository
+Repository <|.. AssignmentRepository
+Repository <|.. GradeRepository
+Repository <|.. MessageRepository
+Repository <|.. SubmissionRepository
+
+StudentRepository o-- Student
+TeacherRepository o-- Teacher
+AdminRepository o-- Admin
+CourseRepository o-- Course
+AssignmentRepository o-- Assignment
+GradeRepository o-- Grade
+MessageRepository o-- Message
+SubmissionRepository o-- Submission
+
+' ========================================
+' EXCEPTION HANDLING LAYER
+' ========================================
+
+abstract class BaseException <<abstract>> {
+    - message: String
+    - timestamp: LocalDateTime
+    __
+    + BaseException(message)
+    + BaseException(message, cause)
+    + log(): void
+    + getMessage(): String
+    + getTimestamp(): LocalDateTime
+}
+
+class ValidationException {
+    - fieldName: String
+    - invalidValue: String
+    __
+    + ValidationException(message, fieldName, invalidValue)
+    + getFieldName(): String
+    + getInvalidValue(): String
+}
+
+class NotFoundException {
+    - entityType: String
+    - searchCriteria: String
+    __
+    + NotFoundException(message, entityType, searchCriteria)
+    + getEntityType(): String
+    + getSearchCriteria(): String
+}
+
+class AuthenticationException {
+    - username: String
+    - errorCode: String
+    __
+    + AuthenticationException(message, username, errorCode)
+    + getUsername(): String
+    + getErrorCode(): String
+}
+
+class AuthorizationException {
+    - userId: int
+    - requiredRole: String
+    - attemptedAction: String
+    __
+    + AuthorizationException(message, userId, requiredRole, attemptedAction)
+    + getUserId(): int
+    + getRequiredRole(): String
+}
+
+class RepositoryException {
+    - operation: String
+    - entityType: String
+    __
+    + RepositoryException(message, operation, entityType)
+    + RepositoryException(message, operation, entityType, cause)
+    + getOperation(): String
+    + getEntityType(): String
+}
+
+class UploadException {
+    - fileName: String
+    - errorCode: String
+    __
+    + UploadException(message, fileName, errorCode)
+    + UploadException(message, fileName, errorCode, cause)
+    + getFileName(): String
+    + getErrorCode(): String
+}
+
+BaseException <|-- ValidationException
+BaseException <|-- NotFoundException
+BaseException <|-- AuthenticationException
+BaseException <|-- AuthorizationException
+BaseException <|-- RepositoryException
+BaseException <|-- UploadException
+
+' ========================================
+' SERVICE LAYER
+' ========================================
+
+interface UploadService<T> <<interface>> {
+    + validate(T): boolean
+    + store(T): void
+    + saveMetadata(T): void
+    + getUploadDirectory(): String
+}
+
+class FileUploadService {
+    - {static} UPLOAD_DIR: String
+    __
+    + FileUploadService()
+    + validate(File): boolean
+    + store(File): void
+    + saveMetadata(File): void
+    + getUploadDirectory(): String
+}
+
+UploadService <|.. FileUploadService
+User ..> FileUploadService : uses
+
+' ========================================
+' SEARCH AND SORT INTERFACES
+' ========================================
+
+interface Searchable<T> <<interface>> {
+    + search(String): List<T>
+}
+
+interface Sortable<T> <<interface>> {
+    + sort(String): List<T>
+}
+
+Repository <|-- Searchable
+Repository <|-- Sortable
+
+' ========================================
+' VALIDATION LAYER
+' ========================================
+
+class InputValidator <<utility>> {
+    + {static} validateName(String): void
+    + {static} validateEmail(String): void
+    + {static} validateUsername(String): void
+    + {static} validatePassword(String): void
+    + {static} validateNumericId(int): void
+    + {static} validateStudentId(String): void
+    + {static} validateCourseId(String): void
+    + {static} validateCourseName(String): void
+    + {static} validateCreditHours(int): void
+    + {static} validateAllUserFields(...): void
+}
+
+User ..> InputValidator : validates with
+Course ..> InputValidator : validates with
+Assignment ..> InputValidator : validates with
+
+' ========================================
+' APPLICATION LAYER
+' ========================================
+
+class Main {
+    - {static} studentRepository: Repository<Student>
+    - {static} teacherRepository: Repository<Teacher>
+    - {static} adminRepository: Repository<Admin>
+    - {static} courseRepository: Repository<Course>
+    - {static} messageRepository: MessageRepository
+    - {static} assignmentRepository: AssignmentRepository
+    - {static} gradeRepository: GradeRepository
+    - {static} submissionRepository: SubmissionRepository
+    - {static} uploadService: UploadService<File>
+    - {static} scanner: Scanner
+    __
+    + {static} main(String[]): void
+    - {static} initializeSystem(): void
+    - {static} demonstrateOopFeatures(): void
+    - {static} runMainMenu(): void
+    - {static} handleRoleBasedAccess(): void
+    - {static} handleSearchAndSort(): void
+    - {static} handleFileUpload(): void
+}
+
+Main ..> StudentRepository : uses
+Main ..> TeacherRepository : uses
+Main ..> AdminRepository : uses
+Main ..> CourseRepository : uses
+Main ..> AssignmentRepository : uses
+Main ..> GradeRepository : uses
+Main ..> MessageRepository : uses
+Main ..> SubmissionRepository : uses
+Main ..> FileUploadService : uses
+Main ..> Student : creates
+Main ..> Teacher : creates
+Main ..> Admin : creates
+Main ..> Principal : creates
+
+' ========================================
+' NOTES AND LEGENDS
+' ========================================
+
+note top of User
+  Abstract base class for all user types.
+  Demonstrates inheritance and polymorphism.
+  All subclasses must implement getRole().
+end note
+
+note right of Repository
+  Generic interface demonstrating
+  generics usage. Provides type-safe
+  CRUD operations for all entities.
+end note
+
+note bottom of BaseException
+  Abstract exception base class.
+  All custom exceptions inherit
+  common logging and timestamp
+  functionality.
+end note
+
+note left of InputValidator
+  Utility class with static methods
+  for comprehensive input validation.
+  Throws ValidationException on
+  invalid data.
+end note
+
+legend right
+  |= Color |= Type |
+  | <back:#E8F5E9>   </back> | Abstract Class |
+  | <back:#E3F2FD>   </back> | Interface |
+  | <back:#FFF9C4>   </back> | Concrete Class |
+  
+  |= Relationship |= Meaning |
+  | --|> | Inheritance (extends) |
+  | ..|> | Implementation (implements) |
+  | --> | Association |
+  | *-- | Composition |
+  | o-- | Aggregation |
+  | ..> | Dependency |
+endlegend
+
+@enduml
