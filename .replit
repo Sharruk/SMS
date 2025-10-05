@@ -27,7 +27,7 @@ outputType = "console"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "mvn exec:java -Dexec.mainClass=\"sms.app.Main\""
+args = "mvn exec:java"
 
 [deployment]
 deploymentTarget = "vm"

@@ -1,4 +1,5 @@
 [ {
+  "type" : "teacher",
   "userId" : 2001,
   "name" : "Dr. Robert Johnson",
   "email" : "r.johnson@university.edu",
@@ -18,6 +19,7 @@
   "role" : "TEACHER",
   "passwordForAuth" : null
 }, {
+  "type" : "teacher",
   "userId" : 2002,
   "name" : "Dr. Emily Williams",
   "email" : "e.williams@university.edu",
@@ -37,6 +39,7 @@
   "role" : "TEACHER",
   "passwordForAuth" : null
 }, {
+  "type" : "teacher",
   "userId" : 999,
   "name" : "Lambda",
   "email" : "lambda@gmail.com",

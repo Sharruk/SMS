@@ -1,4 +1,5 @@
 [ {
+  "type" : "student",
   "userId" : 1001,
   "name" : "John Smith",
   "email" : "john.smith@student.edu",
@@ -26,6 +27,7 @@
   "role" : "STUDENT",
   "passwordForAuth" : null
 }, {
+  "type" : "student",
   "userId" : 1002,
   "name" : "Sarah Johnson",
   "email" : "sarah.j@student.edu",
@@ -45,6 +47,7 @@
   "role" : "STUDENT",
   "passwordForAuth" : null
 }, {
+  "type" : "student",
   "userId" : 888,
   "name" : "8",
   "email" : "8@gmail.com",

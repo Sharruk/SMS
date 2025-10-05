@@ -1,4 +1,5 @@
 [ {
+  "type" : "admin",
   "userId" : 101,
   "name" : "Admin",
   "email" : "admin@gmail.com",
