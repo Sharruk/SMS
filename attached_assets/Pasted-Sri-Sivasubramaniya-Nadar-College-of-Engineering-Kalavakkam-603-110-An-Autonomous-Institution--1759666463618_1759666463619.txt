@@ -1,0 +1,98 @@
+Sri Sivasubramaniya Nadar College of Engineering, Kalavakkam – 603 110
+(An Autonomous Institution, Affiliated to Anna University, Chennai)
+Date: 07.07.2025
+________________________________________
+Mini Project
+Objective:
+1.	To develop a real world application using Java, as a team project
+2.	To use various object oriented concepts learnt in the course
+3.	To prepare a detailed report having the following components:
+o	Problem statement
+o	Motivation for the problem
+o	Scope and Limitations
+o	Design of the solution (class diagram)
+o	Modules split-up
+o	Implementation
+o	Output screenshots
+o	Object oriented features used
+o	Inference and future extension
+4.	To present and demonstrate the project for evaluation
+________________________________________
+Best Practices:
+•	Class Diagram usage
+•	Naming convention – for file names, variables
+•	Comment usage at proper places
+•	Prompt messages during reading input and displaying output
+•	Incremental program development
+•	Modularity
+•	All possible test cases in output
+
+
+Question:
+Please follow the instructions given below to develop a Java application that automates a real life system,
+1.	Describe the problem statement in detail specifying the inputs, output, scope and limitations. (CO3 - K2)
+2.	Choose appropriate object oriented structures learnt in the course to design a reusable and efficient system. Represent it using class diagrams.
+(CO2, CO3, CO4 - K5)
+3.	Propose at least one design alternative. (CO3 - K6)
+4.	Develop and implement the design solution using Java. (CO3, K3)
+5.	Your project should have the following: (CO3, K4)
+a. An interactive text-based interface to accept inputs and display outputs
+b. A file-based storage for storing the data
+c. A Java package that has distinct Java files for each functionality
+d. A well-documented codebase
+6.	Prepare a detailed report with the following components: (CO3, K4)
+a. Problem statement
+b. Motivation for the problem
+c. Scope and Limitations
+d. Design of the solution (class diagram)
+e. Modules split-up
+f. Implementation specifics
+g. Output screenshots
+h. Object oriented features used
+i. Inference and future extension
+7.	Present and demonstrate the project for evaluation with sufficient test cases that cover all use cases. (CO3, K4)
+8.	Present and demonstrate the project for evaluation with sufficient test cases that cover all use cases, and following best practices that include class diagrams for design, modularity, recommended naming conventions, well-documented codebase, prompt messages input and output, and incremental mode of program development.
+
+
+Evaluation Criteria - Mini Project:
+Evaluation criteria	Question	PO / PSO	PI	Marks
+Problem statement, motivation	1	PO1, PO4, PO6	1.4.1 (2) 4.1.1 (2) 6.1.2 (1)	5
+Scope and limitations	1	PO4	4.1.1 (2)	5
+Object oriented features used for the application	2	PO3	2.1.2 (5)	5
+Identification of process modules / algorithms	2	PO2	2.1.1 (2) 2.1.2 (3)	5
+Design of the solution (class diagram)	2	PO3	3.2.1 (3) 3.2.2 (2)	5
+Explore design alternatives	3	PO3	3.2.1 (1) 3.4.3 (2)	5
+Implementation of modules	4, 5	PO3, PO5	3.4.2 (2) 3.4.3 (3) 5.1.3 (5)	10
+Integration of modules	5	PO3	3.4.2 (5)	10
+Demo - Execution of test cases	7	PO4, PO7	4.1.2 (2) 7.1.1 (3)	10
+Presentation	8	PO10	10.1.3 (5)	5
+Documentation	8	PO10, PO12	10.1.3 (2) 12.3.1 (3)	5
+Best Practices	-	PSO2, PO8	8.1.1 (5)	10
+Total: 100
+________________________________________
+PO Weightage:
+PO	PO2	PO3	PO4	PO6	PO7	PO8	PO10	PO12	PSO1	PSO2	Total
+%	22	26	16	4	2	5	5	5	3	15	100
+________________________________________
+PI:
+•	1.4.1 - Apply theory and principles of computer science and engineering to solve engineering problems (3)
+•	2.1.1 - Evaluate problem statements and identify objectives (3)
+•	2.1.2 - Identify processes/modules/algorithms of computer-based systems and parameters to solve problems (3)
+•	3.2.1 - Apply computer engineering principles to build modules of a system with required applicability and performance (3)
+•	3.2.2 - Identify design alternatives (3)
+•	3.4.2 - Implement and integrate the modules (3)
+•	3.4.3 - Verify functionalities and validate the design (3)
+•	4.1.1 - Define a problem for purposes of investigation, its scope and importance (1)
+•	4.1.2 - Choose appropriate procedures/algorithms, datasets, and test cases (3)
+•	4.2.1 - Design and develop appropriate procedures/methodologies based on study objectives (3)
+•	5.1.3 - Create/adapt/modify/extend tools and techniques to solve engineering problems (3)
+•	6.1.2 - Interpret legislation, regulations, codes, and standards relevant to computer science and engineering and explain its contribution to the protection of the public (2)
+•	7.1.1 - Understand the relationship between the technical, socio-economic, and environmental dimensions of sustainability (3)
+•	8.1.1 - Identify situations of unethical professional conduct and propose ethical alternatives (2)
+•	9.2.1 - Demonstrate effective communication, problem-solving, conflict resolution, and leadership skills (3)
+•	10.1.2 - Produce clear, well-constructed, and well-supported written engineering documents (3)
+•	10.1.3 - Create flow in a document or presentation, a logical progression of ideas so that the output is effective (2)
+•	12.3.1 - Identify important technological changes that require knowledge upgradation (2)
+•	12.3.2 - Apply such professional proficiency in various domains (2)
+•	12.3.3 - Apply concepts and tools to solve new (and open ended) engineering activities (2)
+
