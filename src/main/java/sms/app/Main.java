@@ -89,15 +89,15 @@ public class Main {
             System.out.println("\n1. === INHERITANCE DEMONSTRATION ===");
             System.out.println("Creating all User hierarchy objects (User -> Admin, Teacher, Student, Principal):");
             
-            Admin admin = new Admin(1001, "Dr. Alice Smith", "alice@lms.edu", "alice", "admin123");
-            Teacher teacher = new Teacher(2001, "Prof. Bob Johnson", "bob@lms.edu", "bob", "teacher123");
+            Admin admin = new Admin(1001, "Alice Smith", "alice@lms.edu", "alice", "admin123");
+            Teacher teacher = new Teacher(2001, "Bob Johnson", "bob@lms.edu", "bob", "teacher123");
             Student student = new Student(3001, "Charlie Brown", "charlie@student.edu", "charlie", "student123");
-            Principal principal = new Principal(4001, "Dr. Diana Wilson", "diana@lms.edu", "diana", "principal123");
+            Principal principal = new Principal(4001, "Diana Wilson", "diana@lms.edu", "diana", "principal123");
             
-            System.out.println("Admin created: " + admin.getName() + " (inherits from User)");
-            System.out.println("Teacher created: " + teacher.getName() + " (inherits from User)");
-            System.out.println("Student created: " + student.getName() + " (inherits from User)");
-            System.out.println("Principal created: " + principal.getName() + " (inherits from User)");
+            System.out.println("✓ Admin created: " + admin.getName() + " (inherits from User)");
+            System.out.println("✓ Teacher created: " + teacher.getName() + " (inherits from User)");
+            System.out.println("✓ Student created: " + student.getName() + " (inherits from User)");
+            System.out.println("✓ Principal created: " + principal.getName() + " (inherits from User)");
 
             // 2. POLYMORPHISM DEMONSTRATION
             System.out.println("\n2. === POLYMORPHISM DEMONSTRATION ===");
@@ -440,23 +440,37 @@ public class Main {
 
     private static void runQuickPrincipalDemo() {
         System.out.println("\n--- Quick Principal Demo ---");
-        Principal principal = new Principal(5001, "Dr. Principal", "principal@lms.edu", "principal", "pass123");
-        Admin admin = new Admin(5002, "Admin User", "admin@lms.edu", "admin", "pass123");
-        Teacher teacher = new Teacher(5003, "Teacher User", "teacher@lms.edu", "teacher", "pass123");
-        
-        principal.addAdmin(admin);
-        principal.appointTeacher(teacher);
-        principal.viewReports();
+        try {
+            Principal principal = new Principal(5001, "Principal Smith", "principal@lms.edu", "principal", "pass123");
+            Admin admin = new Admin(5002, "Admin User", "admin@lms.edu", "admin", "pass123");
+            Teacher teacher = new Teacher(5003, "Teacher User", "teacher@lms.edu", "teacher", "pass123");
+            
+            principal.addAdmin(admin);
+            principal.appointTeacher(teacher);
+            principal.viewReports();
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            e.log();
+        }
     }
 
     private static void runPrincipalMenu() {
-        Principal principal = new Principal(1, "Dr. Principal", "principal@lms.edu", "principal", "pass123");
-        
-        System.out.println("\n" + "=".repeat(60));
-        System.out.println("   Welcome, " + principal.getName() + " - Principal Account");
-        System.out.println("   All operations work directly with persistent storage");
-        System.out.println("=".repeat(60));
-        
+        try {
+            Principal principal = new Principal(1, "Principal Davis", "principal@lms.edu", "principal", "pass123");
+            
+            System.out.println("\n" + "=".repeat(60));
+            System.out.println("   Welcome, " + principal.getName() + " - Principal Account");
+            System.out.println("   All operations work directly with persistent storage");
+            System.out.println("=".repeat(60));
+            
+            runPrincipalMenuLoop(principal);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            e.log();
+        }
+    }
+    
+    private static void runPrincipalMenuLoop(Principal principal) {
         while (true) {
             try {
                 principal.showMenu();
@@ -2454,9 +2468,14 @@ public class Main {
         System.out.println("\n=== SEARCH & SORT DEMONSTRATION ===");
         System.out.println("Demonstrating role-based search and sort capabilities...");
         
-        Admin admin = new Admin(9001, "Search Admin", "search@lms.edu", "search", "pass123");
-        System.out.println("Admin searching for 'Demo': " + admin.search("Demo").size() + " results");
-        System.out.println("Admin sorting by name: " + admin.sort("name").size() + " items");
+        try {
+            Admin admin = new Admin(9001, "Search Admin", "search@lms.edu", "search", "pass123");
+            System.out.println("Admin searching for 'Demo': " + admin.search("Demo").size() + " results");
+            System.out.println("Admin sorting by name: " + admin.sort("name").size() + " items");
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            e.log();
+        }
     }
 
     private static void demonstrateFileUpload() {

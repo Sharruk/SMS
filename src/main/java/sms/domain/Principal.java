@@ -1,6 +1,7 @@
 package sms.domain;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import sms.exceptions.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class Principal extends User {
         this.managedCourses = new ArrayList<>();
     }
 
-    public Principal(int userId, String name, String email, String username, String password) {
+    public Principal(int userId, String name, String email, String username, String password) throws ValidationException {
         super(userId, name, email, username, password);
         this.managedAdmins = new ArrayList<>();
         this.appointedTeachers = new ArrayList<>();

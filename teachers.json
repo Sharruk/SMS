@@ -1,48 +1,50 @@
-[
-  {
-    "type": "teacher",
-    "userId": 2001,
-    "name": "Dr. Robert Johnson",
-    "email": "r.johnson@university.edu",
-    "username": "rjohnson",
-    "passwordForAuth": "teacher123",
-    "id": "T2001",
-    "courses": [
-      {
-        "courseId": "CS101",
-        "courseName": "Introduction to Programming",
-        "creditHours": 3,
-        "facultyName": "Dr. Johnson",
-        "classDays": "Mon/Wed",
-        "classTimes": "9:00-10:30",
-        "classDates": "Fall 2025"
-      }
-    ],
-    "batches": [],
-    "students": [],
-    "role": "TEACHER"
-  },
-  {
-    "type": "teacher",
-    "userId": 2002,
-    "name": "Dr. Emily Williams",
-    "email": "e.williams@university.edu",
-    "username": "ewilliams",
-    "passwordForAuth": "teacher123",
-    "id": "T2002",
-    "courses": [
-      {
-        "courseId": "CS201",
-        "courseName": "Data Structures",
-        "creditHours": 4,
-        "facultyName": "Dr. Williams",
-        "classDays": "Tue/Thu",
-        "classTimes": "10:00-11:30",
-        "classDates": "Fall 2025"
-      }
-    ],
-    "batches": [],
-    "students": [],
-    "role": "TEACHER"
-  }
-]
+[ {
+  "userId" : 2001,
+  "name" : "Dr. Robert Johnson",
+  "email" : "r.johnson@university.edu",
+  "username" : "rjohnson",
+  "id" : "T2001",
+  "courses" : [ {
+    "courseId" : "CS101",
+    "courseName" : "Introduction to Programming",
+    "creditHours" : 3,
+    "facultyName" : "Dr. Johnson",
+    "classDays" : "Mon/Wed",
+    "classTimes" : "9:00-10:30",
+    "classDates" : "Fall 2025"
+  } ],
+  "batches" : [ ],
+  "students" : [ ],
+  "role" : "TEACHER",
+  "passwordForAuth" : null
+}, {
+  "userId" : 2002,
+  "name" : "Dr. Emily Williams",
+  "email" : "e.williams@university.edu",
+  "username" : "ewilliams",
+  "id" : "T2002",
+  "courses" : [ {
+    "courseId" : "CS201",
+    "courseName" : "Data Structures",
+    "creditHours" : 4,
+    "facultyName" : "Dr. Williams",
+    "classDays" : "Tue/Thu",
+    "classTimes" : "10:00-11:30",
+    "classDates" : "Fall 2025"
+  } ],
+  "batches" : [ ],
+  "students" : [ ],
+  "role" : "TEACHER",
+  "passwordForAuth" : null
+}, {
+  "userId" : 999,
+  "name" : "Lambda",
+  "email" : "lambda@gmail.com",
+  "username" : "Lambda",
+  "id" : "T999",
+  "courses" : [ ],
+  "batches" : [ ],
+  "students" : [ ],
+  "role" : "TEACHER",
+  "passwordForAuth" : "Lambda"
+} ]

@@ -34,6 +34,7 @@ Preferred communication style: Simple, everyday language.
 
 ### Key Features
 - **Comprehensive OOP Demonstration**: Showcases inheritance, polymorphism, encapsulation, generics, and custom exception handling.
+- **Centralized Input Validation**: Robust validation system with clear error messages for all user inputs.
 - **Role-based Access Control (RBAC)**: Differentiates capabilities for Principal, Admin, Teacher, and Student roles.
 - **Search and Sort**: Role-specific search and sort functionalities for system entities.
 - **Upload Service**: Handles file uploads with validation.
@@ -56,10 +57,25 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+### 2025-10-05: Enhanced Input Validation System
+- **Implemented centralized validation system** with `InputValidator` class
+- **Added comprehensive input validation rules**:
+  - Name: Only letters and spaces (no digits, symbols, or punctuation)
+  - Email: Valid email format (user@domain.com)
+  - Username: No spaces allowed, cannot be empty
+  - Password: Minimum 6 characters required
+  - User ID: Must be positive number
+- **Improved exception handling** with user-friendly error messages (⚠️ prefix)
+- **Updated all User constructors** (Student, Teacher, Admin, Principal) to validate on creation
+- **Updated Admin.registerStudent()** method to use centralized validation
+- **All validation exceptions** throw clear, descriptive messages
+- **Created VALIDATION_GUIDE.md** with examples and usage documentation
+- System now prevents invalid user data from entering the application
+
 ### 2025-10-03: Replit Environment Setup - GitHub Import Completed
 - Successfully imported Java-based LMS project from GitHub
 - Installed Java (GraalVM 19.0.2) and Maven (3.9.9) via Replit modules
-- Compiled the project successfully with Maven (35 source files)
+- Compiled the project successfully with Maven (36 source files including InputValidator)
 - Configured workflow "LMS Application" to run the console application via `mvn exec:java`
 - Application starts successfully and demonstrates all OOP features on launch
 - JSON data persistence is working correctly (students.json, teachers.json, admins.json, courses.json, messages.json, assignments.json, grades.json)

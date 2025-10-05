@@ -22,6 +22,7 @@ sms/domain/User.class
 sms/data/Repository.class
 sms/data/GradeRepository$1.class
 sms/services/FileUploadService.class
+sms/validation/InputValidator.class
 sms/domain/Grade.class
 sms/domain/Assignment.class
 sms/exceptions/BaseException.class

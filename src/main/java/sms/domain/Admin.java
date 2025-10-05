@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import sms.exceptions.*;
 import sms.search.Searchable;
 import sms.sort.Sortable;
+import sms.validation.InputValidator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +25,7 @@ public class Admin extends User implements Searchable<Object>, Sortable<Object> 
         this.managedBatches = new ArrayList<>();
     }
 
-    public Admin(int userId, String name, String email, String username, String password) {
+    public Admin(int userId, String name, String email, String username, String password) throws ValidationException {
         super(userId, name, email, username, password);
         this.managedStudents = new ArrayList<>();
         this.managedTeachers = new ArrayList<>();
@@ -50,18 +51,17 @@ public class Admin extends User implements Searchable<Object>, Sortable<Object> 
     }
 
     public Student registerStudent(String name, String email) throws ValidationException {
-        if (name == null || name.trim().isEmpty()) {
-            throw new ValidationException("Student name cannot be empty", "name", name);
-        }
-        if (email == null || !email.contains("@")) {
-            throw new ValidationException("Invalid email format", "email", email);
-        }
+        InputValidator.validateName(name);
+        InputValidator.validateEmail(email);
 
-        int newId = managedStudents.size() + 1000; // Generate simple ID
-        Student student = new Student(newId, name, email, email.split("@")[0], "defaultPassword");
+        int newId = managedStudents.size() + 1000;
+        String username = email.split("@")[0];
+        String defaultPassword = "Default123";
+        
+        Student student = new Student(newId, name, email, username, defaultPassword);
         managedStudents.add(student);
         
-        System.out.println("Admin: Registered new student - " + name + " (ID: " + newId + ")");
+        System.out.println("✓ Admin: Registered new student - " + name + " (ID: " + newId + ")");
         return student;
     }
 

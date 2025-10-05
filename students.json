@@ -1,57 +1,58 @@
-[
-  {
-    "type": "student",
-    "userId": 1001,
-    "name": "John Smith",
-    "email": "john.smith@student.edu",
-    "username": "john",
-    "passwordForAuth": "student123",
-    "id": "S1001",
-    "dept": null,
-    "batch": null,
-    "courses": [
-      {
-        "courseId": "CS101",
-        "courseName": "Introduction to Programming",
-        "creditHours": 3,
-        "facultyName": "Dr. Johnson",
-        "classDays": "Mon/Wed",
-        "classTimes": "9:00-10:30",
-        "classDates": "Fall 2025"
-      },
-      {
-        "courseId": "CS201",
-        "courseName": "Data Structures",
-        "creditHours": 4,
-        "facultyName": "Dr. Williams",
-        "classDays": "Tue/Thu",
-        "classTimes": "10:00-11:30",
-        "classDates": "Fall 2025"
-      }
-    ],
-    "role": "STUDENT"
-  },
-  {
-    "type": "student",
-    "userId": 1002,
-    "name": "Sarah Johnson",
-    "email": "sarah.j@student.edu",
-    "username": "sarah",
-    "passwordForAuth": "student123",
-    "id": "S1002",
-    "dept": null,
-    "batch": null,
-    "courses": [
-      {
-        "courseId": "CS101",
-        "courseName": "Introduction to Programming",
-        "creditHours": 3,
-        "facultyName": "Dr. Johnson",
-        "classDays": "Mon/Wed",
-        "classTimes": "9:00-10:30",
-        "classDates": "Fall 2025"
-      }
-    ],
-    "role": "STUDENT"
-  }
-]
+[ {
+  "userId" : 1001,
+  "name" : "John Smith",
+  "email" : "john.smith@student.edu",
+  "username" : "john",
+  "id" : "S1001",
+  "dept" : null,
+  "batch" : null,
+  "courses" : [ {
+    "courseId" : "CS101",
+    "courseName" : "Introduction to Programming",
+    "creditHours" : 3,
+    "facultyName" : "Dr. Johnson",
+    "classDays" : "Mon/Wed",
+    "classTimes" : "9:00-10:30",
+    "classDates" : "Fall 2025"
+  }, {
+    "courseId" : "CS201",
+    "courseName" : "Data Structures",
+    "creditHours" : 4,
+    "facultyName" : "Dr. Williams",
+    "classDays" : "Tue/Thu",
+    "classTimes" : "10:00-11:30",
+    "classDates" : "Fall 2025"
+  } ],
+  "role" : "STUDENT",
+  "passwordForAuth" : null
+}, {
+  "userId" : 1002,
+  "name" : "Sarah Johnson",
+  "email" : "sarah.j@student.edu",
+  "username" : "sarah",
+  "id" : "S1002",
+  "dept" : null,
+  "batch" : null,
+  "courses" : [ {
+    "courseId" : "CS101",
+    "courseName" : "Introduction to Programming",
+    "creditHours" : 3,
+    "facultyName" : "Dr. Johnson",
+    "classDays" : "Mon/Wed",
+    "classTimes" : "9:00-10:30",
+    "classDates" : "Fall 2025"
+  } ],
+  "role" : "STUDENT",
+  "passwordForAuth" : null
+}, {
+  "userId" : 888,
+  "name" : "8",
+  "email" : "8@gmail.com",
+  "username" : "8",
+  "id" : "S888",
+  "dept" : null,
+  "batch" : null,
+  "courses" : [ ],
+  "role" : "STUDENT",
+  "passwordForAuth" : "8"
+} ]

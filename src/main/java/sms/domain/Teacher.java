@@ -23,7 +23,7 @@ public class Teacher extends User implements Searchable<Student>, Sortable<Stude
         this.students = new ArrayList<>();
     }
 
-    public Teacher(int userId, String name, String email, String username, String password) {
+    public Teacher(int userId, String name, String email, String username, String password) throws ValidationException {
         super(userId, name, email, username, password);
         this.id = "T" + userId;
         this.courses = new ArrayList<>();

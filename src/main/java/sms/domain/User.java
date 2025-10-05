@@ -7,6 +7,7 @@ import sms.exceptions.UploadException;
 import sms.exceptions.ValidationException;
 import sms.services.FileUploadService;
 import sms.services.UploadService;
+import sms.validation.InputValidator;
 import java.io.File;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
@@ -30,7 +31,8 @@ public abstract class User {
     // Default constructor for Jackson
     public User() {}
 
-    public User(int userId, String name, String email, String username, String password) {
+    public User(int userId, String name, String email, String username, String password) throws ValidationException {
+        InputValidator.validateAllUserFields(userId, name, email, username, password);
         this.userId = userId;
         this.name = name;
         this.email = email;

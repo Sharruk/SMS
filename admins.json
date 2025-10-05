@@ -1,5 +1,4 @@
 [ {
-  "type" : "admin",
   "userId" : 101,
   "name" : "Alice",
   "email" : "alice@gmail.com",
@@ -9,9 +8,8 @@
   "managedCourses" : [ ],
   "managedBatches" : [ ],
   "role" : "ADMIN",
-  "passwordForAuth" : "12345"
+  "passwordForAuth" : null
 }, {
-  "type" : "admin",
   "userId" : 902,
   "name" : "bob",
   "email" : "bob@gmail.com",
@@ -21,5 +19,16 @@
   "managedCourses" : [ ],
   "managedBatches" : [ ],
   "role" : "ADMIN",
-  "passwordForAuth" : "123"
+  "passwordForAuth" : null
+}, {
+  "userId" : 777,
+  "name" : "kd",
+  "email" : "kd@gmail.com",
+  "username" : "kd",
+  "managedStudents" : [ ],
+  "managedTeachers" : [ ],
+  "managedCourses" : [ ],
+  "managedBatches" : [ ],
+  "role" : "ADMIN",
+  "passwordForAuth" : "kd"
 } ]
