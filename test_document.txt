@@ -1,0 +1,5 @@
+Student Name: John Doe
+Course: Data Science 101
+Assignment: Week 2 Project Report
+
+This is a sample assignment document for demonstration purposes.

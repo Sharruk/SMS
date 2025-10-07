@@ -1,17 +1,6 @@
 [ {
   "userId" : 101,
-  "name" : "Admin",
-  "email" : "admin@gmail.com",
-  "username" : "Admin",
-  "managedStudents" : [ ],
-  "managedTeachers" : [ ],
-  "managedCourses" : [ ],
-  "managedBatches" : [ ],
-  "role" : "ADMIN",
-  "passwordForAuth" : null
-}, {
-  "userId" : 101,
-  "name" : "Admin",
+  "name" : "admin",
   "email" : "admin@gmail.com",
   "username" : "admin",
   "managedStudents" : [ ],
