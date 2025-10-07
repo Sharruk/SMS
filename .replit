@@ -4,7 +4,7 @@ expertMode = true
 
 [nix]
 channel = "stable-25_05"
-packages = ["maven"]
+packages = ["freetype", "glibcLocales", "maven"]
 
 [workflows]
 runButton = "Project"
@@ -32,7 +32,3 @@ args = "mvn exec:java"
 [deployment]
 deploymentTarget = "vm"
 run = ["mvn", "exec:java", "-Dexec.mainClass=sms.app.Main"]
-
-[[ports]]
-localPort = 44051
-externalPort = 80
