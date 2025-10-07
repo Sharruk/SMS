@@ -26,7 +26,6 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("==========================================");
         System.out.println("   Learning Management System (LMS)     ");
-        System.out.println("     Based on PlantUML Specification     ");
         System.out.println("==========================================");
         System.out.println("Initializing comprehensive LMS system...\n");
 
@@ -82,7 +81,6 @@ public class Main {
     public static void demonstrateOopFeatures() {
         System.out.println("\n" + "=".repeat(70));
         System.out.println("     COMPREHENSIVE LMS OOP FEATURES DEMONSTRATION");
-        System.out.println("        Based on PlantUML Class Diagram");
         System.out.println("=".repeat(70));
 
         try {
