@@ -123,4 +123,17 @@ public class AdminRepository implements Repository<Admin> {
     public long count() {
         return admins.size();
     }
+
+    @Override
+    public List<Admin> sort(String criteria) throws RepositoryException {
+        List<Admin> sortedList = new ArrayList<>(admins);
+        if ("name".equalsIgnoreCase(criteria)) {
+            sortedList.sort((a1, a2) -> a1.getName().compareToIgnoreCase(a2.getName()));
+        } else if ("id".equalsIgnoreCase(criteria)) {
+            sortedList.sort((a1, a2) -> Integer.compare(a1.getUserId(), a2.getUserId()));
+        } else {
+            sortedList.sort((a1, a2) -> a1.getName().compareToIgnoreCase(a2.getName()));
+        }
+        return sortedList;
+    }
 }

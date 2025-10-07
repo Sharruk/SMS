@@ -146,4 +146,17 @@ public class AssignmentRepository implements Repository<Assignment> {
                 .max()
                 .orElse(0) + 1;
     }
+
+    @Override
+    public List<Assignment> sort(String criteria) throws RepositoryException {
+        List<Assignment> sortedList = new ArrayList<>(assignments);
+        if ("title".equalsIgnoreCase(criteria) || "name".equalsIgnoreCase(criteria)) {
+            sortedList.sort((a1, a2) -> a1.getTitle().compareToIgnoreCase(a2.getTitle()));
+        } else if ("id".equalsIgnoreCase(criteria)) {
+            sortedList.sort((a1, a2) -> Integer.compare(a1.getId(), a2.getId()));
+        } else {
+            sortedList.sort((a1, a2) -> Integer.compare(a1.getId(), a2.getId()));
+        }
+        return sortedList;
+    }
 }

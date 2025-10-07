@@ -149,4 +149,17 @@ public class GradeRepository implements Repository<Grade> {
             throw new RepositoryException("Failed to save grades to file: " + e.getMessage(), "SAVE", "Grade");
         }
     }
+
+    @Override
+    public List<Grade> sort(String criteria) throws RepositoryException {
+        List<Grade> sortedList = new ArrayList<>(grades);
+        if ("student".equalsIgnoreCase(criteria) || "id".equalsIgnoreCase(criteria)) {
+            sortedList.sort((g1, g2) -> Integer.compare(g1.getStudentId(), g2.getStudentId()));
+        } else if ("grade".equalsIgnoreCase(criteria)) {
+            sortedList.sort((g1, g2) -> g1.getGrade().compareToIgnoreCase(g2.getGrade()));
+        } else {
+            sortedList.sort((g1, g2) -> Integer.compare(g1.getStudentId(), g2.getStudentId()));
+        }
+        return sortedList;
+    }
 }

@@ -49,4 +49,12 @@ public interface Repository<T> {
      * @throws RepositoryException if find operation fails
      */
     List<T> find(String criteria) throws RepositoryException;
+    
+    /**
+     * Sort entities based on criteria
+     * @param criteria The sort criteria (e.g., "name", "id", "code")
+     * @return List of entities sorted by the criteria
+     * @throws RepositoryException if sort operation fails
+     */
+    List<T> sort(String criteria) throws RepositoryException;
 }

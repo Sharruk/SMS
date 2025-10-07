@@ -147,4 +147,17 @@ public class MessageRepository implements Repository<Message> {
                 .max()
                 .orElse(0) + 1;
     }
+
+    @Override
+    public List<Message> sort(String criteria) throws RepositoryException {
+        List<Message> sortedList = new ArrayList<>(messages);
+        if ("id".equalsIgnoreCase(criteria)) {
+            sortedList.sort((m1, m2) -> Integer.compare(m1.getMessageId(), m2.getMessageId()));
+        } else if ("date".equalsIgnoreCase(criteria)) {
+            sortedList.sort((m1, m2) -> m1.getTimestamp().compareTo(m2.getTimestamp()));
+        } else {
+            sortedList.sort((m1, m2) -> Integer.compare(m1.getMessageId(), m2.getMessageId()));
+        }
+        return sortedList;
+    }
 }

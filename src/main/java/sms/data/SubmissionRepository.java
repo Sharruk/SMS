@@ -130,4 +130,17 @@ public class SubmissionRepository implements Repository<Submission> {
             throw new RepositoryException("Submission not found with ID: " + submissionId);
         }
     }
+
+    @Override
+    public List<Submission> sort(String criteria) throws RepositoryException {
+        List<Submission> sortedList = new ArrayList<>(submissions);
+        if ("id".equalsIgnoreCase(criteria)) {
+            sortedList.sort((s1, s2) -> Integer.compare(s1.getSubmissionId(), s2.getSubmissionId()));
+        } else if ("student".equalsIgnoreCase(criteria)) {
+            sortedList.sort((s1, s2) -> Integer.compare(s1.getStudentId(), s2.getStudentId()));
+        } else {
+            sortedList.sort((s1, s2) -> Integer.compare(s1.getSubmissionId(), s2.getSubmissionId()));
+        }
+        return sortedList;
+    }
 }
