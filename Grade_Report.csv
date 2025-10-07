@@ -1,0 +1,6 @@
+StudentID,StudentName,Course,Assignment,Grade,Date
+1001,John Smith,CS101,Assignment 1,95,2025-09-15
+1001,John Smith,CS101,Assignment 2,88,2025-09-22
+1002,Sarah Johnson,CS101,Assignment 1,92,2025-09-15
+1002,Sarah Johnson,CS101,Assignment 2,94,2025-09-22
+1001,John Smith,CS201,Assignment 1,90,2025-09-20

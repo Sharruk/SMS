@@ -1,0 +1,193 @@
+================================================================================
+    LMS APPLICATION - QUICK START GUIDE
+================================================================================
+
+📋 LOGIN CREDENTIALS (Copy & Paste Ready)
+================================================================================
+
+TEACHERS:
+---------
+1. Dr. Robert Johnson
+   Password: teacher123
+
+2. Dr. Emily Williams
+   Password: teacher123
+
+3. Lambda
+   Password: Lambda
+
+STUDENTS:
+---------
+1. John Smith
+   Password: student123
+
+2. Sarah Johnson
+   Password: student123
+
+3. User 8
+   Password: 8
+
+
+📁 SAMPLE FILES FOR UPLOAD (Copy & Paste Ready)
+================================================================================
+
+In Replit (Use these exact filenames):
+---------------------------------------
+sample_assignment.txt
+test_document.txt
+Assignment_Submission.txt
+Course_Material.txt
+Grade_Report.csv
+
+
+In VS Code Local (Windows example):
+------------------------------------
+D:\Visual_Studio_Code\DataScience\3122247001061_ass2.pdf
+C:\Users\YourName\Documents\assignment.docx
+
+
+🚀 QUICK TEST WORKFLOW
+================================================================================
+
+TEST 1: Teacher Login & Upload
+-------------------------------
+1. Choose option: 1
+2. Select role: 1
+3. Enter selection: 2
+4. Enter password: teacher123
+5. Choose option: 7
+6. Enter file path: Course_Material.txt
+7. Check: File uploaded to uploads/teachers/
+
+TEST 2: Student Login & Upload
+-------------------------------
+1. Choose option: 1
+2. Select role: 2
+3. Enter selection: 1
+4. Enter password: student123
+5. Choose option: 6
+6. Enter file path: Assignment_Submission.txt
+7. Check: File uploaded to uploads/students/
+
+TEST 3: View Uploaded Files
+----------------------------
+After uploading, the system automatically shows:
+- File name
+- Uploaded by (username)
+- Role
+- File size
+- Timestamp
+
+
+⚡ ONE-LINE COPY-PASTE COMMANDS
+================================================================================
+
+Login as Teacher:
+  1 → 1 → 2 → teacher123
+
+Login as Student:
+  1 → 2 → 1 → student123
+
+Upload File:
+  7 (teacher) or 6 (student/admin) → filename.txt
+
+
+🎯 IMPLEMENTATION FEATURES
+================================================================================
+
+✓ Role-Based Authentication
+  - Password required for all logins
+  - Access denied on wrong password
+
+✓ Role-Based File Storage
+  - Automatic folder routing
+  - Separate folders per role
+
+✓ Metadata Tracking
+  - All uploads saved in uploads.json
+  - Includes: filename, user, role, size, timestamp
+
+✓ File Validation
+  - Max size: 10MB
+  - Allowed: .csv, .json, .txt, .xlsx, .pdf, .doc, .docx
+  - Validation errors shown immediately
+
+✓ Upload Confirmation
+  - Success message with file path
+  - List of all uploaded files for that role
+
+
+📊 FILE UPLOAD ARCHITECTURE
+================================================================================
+
+FileUploadService.uploadFile(filePath, userName, role)
+  ↓
+Role Detection:
+  "admin"   → uploads/admin/
+  "teacher" → uploads/teachers/
+  "student" → uploads/students/
+  "other"   → uploads/others/
+  ↓
+File Validation:
+  - Check file exists
+  - Check file size
+  - Check file extension
+  ↓
+Store File + Save Metadata
+  ↓
+Display Success + Show File List
+
+
+🔍 TROUBLESHOOTING
+================================================================================
+
+Problem: "File does not exist"
+Solution: Use relative path (sample_assignment.txt) in Replit
+         Use absolute path (D:\path\file.pdf) in VS Code
+
+Problem: "Invalid password. Access denied"
+Solution: Check credentials above, case-sensitive
+
+Problem: "File extension not allowed"
+Solution: Only .csv, .json, .txt, .xlsx, .pdf, .doc, .docx allowed
+
+Problem: "File size exceeds maximum"
+Solution: Files must be under 10MB
+
+
+📞 SAMPLE INPUT/OUTPUT
+================================================================================
+
+INPUT:
+------
+Choose an option: 1
+Select role (1=Teacher, 2=Student, 3=Admin): 1
+Enter selection number (1, 2, etc.) to login: 2
+Enter password: teacher123
+
+OUTPUT:
+-------
+✓ Authentication successful!
+============================================================
+   Welcome, Dr. Emily Williams - Teacher Account
+   User ID: 2002
+   Courses: 1
+   Students: 1
+============================================================
+
+INPUT:
+------
+Choose an option: 7
+Enter file path to upload: Course_Material.txt
+
+OUTPUT:
+-------
+✓ File uploaded successfully by Teacher: Dr. Emily Williams → uploads/teachers/Course_Material.txt
+
+--- Uploaded Files for TEACHER ---
+[1] Course_Material.txt uploaded by Dr. Emily Williams (teacher) - 1098 bytes - 2025-10-07 18:04:35
+
+
+================================================================================
+Ready to test! Start with: Choose an option: 1
+================================================================================

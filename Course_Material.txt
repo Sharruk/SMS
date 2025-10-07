@@ -1,0 +1,42 @@
+==========================================
+    COURSE MATERIAL
+==========================================
+
+Course: CS201 - Data Structures
+Instructor: Dr. Emily Williams
+Topic: Binary Search Trees
+
+==========================================
+LESSON OUTLINE
+==========================================
+
+1. Introduction to Trees
+   - Definition and terminology
+   - Tree traversal methods
+   - Applications in computer science
+
+2. Binary Search Trees (BST)
+   - Structure and properties
+   - Insertion algorithm
+   - Deletion algorithm
+   - Search operations
+
+3. Time Complexity Analysis
+   - Best case: O(log n)
+   - Worst case: O(n)
+   - Average case: O(log n)
+
+4. Practice Problems
+   - Implement BST insert
+   - Find minimum/maximum values
+   - Validate BST structure
+
+==========================================
+REFERENCES
+==========================================
+- Introduction to Algorithms (CLRS)
+- Data Structures textbook Ch. 12
+
+==========================================
+END OF MATERIAL
+==========================================

@@ -1,0 +1,31 @@
+==========================================
+    ASSIGNMENT SUBMISSION
+==========================================
+
+Student: John Smith
+Student ID: 1001
+Course: CS101 - Introduction to Programming
+Assignment: Week 5 - Data Structures
+
+Submission Date: October 7, 2025
+
+==========================================
+ASSIGNMENT CONTENT
+==========================================
+
+This is a sample assignment submission demonstrating
+the file upload functionality in the LMS system.
+
+Task 1: Implement a linked list
+- Created Node class
+- Implemented insert, delete, search methods
+- Added unit tests
+
+Task 2: Performance Analysis
+- Analyzed time complexity
+- Compared with array implementation
+- Documented findings
+
+==========================================
+END OF SUBMISSION
+==========================================

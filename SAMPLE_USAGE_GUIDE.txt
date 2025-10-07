@@ -1,0 +1,299 @@
+================================================================================
+    LMS APPLICATION - SAMPLE USAGE GUIDE
+    Login with Password & File Upload Functionality
+================================================================================
+
+PART 1: LOGIN WITH PASSWORD AUTHENTICATION
+================================================================================
+
+1. TEACHER LOGIN EXAMPLE
+   -----------------------
+   Menu Option: 1 (Role-based Access Demo)
+   Select Role: 1 (Teacher)
+   
+   Available Teachers:
+   - Dr. Robert Johnson (ID: 2001)
+     Username: rjohnson
+     Password: teacher123
+   
+   - Dr. Emily Williams (ID: 2002)
+     Username: ewilliams
+     Password: teacher123
+   
+   - Lambda (ID: 999)
+     Username: Lambda
+     Password: Lambda
+   
+   Sample Input Flow:
+   >> Choose an option: 1
+   >> Select role (1=Teacher, 2=Student, 3=Admin): 1
+   >> Enter selection number (1, 2, etc.) to login: 1
+   >> Enter password: teacher123
+   >> ✓ Authentication successful!
+
+2. STUDENT LOGIN EXAMPLE
+   ----------------------
+   Menu Option: 1 (Role-based Access Demo)
+   Select Role: 2 (Student)
+   
+   Available Students:
+   - John Smith (ID: 1001)
+     Username: john
+     Password: student123
+   
+   - Sarah Johnson (ID: 1002)
+     Username: sarah
+     Password: student123
+   
+   - User 8 (ID: 888)
+     Username: 8
+     Password: 8
+   
+   Sample Input Flow:
+   >> Choose an option: 1
+   >> Select role (1=Teacher, 2=Student, 3=Admin): 2
+   >> Enter selection number (1, 2, etc.) to login: 1
+   >> Enter password: student123
+   >> ✓ Authentication successful!
+
+3. ADMIN LOGIN EXAMPLE
+   --------------------
+   Menu Option: 1 (Role-based Access Demo)
+   Select Role: 3 (Admin)
+   
+   Note: Create a new admin account first if none exist.
+   
+   Sample Input Flow (Creating New Admin):
+   >> Choose an option: 1
+   >> Select role (1=Teacher, 2=Student, 3=Admin): 3
+   >> Enter 'new' to create a new admin, or 0 to cancel: new
+   >> Enter Admin ID: 5001
+   >> Enter Name: John Admin
+   >> Enter Email: admin@lms.edu
+   >> Enter Username: jadmin
+   >> Enter Password: admin123
+   
+   Then login:
+   >> Enter selection number: 1
+   >> Enter password: admin123
+   >> ✓ Authentication successful!
+
+
+================================================================================
+PART 2: FILE UPLOAD FUNCTIONALITY
+================================================================================
+
+IMPLEMENTATION DETAILS:
+-----------------------
+- Upload Service: FileUploadService (role-based routing)
+- Storage Location: uploads/ directory
+- Folder Structure:
+  * uploads/admin/     → Admin uploads
+  * uploads/teachers/  → Teacher uploads
+  * uploads/students/  → Student uploads
+  * uploads/others/    → Other uploads
+- Metadata Storage: uploads.json
+- Max File Size: 10MB
+- Allowed Extensions: .csv, .json, .txt, .xlsx, .pdf, .doc, .docx
+
+SAMPLE FILE UPLOAD SCENARIOS:
+------------------------------
+
+Scenario 1: TEACHER UPLOADS ASSIGNMENT
+---------------------------------------
+1. Login as Teacher (Dr. Emily Williams)
+   Password: teacher123
+
+2. Navigate to Upload Option
+   >> Choose an option: 7
+
+3. Sample Files to Upload (In Replit Environment):
+   >> Enter file path to upload: sample_assignment.txt
+   OR
+   >> Enter file path to upload: test_document.txt
+
+4. Expected Output:
+   ✓ File uploaded successfully by Teacher: Dr. Emily Williams → uploads/teachers/sample_assignment.txt
+   
+   --- Uploaded Files for TEACHER ---
+   [1] sample_assignment.txt uploaded by Dr. Emily Williams (teacher) - 76 bytes - 2025-10-07 18:00:00
+
+
+Scenario 2: STUDENT UPLOADS SUBMISSION
+---------------------------------------
+1. Login as Student (John Smith)
+   Password: student123
+
+2. Navigate to Upload Option
+   >> Choose an option: 6
+
+3. Sample Files to Upload:
+   >> Enter file path to upload: sample_assignment.txt
+
+4. Expected Output:
+   ✓ File uploaded successfully by Student: John Smith → uploads/students/sample_assignment.txt
+   
+   --- Uploaded Files for STUDENT ---
+   [1] sample_assignment.txt uploaded by John Smith (student) - 76 bytes - 2025-10-07 18:00:00
+
+
+Scenario 3: ADMIN UPLOADS SYSTEM FILE
+--------------------------------------
+1. Login as Admin
+   Password: admin123
+
+2. Navigate to Upload Option
+   >> Choose an option: 6
+
+3. Sample Files to Upload:
+   >> Enter file path to upload: test_document.txt
+
+4. Expected Output:
+   ✓ File uploaded successfully by Admin: John Admin → uploads/admin/test_document.txt
+   
+   --- Uploaded Files for ADMIN ---
+   [1] test_document.txt uploaded by John Admin (admin) - 148 bytes - 2025-10-07 18:00:00
+
+
+================================================================================
+PART 3: LOCAL VS CLOUD FILE PATHS
+================================================================================
+
+WHEN RUNNING IN REPLIT (Cloud):
+--------------------------------
+- Use relative paths: sample_assignment.txt
+- Use workspace paths: /home/runner/workspace/sample_assignment.txt
+- Cannot access your local computer's drives (D:\, C:\, etc.)
+
+WHEN RUNNING IN VS CODE (Local Computer):
+------------------------------------------
+- Use absolute paths: D:\Visual_Studio_Code\DataScience\assignment.pdf
+- Use relative paths: ./documents/assignment.pdf
+- Full access to your computer's file system
+
+Sample Windows Paths (VS Code):
+- D:\Visual_Studio_Code\DataScience\3122247001061_ass2.pdf
+- C:\Users\YourName\Documents\assignment.docx
+- .\project_files\report.pdf
+
+Sample Linux/Mac Paths (VS Code):
+- /home/user/Documents/assignment.pdf
+- ~/Downloads/report.pdf
+- ./files/submission.txt
+
+
+================================================================================
+PART 4: COMPLETE WORKFLOW EXAMPLE
+================================================================================
+
+Step-by-Step: Teacher Uploads Assignment and Student Submits
+-------------------------------------------------------------
+
+TEACHER WORKFLOW:
+1. Start Application
+   >> Choose an option: 1
+
+2. Select Teacher Login
+   >> Select role: 1
+   >> Enter selection number: 2
+   >> Enter password: teacher123
+   >> ✓ Authentication successful!
+
+3. Upload Assignment File
+   >> Choose an option: 7
+   >> Enter file path to upload: sample_assignment.txt
+   >> ✓ File uploaded successfully by Teacher: Dr. Emily Williams → uploads/teachers/sample_assignment.txt
+
+4. Logout
+   >> Choose an option: 0
+   >> Logging out from Teacher account...
+
+STUDENT WORKFLOW:
+1. From Main Menu
+   >> Choose an option: 1
+
+2. Select Student Login
+   >> Select role: 2
+   >> Enter selection number: 1
+   >> Enter password: student123
+   >> ✓ Authentication successful!
+
+3. Upload Submission File
+   >> Choose an option: 6
+   >> Enter file path to upload: test_document.txt
+   >> ✓ File uploaded successfully by Student: John Smith → uploads/students/test_document.txt
+
+4. View All Student Uploads
+   Shows list of all files uploaded by students
+
+5. Logout
+   >> Choose an option: 0
+   >> Logging out from Student account...
+
+
+================================================================================
+PART 5: ERROR HANDLING EXAMPLES
+================================================================================
+
+1. WRONG PASSWORD:
+   >> Enter password: wrongpass
+   >> ❌ Invalid password. Access denied.
+
+2. FILE NOT FOUND:
+   >> Enter file path to upload: nonexistent.pdf
+   >> Error uploading file: File validation failed: File does not exist
+
+3. INVALID FILE TYPE:
+   >> Enter file path to upload: malicious.exe
+   >> Error uploading file: File validation failed: File extension not allowed
+
+4. FILE TOO LARGE (>10MB):
+   >> Enter file path to upload: huge_video.mp4
+   >> Error uploading file: File validation failed: File size exceeds maximum allowed size
+
+
+================================================================================
+PART 6: SAMPLE FILES PROVIDED
+================================================================================
+
+Pre-created Sample Files in Workspace:
+---------------------------------------
+1. sample_assignment.txt (76 bytes)
+   - Content: Sample assignment submission text
+   - Use for: Testing basic text file uploads
+
+2. test_document.txt (148 bytes)
+   - Content: Student assignment document sample
+   - Use for: Testing student submissions
+
+
+================================================================================
+PART 7: QUICK REFERENCE
+================================================================================
+
+LOGIN CREDENTIALS:
+------------------
+Teachers:  password = teacher123 (except Lambda = Lambda)
+Students:  password = student123 (except User 8 = 8)
+Admins:    Create your own with custom password
+
+UPLOAD MENU OPTIONS:
+--------------------
+Teacher Menu:  Option 7 - Upload File
+Student Menu:  Option 6 - Upload File
+Admin Menu:    Option 6 - Upload File
+
+SAMPLE FILE PATHS (Replit):
+----------------------------
+sample_assignment.txt
+test_document.txt
+
+SAMPLE FILE PATHS (VS Code Local):
+-----------------------------------
+D:\path\to\your\file.pdf
+C:\Users\YourName\Documents\file.docx
+
+
+================================================================================
+END OF SAMPLE USAGE GUIDE
+================================================================================
