@@ -1245,6 +1245,9 @@ public class Main {
                         case 6:
                             viewTeacherStudents(teacher);
                             break;
+                        case 7:
+                            handleFileUpload(teacher);
+                            break;
                         case 0:
                             System.out.println("Logging out from Teacher account...");
                             return;
@@ -1942,6 +1945,9 @@ public class Main {
                             break;
                         case 5:
                             viewStudentCourses(student);
+                            break;
+                        case 6:
+                            handleFileUpload(student);
                             break;
                         case 0:
                             System.out.println("Logging out from Student account...");
@@ -2772,6 +2778,9 @@ public class Main {
                             break;
                         case 5:
                             viewAdminMessages(admin);
+                            break;
+                        case 6:
+                            handleFileUpload(admin);
                             break;
                         case 0:
                             System.out.println("Logging out from Admin account...");

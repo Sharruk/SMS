@@ -256,6 +256,7 @@ public class Admin extends User implements Searchable<Object>, Sortable<Object> 
         System.out.println("3. Course Management");
         System.out.println("4. Reports & Statistics");
         System.out.println("5. View Messages");
+        System.out.println("6. Upload File");
         System.out.println("0. Logout");
         System.out.println("=".repeat(50));
         System.out.print("Choose an option: ");

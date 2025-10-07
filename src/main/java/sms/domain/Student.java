@@ -173,6 +173,7 @@ public class Student extends User implements Searchable<Course>, Sortable<Course
         System.out.println("3. Messaging");
         System.out.println("4. Dashboard");
         System.out.println("5. View My Courses");
+        System.out.println("6. Upload File");
         System.out.println("0. Logout");
         System.out.println("==================================================");
         System.out.print("Choose an option: ");

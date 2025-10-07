@@ -183,6 +183,7 @@ public class Teacher extends User implements Searchable<Student>, Sortable<Stude
         System.out.println("4. Dashboard");
         System.out.println("5. View My Courses");
         System.out.println("6. View My Students");
+        System.out.println("7. Upload File");
         System.out.println("0. Logout");
         System.out.println("=".repeat(50));
         System.out.print("Choose an option: ");
