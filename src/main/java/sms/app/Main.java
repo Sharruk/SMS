@@ -3647,6 +3647,10 @@ public class Main {
             String role = user.getRole().toLowerCase();
             ((FileUploadService) uploadService).uploadFile(filePath, user.getName(), role);
             
+            // Display uploaded files for this role
+            System.out.println("\n--- Uploaded Files for " + user.getRole() + " ---");
+            ((FileUploadService) uploadService).displayUploadedFilesByRole(role);
+            
         } catch (Exception e) {
             System.out.println("Error uploading file: " + e.getMessage());
         }
