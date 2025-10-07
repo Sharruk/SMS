@@ -114,6 +114,11 @@ public abstract class User {
     public String getPasswordForAuth() {
         return password;
     }
+    
+    // Setter for JSON deserialization
+    public void setPasswordForAuth(String password) {
+        this.password = password;
+    }
 
     @com.fasterxml.jackson.annotation.JsonIgnore
     public String getPassword() {
