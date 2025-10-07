@@ -23,12 +23,14 @@ sms/data/Repository.class
 sms/data/GradeRepository$1.class
 sms/services/FileUploadService.class
 sms/validation/InputValidator.class
+sms/data/UploadRepository.class
 sms/domain/Grade.class
 sms/domain/Assignment.class
 sms/exceptions/BaseException.class
 sms/domain/Admin.class
 sms/domain/StudentTable.class
 sms/domain/Principal.class
+sms/data/UploadRepository$1.class
 sms/domain/Teacher.class
 sms/app/Main.class
 sms/data/AdminRepository$1.class
@@ -41,4 +43,5 @@ sms/data/StudentRepository$1.class
 sms/data/SubmissionRepository.class
 sms/exceptions/RepositoryException.class
 sms/domain/Submission.class
+sms/domain/UploadMetadata.class
 sms/exceptions/NotFoundException.class

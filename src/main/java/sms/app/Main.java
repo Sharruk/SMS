@@ -3632,4 +3632,23 @@ public class Main {
             System.out.println("Error sending message: " + e.getMessage());
         }
     }
+
+    private static void handleFileUpload(User user) {
+        try {
+            System.out.println("\n=== File Upload ===");
+            System.out.print("Enter file path to upload: ");
+            String filePath = scanner.nextLine();
+            
+            if (filePath == null || filePath.trim().isEmpty()) {
+                System.out.println("File path cannot be empty.");
+                return;
+            }
+            
+            String role = user.getRole().toLowerCase();
+            ((FileUploadService) uploadService).uploadFile(filePath, user.getName(), role);
+            
+        } catch (Exception e) {
+            System.out.println("Error uploading file: " + e.getMessage());
+        }
+    }
 }
