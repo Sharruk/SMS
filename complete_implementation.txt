@@ -1,0 +1,1596 @@
+================================================================================
+                COMPLETE JAVA LMS SAMPLE INPUT AND OUTPUT SIMULATION
+================================================================================
+
+This document demonstrates the complete working of the Java Learning Management 
+System (LMS) with step-by-step sample user inputs and expected console outputs,
+covering all major functionalities and exception handling.
+
+================================================================================
+                            PART 1: SYSTEM STARTUP
+================================================================================
+
+==========================================
+   Learning Management System (LMS)     
+     Based on PlantUML Specification     
+==========================================
+Initializing comprehensive LMS system...
+Loaded 3 students from students.json
+Loaded 3 teachers from teachers.json
+Loaded 1 admins from admins.json
+Loaded 3 courses from courses.json
+Loaded 3 messages from messages.json
+Loaded 3 assignments from assignments.json
+Loaded 3 grades from grades.json
+Submission data file does not exist. Starting with empty repository.
+LMS system initialized successfully!
+JSON files: students.json, teachers.json, admins.json, courses.json, messages.json, assignments.json, grades.json
+
+=== LMS SYSTEM STATISTICS ===
+Total Students: 3
+Total Teachers: 3
+Total Admins: 1
+Total Courses: 3
+Data files: students.json, teachers.json, admins.json, courses.json
+Upload directory: uploads/
+==============================
+
+======================================================================
+     COMPREHENSIVE LMS OOP FEATURES DEMONSTRATION
+        Based on PlantUML Class Diagram
+======================================================================
+
+1. === INHERITANCE DEMONSTRATION ===
+Creating all User hierarchy objects (User -> Admin, Teacher, Student, Principal):
+✓ Admin created: Alice Smith (inherits from User)
+✓ Teacher created: Bob Johnson (inherits from User)
+✓ Student created: Charlie Brown (inherits from User)
+✓ Principal created: Diana Wilson (inherits from User)
+
+2. === POLYMORPHISM DEMONSTRATION ===
+Using polymorphism with User reference to call overridden methods:
+User Type: Admin
+Role: ADMIN
+User alice (ADMIN) logged in successfully
+User alice (ADMIN) logged out
+
+User Type: Teacher
+Role: TEACHER
+User bob (TEACHER) logged in successfully
+User bob (TEACHER) logged out
+
+User Type: Student
+Role: STUDENT
+User charlie (STUDENT) logged in successfully
+User charlie (STUDENT) logged out
+
+User Type: Principal
+Role: PRINCIPAL
+User diana (PRINCIPAL) logged in successfully
+User diana (PRINCIPAL) logged out
+
+3. === ENCAPSULATION DEMONSTRATION ===
+Demonstrating encapsulation with private fields and public getters/setters:
+Original student ID: 3001
+Updated student ID: 3002
+Teacher email (encapsulated): bob@lms.edu
+Updated teacher email: bob.johnson@lms.edu
+
+4. === GENERICS DEMONSTRATION ===
+Using Generic Repository<T> interface with different types:
+(Demo uses in-memory objects only - no persistent storage pollution)
+Generic Repository<T> interface supports type-safe operations:
+  - Repository<Student> for student data
+  - Repository<Teacher> for teacher data
+  - Repository<Admin> for admin data
+  - Repository<Course> for course data
+Generic repositories working with different types successfully!
+Current repository counts - Students: 3, Teachers: 3, Admins: 1, Courses: 3
+
+5. === CUSTOM EXCEPTION HIERARCHY DEMONSTRATION ===
+Demonstrating comprehensive exception hierarchy with try-catch-finally:
+
+Testing ValidationException...
+Caught ValidationException:
+  Field: name
+  Invalid Value: 
+[2025-10-07T05:44:16.479194984] ValidationException: ⚠️ Invalid input: Name cannot be empty
+Invalid field: name = ''
+  Validation test completed (finally block executed)
+
+Testing NotFoundException...
+Caught NotFoundException:
+  Entity Type: Student
+  Search Criteria: null
+[2025-10-07T05:44:16.482148323] NotFoundException: Student not found
+Entity: Student, Search criteria: null
+  NotFound test completed (finally block executed)
+
+Testing AuthenticationException...
+  Authentication test completed (finally block executed)
+
+======================================================================
+   COMPREHENSIVE LMS OOP FEATURES DEMONSTRATION COMPLETED
+✓ Inheritance: Full User hierarchy (Admin, Teacher, Student, Principal)
+✓ Polymorphism: Overridden methods called via User reference
+✓ Encapsulation: Private fields with public getters/setters
+✓ Generics: Repository<T> interface with type safety
+✓ Exception Handling: Complete exception hierarchy with try-catch-finally
+✓ Search/Sort: Role-based search and sort interfaces
+✓ Upload Service: File upload with validation and error handling
+✓ Role-based Access: Principal, Admin, Teacher, Student capabilities
+======================================================================
+
+
+================================================================================
+                        PART 2: MAIN MENU NAVIGATION
+================================================================================
+
+==================================================
+         LMS MAIN MENU
+==================================================
+1. Role-based Access Demo
+2. Search & Sort Demo
+3. File Upload Demo
+4. User Management
+5. Course Management
+6. System Statistics
+7. Complete OOP Features Demo
+0. Exit
+==================================================
+Choose an option: 4
+
+=== USER MANAGEMENT ===
+Students: 3
+Teachers: 3
+Admins: 1
+
+
+==================================================
+         LMS MAIN MENU
+==================================================
+1. Role-based Access Demo
+2. Search & Sort Demo
+3. File Upload Demo
+4. User Management
+5. Course Management
+6. System Statistics
+7. Complete OOP Features Demo
+0. Exit
+==================================================
+Choose an option: 5
+
+=== COURSE MANAGEMENT ===
+Total Courses: 3
+Course List:
+  - Programming Fundamentals (CS101)
+  - Data Structures (CS201)
+  - Database Systems (CS301)
+
+
+==================================================
+         LMS MAIN MENU
+==================================================
+1. Role-based Access Demo
+2. Search & Sort Demo
+3. File Upload Demo
+4. User Management
+5. Course Management
+6. System Statistics
+7. Complete OOP Features Demo
+0. Exit
+==================================================
+Choose an option: 6
+
+=== SYSTEM STATISTICS ===
+Total Students: 3
+Total Teachers: 3
+Total Admins: 1
+Total Courses: 3
+Data files: students.json, teachers.json, admins.json, courses.json
+Upload directory: uploads/
+
+
+================================================================================
+                    PART 3: ADMIN ROLE DEMONSTRATION
+================================================================================
+
+==================================================
+         LMS MAIN MENU
+==================================================
+1. Role-based Access Demo
+2. Search & Sort Demo
+3. File Upload Demo
+4. User Management
+5. Course Management
+6. System Statistics
+7. Complete OOP Features Demo
+0. Exit
+==================================================
+Choose an option: 1
+
+=== ROLE-BASED ACCESS DEMONSTRATION ===
+Select a role to demonstrate:
+1. Principal
+2. Admin
+3. Teacher
+4. Student
+Choose role: 2
+
+--- Admin Access Mode ---
+Would you like to:
+1. Run Quick Demo (automated)
+2. Interactive Admin Menu
+Choose: 2
+
+=== Select Admin Account ===
+1. Alice Smith (ID: 1001, Email: alice.smith@lms.edu)
+Enter selection number (1, 2, etc.) to login, or 0 to cancel: 1
+
+============================================================
+   Welcome, Alice Smith - Admin Account
+   User ID: 1001
+   All operations work directly with persistent storage
+============================================================
+
+==================================================
+                ADMIN MENU
+==================================================
+1. Student Management
+2. Teacher Management
+3. Course Management
+4. View Reports
+5. View Messages
+0. Logout
+==================================================
+Choose an option: 1
+
+==================================================
+            STUDENT MANAGEMENT
+==================================================
+1. Register New Student
+2. Update Student Details
+3. Remove Student
+4. Search Students
+5. Enroll Student in Course
+6. View All Students
+0. Back to Main Menu
+==================================================
+Choose option: 1
+
+Enter Student ID: 1004
+Enter Name: John Davis
+Enter Email: john.davis@student.edu
+Enter Username: johnd
+Enter Password: pass123
+
+✓ Student registered successfully!
+Student Details:
+  ID: 1004
+  Name: John Davis
+  Email: john.davis@student.edu
+  Username: johnd
+✓ Data saved to students.json
+
+==================================================
+            STUDENT MANAGEMENT
+==================================================
+1. Register New Student
+2. Update Student Details
+3. Remove Student
+4. Search Students
+5. Enroll Student in Course
+6. View All Students
+0. Back to Main Menu
+==================================================
+Choose option: 6
+
+=== ALL STUDENTS ===
+1. Alice Johnson (ID: 1, Email: alice.j@student.edu)
+2. Bob Smith (ID: 2, Email: bob.s@student.edu)
+3. Charlie Brown (ID: 3, Email: charlie.b@student.edu)
+4. John Davis (ID: 1004, Email: john.davis@student.edu)
+
+==================================================
+            STUDENT MANAGEMENT
+==================================================
+1. Register New Student
+2. Update Student Details
+3. Remove Student
+4. Search Students
+5. Enroll Student in Course
+6. View All Students
+0. Back to Main Menu
+==================================================
+Choose option: 4
+
+Enter search term: John
+Searching students with term: 'John'
+
+=== SEARCH RESULTS ===
+Found 2 student(s):
+1. Alice Johnson (ID: 1)
+2. John Davis (ID: 1004)
+
+==================================================
+            STUDENT MANAGEMENT
+==================================================
+1. Register New Student
+2. Update Student Details
+3. Remove Student
+4. Search Students
+5. Enroll Student in Course
+6. View All Students
+0. Back to Main Menu
+==================================================
+Choose option: 2
+
+=== UPDATE STUDENT DETAILS ===
+Enter Student ID to update: 1004
+
+Current Details:
+  Name: John Davis
+  Email: john.davis@student.edu
+
+Enter new name (or press Enter to keep current): John Michael Davis
+Enter new email (or press Enter to keep current): 
+
+✓ Student updated successfully!
+Updated Details:
+  ID: 1004
+  Name: John Michael Davis
+  Email: john.davis@student.edu
+✓ Data saved to students.json
+
+==================================================
+            STUDENT MANAGEMENT
+==================================================
+1. Register New Student
+2. Update Student Details
+3. Remove Student
+4. Search Students
+5. Enroll Student in Course
+6. View All Students
+0. Back to Main Menu
+==================================================
+Choose option: 5
+
+=== ENROLL STUDENT IN COURSE ===
+Enter Student ID: 1004
+
+Available Courses:
+1. Programming Fundamentals (CS101)
+2. Data Structures (CS201)
+3. Database Systems (CS301)
+
+Enter Course ID: CS101
+
+✓ Student John Michael Davis enrolled in Programming Fundamentals (CS101)
+✓ Data saved to students.json
+
+==================================================
+            STUDENT MANAGEMENT
+==================================================
+1. Register New Student
+2. Update Student Details
+3. Remove Student
+4. Search Students
+5. Enroll Student in Course
+6. View All Students
+0. Back to Main Menu
+==================================================
+Choose option: 0
+
+==================================================
+                ADMIN MENU
+==================================================
+1. Student Management
+2. Teacher Management
+3. Course Management
+4. View Reports
+5. View Messages
+0. Logout
+==================================================
+Choose an option: 2
+
+==================================================
+            TEACHER MANAGEMENT
+==================================================
+1. Add New Teacher
+2. Update Teacher Details
+3. Remove Teacher
+4. Search Teachers
+5. Assign Course to Teacher
+6. View All Teachers
+0. Back to Main Menu
+==================================================
+Choose option: 1
+
+Enter Teacher ID: 2005
+Enter Name: Dr. Sarah Wilson
+Enter Email: sarah.wilson@lms.edu
+Enter Username: sarahw
+Enter Password: teach123
+
+✓ Teacher added successfully!
+Teacher Details:
+  ID: 2005
+  Name: Dr. Sarah Wilson
+  Email: sarah.wilson@lms.edu
+  Username: sarahw
+✓ Data saved to teachers.json
+
+==================================================
+            TEACHER MANAGEMENT
+==================================================
+1. Add New Teacher
+2. Update Teacher Details
+3. Remove Teacher
+4. Search Teachers
+5. Assign Course to Teacher
+6. View All Teachers
+0. Back to Main Menu
+==================================================
+Choose option: 5
+
+=== ASSIGN COURSE TO TEACHER ===
+Enter Teacher ID: 2005
+
+Available Courses:
+1. Programming Fundamentals (CS101)
+2. Data Structures (CS201)
+3. Database Systems (CS301)
+
+Enter Course ID: CS201
+
+✓ Course Data Structures (CS201) assigned to Dr. Sarah Wilson
+✓ Data saved to teachers.json
+✓ Data saved to courses.json
+
+==================================================
+            TEACHER MANAGEMENT
+==================================================
+1. Add New Teacher
+2. Update Teacher Details
+3. Remove Teacher
+4. Search Teachers
+5. Assign Course to Teacher
+6. View All Teachers
+0. Back to Main Menu
+==================================================
+Choose option: 0
+
+==================================================
+                ADMIN MENU
+==================================================
+1. Student Management
+2. Teacher Management
+3. Course Management
+4. View Reports
+5. View Messages
+0. Logout
+==================================================
+Choose an option: 3
+
+==================================================
+            COURSE MANAGEMENT
+==================================================
+1. Add New Course
+2. Update Course Details
+3. Remove Course
+4. Search Courses
+5. View All Courses
+0. Back to Main Menu
+==================================================
+Choose option: 1
+
+Enter Course ID: CS401
+Enter Course Name: Software Engineering
+Enter Credits: 4
+Enter Faculty Name: Dr. Sarah Wilson
+
+✓ Course added successfully!
+Course Details:
+  Course ID: CS401
+  Course Name: Software Engineering
+  Credits: 4
+  Faculty: Dr. Sarah Wilson
+✓ Data saved to courses.json
+
+==================================================
+            COURSE MANAGEMENT
+==================================================
+1. Add New Course
+2. Update Course Details
+3. Remove Course
+4. Search Courses
+5. View All Courses
+0. Back to Main Menu
+==================================================
+Choose option: 5
+
+=== ALL COURSES ===
+1. Programming Fundamentals (CS101) - Credits: 3 - Faculty: Prof. Anderson
+2. Data Structures (CS201) - Credits: 4 - Faculty: Dr. Sarah Wilson
+3. Database Systems (CS301) - Credits: 4 - Faculty: Prof. Martinez
+4. Software Engineering (CS401) - Credits: 4 - Faculty: Dr. Sarah Wilson
+
+==================================================
+            COURSE MANAGEMENT
+==================================================
+1. Add New Course
+2. Update Course Details
+3. Remove Course
+4. Search Courses
+5. View All Courses
+0. Back to Main Menu
+==================================================
+Choose option: 0
+
+==================================================
+                ADMIN MENU
+==================================================
+1. Student Management
+2. Teacher Management
+3. Course Management
+4. View Reports
+5. View Messages
+0. Logout
+==================================================
+Choose an option: 4
+
+============================================================
+                    ADMIN REPORTS
+============================================================
+Total Students: 4
+Total Teachers: 4
+Total Courses: 4
+
+Students Enrolled in Courses:
+  - Alice Johnson: 2 courses
+  - Bob Smith: 1 course
+  - Charlie Brown: 3 courses
+  - John Michael Davis: 1 course
+
+Teachers Teaching Courses:
+  - Prof. Anderson: 1 course
+  - Dr. Sarah Wilson: 2 courses
+  - Prof. Martinez: 1 course
+  - Dr. Emily Chen: 0 courses
+
+Course Enrollment Statistics:
+  - Programming Fundamentals (CS101): 2 students
+  - Data Structures (CS201): 3 students
+  - Database Systems (CS301): 1 student
+  - Software Engineering (CS401): 0 students
+============================================================
+
+==================================================
+                ADMIN MENU
+==================================================
+1. Student Management
+2. Teacher Management
+3. Course Management
+4. View Reports
+5. View Messages
+0. Logout
+==================================================
+Choose an option: 0
+
+Logging out from Admin account...
+
+
+================================================================================
+                  PART 4: TEACHER ROLE DEMONSTRATION
+================================================================================
+
+==================================================
+         LMS MAIN MENU
+==================================================
+1. Role-based Access Demo
+2. Search & Sort Demo
+3. File Upload Demo
+4. User Management
+5. Course Management
+6. System Statistics
+7. Complete OOP Features Demo
+0. Exit
+==================================================
+Choose an option: 1
+
+=== ROLE-BASED ACCESS DEMONSTRATION ===
+Select a role to demonstrate:
+1. Principal
+2. Admin
+3. Teacher
+4. Student
+Choose role: 3
+
+--- Teacher Access Mode ---
+Would you like to:
+1. Run Quick Demo (automated)
+2. Interactive Teacher Menu
+Choose: 2
+
+=== Select Teacher Account ===
+1. Prof. Anderson (ID: 101, Email: anderson@lms.edu)
+2. Dr. Sarah Wilson (ID: 2005, Email: sarah.wilson@lms.edu)
+3. Prof. Martinez (ID: 103, Email: martinez@lms.edu)
+Enter selection number (1, 2, etc.) to login, or 0 to cancel: 2
+
+============================================================
+   Welcome, Dr. Sarah Wilson - Teacher Account
+   User ID: 2005
+   Courses: 2
+   Students: 5
+   All operations work directly with persistent storage
+============================================================
+
+==================================================
+                TEACHER MENU
+==================================================
+1. Manage Assignments
+2. Manage Grades
+3. View Students
+4. View Courses
+5. View Messages
+6. Show Dashboard
+0. Logout
+==================================================
+Choose an option: 3
+
+=== MY STUDENTS ===
+Total Students: 5
+
+Students enrolled in my courses:
+1. Alice Johnson (ID: 1) - Courses: Data Structures
+2. Bob Smith (ID: 2) - Courses: Data Structures
+3. Charlie Brown (ID: 3) - Courses: Data Structures
+4. John Michael Davis (ID: 1004) - Courses: Programming Fundamentals
+5. Emma Williams (ID: 1005) - Courses: Data Structures
+
+==================================================
+                TEACHER MENU
+==================================================
+1. Manage Assignments
+2. Manage Grades
+3. View Students
+4. View Courses
+5. View Messages
+6. Show Dashboard
+0. Logout
+==================================================
+Choose an option: 1
+
+==================================================
+            ASSIGNMENT MANAGEMENT
+==================================================
+1. Create New Assignment
+2. Update Assignment
+3. Delete Assignment
+4. View All Assignments
+5. View Student Submissions
+0. Back to Main Menu
+==================================================
+Choose option: 1
+
+=== CREATE NEW ASSIGNMENT ===
+Enter Assignment ID: A401
+Enter Assignment Title: Midterm Project
+Enter Description: Design and implement a small application
+Enter Due Date (YYYY-MM-DD): 2025-11-15
+Enter Max Points: 100
+
+Select Course for Assignment:
+1. Data Structures (CS201)
+2. Software Engineering (CS401)
+Enter course number: 2
+
+✓ Assignment created successfully!
+Assignment Details:
+  ID: A401
+  Title: Midterm Project
+  Description: Design and implement a small application
+  Due Date: 2025-11-15
+  Max Points: 100
+  Course: Software Engineering (CS401)
+✓ Data saved to assignments.json
+
+==================================================
+            ASSIGNMENT MANAGEMENT
+==================================================
+1. Create New Assignment
+2. Update Assignment
+3. Delete Assignment
+4. View All Assignments
+5. View Student Submissions
+0. Back to Main Menu
+==================================================
+Choose option: 4
+
+=== ALL ASSIGNMENTS ===
+Showing assignments for courses you teach:
+
+Course: Data Structures (CS201)
+  1. Assignment A101: Quiz 1 - Due: 2025-10-20 - Max Points: 50
+  2. Assignment A102: Lab Exercise - Due: 2025-10-25 - Max Points: 30
+
+Course: Software Engineering (CS401)
+  3. Assignment A401: Midterm Project - Due: 2025-11-15 - Max Points: 100
+
+==================================================
+            ASSIGNMENT MANAGEMENT
+==================================================
+1. Create New Assignment
+2. Update Assignment
+3. Delete Assignment
+4. View All Assignments
+5. View Student Submissions
+0. Back to Main Menu
+==================================================
+Choose option: 0
+
+==================================================
+                TEACHER MENU
+==================================================
+1. Manage Assignments
+2. Manage Grades
+3. View Students
+4. View Courses
+5. View Messages
+6. Show Dashboard
+0. Logout
+==================================================
+Choose an option: 2
+
+==================================================
+            GRADE MANAGEMENT
+==================================================
+1. Add/Update Grade
+2. View Student Grades
+3. View Grade Statistics
+0. Back to Main Menu
+==================================================
+Choose option: 1
+
+=== ADD/UPDATE GRADE ===
+Enter Student ID: 1
+
+Students found:
+1. Alice Johnson (ID: 1, Email: alice.j@student.edu)
+
+Select student: 1
+
+Assignments for your courses:
+1. Assignment A101: Quiz 1 (Data Structures) - Max Points: 50
+2. Assignment A102: Lab Exercise (Data Structures) - Max Points: 30
+
+Enter assignment number: 1
+Enter points earned (out of 50): 45
+Enter feedback (optional): Good work! Minor improvements needed.
+
+✓ Grade added successfully!
+Grade Details:
+  Student: Alice Johnson (1)
+  Assignment: Quiz 1 (A101)
+  Points: 45/50
+  Percentage: 90.0%
+  Feedback: Good work! Minor improvements needed.
+✓ Data saved to grades.json
+
+==================================================
+            GRADE MANAGEMENT
+==================================================
+1. Add/Update Grade
+2. View Student Grades
+3. View Grade Statistics
+0. Back to Main Menu
+==================================================
+Choose option: 0
+
+==================================================
+                TEACHER MENU
+==================================================
+1. Manage Assignments
+2. Manage Grades
+3. View Students
+4. View Courses
+5. View Messages
+6. Show Dashboard
+0. Logout
+==================================================
+Choose an option: 6
+
+============================================================
+               DR. SARAH WILSON'S DASHBOARD
+============================================================
+Courses Teaching: 2
+  - Data Structures (CS201) - 5 students enrolled
+  - Software Engineering (CS401) - 0 students enrolled
+
+Total Students: 5
+
+Recent Assignments:
+  - Quiz 1 (A101) - Due: 2025-10-20
+  - Lab Exercise (A102) - Due: 2025-10-25
+  - Midterm Project (A401) - Due: 2025-11-15
+
+Grading Summary:
+  - Assignments graded: 12/15
+  - Pending submissions: 3
+  - Average class score: 82.5%
+============================================================
+
+==================================================
+                TEACHER MENU
+==================================================
+1. Manage Assignments
+2. Manage Grades
+3. View Students
+4. View Courses
+5. View Messages
+6. Show Dashboard
+0. Logout
+==================================================
+Choose an option: 0
+
+Logging out from Teacher account...
+
+
+================================================================================
+                   PART 5: STUDENT ROLE DEMONSTRATION
+================================================================================
+
+==================================================
+         LMS MAIN MENU
+==================================================
+1. Role-based Access Demo
+2. Search & Sort Demo
+3. File Upload Demo
+4. User Management
+5. Course Management
+6. System Statistics
+7. Complete OOP Features Demo
+0. Exit
+==================================================
+Choose an option: 1
+
+=== ROLE-BASED ACCESS DEMONSTRATION ===
+Select a role to demonstrate:
+1. Principal
+2. Admin
+3. Teacher
+4. Student
+Choose role: 4
+
+--- Student Access Mode ---
+Would you like to:
+1. Run Quick Demo (automated)
+2. Interactive Student Menu
+Choose: 2
+
+=== Select Student Account ===
+1. Alice Johnson (ID: 1, Email: alice.j@student.edu)
+2. Bob Smith (ID: 2, Email: bob.s@student.edu)
+3. Charlie Brown (ID: 3, Email: charlie.b@student.edu)
+4. John Michael Davis (ID: 1004, Email: john.davis@student.edu)
+Enter selection number (1, 2, etc.) to login, or 0 to cancel: 1
+
+============================================================
+   Welcome, Alice Johnson - Student Account
+   User ID: 1
+   Courses: 2
+   All operations work directly with persistent storage
+============================================================
+
+==================================================
+                STUDENT MENU
+==================================================
+1. View Assignments
+2. Submit Assignment
+3. View Grades
+4. View Courses
+5. View Messages
+6. Show Dashboard
+0. Logout
+==================================================
+Choose an option: 4
+
+=== MY COURSES ===
+Enrolled Courses: 2
+
+1. Programming Fundamentals (CS101)
+   Credits: 3
+   Faculty: Prof. Anderson
+   
+2. Data Structures (CS201)
+   Credits: 4
+   Faculty: Dr. Sarah Wilson
+
+==================================================
+                STUDENT MENU
+==================================================
+1. View Assignments
+2. Submit Assignment
+3. View Grades
+4. View Courses
+5. View Messages
+6. Show Dashboard
+0. Logout
+==================================================
+Choose an option: 1
+
+=== MY ASSIGNMENTS ===
+Showing assignments for enrolled courses:
+
+Course: Programming Fundamentals (CS101)
+  1. Assignment A001: Homework 1 - Due: 2025-10-15 - Max Points: 25 - Status: Submitted
+  2. Assignment A002: Quiz 1 - Due: 2025-10-22 - Max Points: 50 - Status: Pending
+
+Course: Data Structures (CS201)
+  3. Assignment A101: Quiz 1 - Due: 2025-10-20 - Max Points: 50 - Status: Graded (45/50)
+  4. Assignment A102: Lab Exercise - Due: 2025-10-25 - Max Points: 30 - Status: Pending
+
+Total Pending Assignments: 2
+
+==================================================
+                STUDENT MENU
+==================================================
+1. View Assignments
+2. Submit Assignment
+3. View Grades
+4. View Courses
+5. View Messages
+6. Show Dashboard
+0. Logout
+==================================================
+Choose an option: 2
+
+=== SUBMIT ASSIGNMENT ===
+Enter Assignment ID: A102
+
+Assignment Details:
+  Title: Lab Exercise
+  Course: Data Structures (CS201)
+  Due Date: 2025-10-25
+  Max Points: 30
+
+Enter submission file path: submissions/alice_lab2.zip
+Enter submission notes (optional): Completed all exercises
+
+✓ Assignment submitted successfully!
+Submission Details:
+  Assignment: Lab Exercise (A102)
+  Submitted by: Alice Johnson (1)
+  Submission Date: 2025-10-07
+  File: submissions/alice_lab2.zip
+  Notes: Completed all exercises
+✓ Submission saved to database
+
+==================================================
+                STUDENT MENU
+==================================================
+1. View Assignments
+2. Submit Assignment
+3. View Grades
+4. View Courses
+5. View Messages
+6. Show Dashboard
+0. Logout
+==================================================
+Choose an option: 3
+
+=== MY GRADES ===
+Course: Programming Fundamentals (CS101)
+  Assignment: Homework 1 (A001)
+    Points: 22/25 (88.0%)
+    Feedback: Well done! Watch for syntax errors.
+
+Course: Data Structures (CS201)
+  Assignment: Quiz 1 (A101)
+    Points: 45/50 (90.0%)
+    Feedback: Good work! Minor improvements needed.
+
+Overall Statistics:
+  Total Assignments Graded: 2
+  Total Points Earned: 67
+  Total Possible Points: 75
+  Current GPA: 89.3%
+
+==================================================
+                STUDENT MENU
+==================================================
+1. View Assignments
+2. Submit Assignment
+3. View Grades
+4. View Courses
+5. View Messages
+6. Show Dashboard
+0. Logout
+==================================================
+Choose an option: 6
+
+============================================================
+               ALICE JOHNSON'S DASHBOARD
+============================================================
+Student ID: 1
+Email: alice.j@student.edu
+
+Enrolled Courses: 2
+  - Programming Fundamentals (CS101)
+  - Data Structures (CS201)
+
+Academic Summary:
+  Total Credits: 7
+  Current GPA: 89.3%
+  Assignments Completed: 3/4
+  Pending Assignments: 1
+
+Recent Activity:
+  - Submitted: Lab Exercise (A102) - 2025-10-07
+  - Graded: Quiz 1 (A101) - Score: 90.0%
+
+Upcoming Deadlines:
+  - Quiz 1 (A002) - Due: 2025-10-22
+============================================================
+
+==================================================
+                STUDENT MENU
+==================================================
+1. View Assignments
+2. Submit Assignment
+3. View Grades
+4. View Courses
+5. View Messages
+6. Show Dashboard
+0. Logout
+==================================================
+Choose an option: 0
+
+Logging out from Student account...
+
+
+================================================================================
+                 PART 6: PRINCIPAL ROLE DEMONSTRATION
+================================================================================
+
+==================================================
+         LMS MAIN MENU
+==================================================
+1. Role-based Access Demo
+2. Search & Sort Demo
+3. File Upload Demo
+4. User Management
+5. Course Management
+6. System Statistics
+7. Complete OOP Features Demo
+0. Exit
+==================================================
+Choose an option: 1
+
+=== ROLE-BASED ACCESS DEMONSTRATION ===
+Select a role to demonstrate:
+1. Principal
+2. Admin
+3. Teacher
+4. Student
+Choose role: 1
+
+--- Principal Access Mode ---
+Would you like to:
+1. Run Quick Demo (automated)
+2. Interactive Principal Menu
+Choose: 2
+
+============================================================
+   Welcome, Principal Davis - Principal Account
+   All operations work directly with persistent storage
+============================================================
+
+==================================================
+              PRINCIPAL MENU
+==================================================
+1. Manage Admins
+2. Manage Teachers
+3. Manage Courses
+4. View All Students
+5. View System Reports
+6. Send Message
+0. Logout
+==================================================
+Choose an option: 5
+
+============================================================
+         PRINCIPAL'S SYSTEM REPORTS & STATISTICS
+============================================================
+Total Admins: 1
+Total Teachers: 4
+Total Courses: 4
+Total Students: 4
+
+Admins:
+  - Alice Smith (ID: 1001)
+
+Teachers:
+  - Prof. Anderson (ID: 101, Courses: 1)
+  - Dr. Sarah Wilson (ID: 2005, Courses: 2)
+  - Prof. Martinez (ID: 103, Courses: 1)
+  - Dr. Emily Chen (ID: 104, Courses: 0)
+
+Courses:
+  - Programming Fundamentals (CS101) - Faculty: Prof. Anderson
+  - Data Structures (CS201) - Faculty: Dr. Sarah Wilson
+  - Database Systems (CS301) - Faculty: Prof. Martinez
+  - Software Engineering (CS401) - Faculty: Dr. Sarah Wilson
+
+Students:
+  - Alice Johnson (ID: 1, Courses: 2)
+  - Bob Smith (ID: 2, Courses: 1)
+  - Charlie Brown (ID: 3, Courses: 3)
+  - John Michael Davis (ID: 1004, Courses: 1)
+============================================================
+
+==================================================
+              PRINCIPAL MENU
+==================================================
+1. Manage Admins
+2. Manage Teachers
+3. Manage Courses
+4. View All Students
+5. View System Reports
+6. Send Message
+0. Logout
+==================================================
+Choose an option: 2
+
+==================================================
+            TEACHER MANAGEMENT
+==================================================
+1. Appoint New Teacher
+2. View All Teachers
+3. Remove Teacher Appointment
+0. Back to Main Menu
+==================================================
+Choose option: 2
+
+=== ALL TEACHERS ===
+1. Prof. Anderson (ID: 101, Email: anderson@lms.edu)
+   Courses: Programming Fundamentals (CS101)
+   
+2. Dr. Sarah Wilson (ID: 2005, Email: sarah.wilson@lms.edu)
+   Courses: Data Structures (CS201), Software Engineering (CS401)
+   
+3. Prof. Martinez (ID: 103, Email: martinez@lms.edu)
+   Courses: Database Systems (CS301)
+   
+4. Dr. Emily Chen (ID: 104, Email: emily.chen@lms.edu)
+   Courses: None assigned
+
+==================================================
+            TEACHER MANAGEMENT
+==================================================
+1. Appoint New Teacher
+2. View All Teachers
+3. Remove Teacher Appointment
+0. Back to Main Menu
+==================================================
+Choose option: 0
+
+==================================================
+              PRINCIPAL MENU
+==================================================
+1. Manage Admins
+2. Manage Teachers
+3. Manage Courses
+4. View All Students
+5. View System Reports
+6. Send Message
+0. Logout
+==================================================
+Choose an option: 0
+
+Logging out from Principal account...
+
+
+================================================================================
+              PART 7: EXCEPTION HANDLING DEMONSTRATIONS
+================================================================================
+
+==================================================
+         LMS MAIN MENU
+==================================================
+1. Role-based Access Demo
+2. Search & Sort Demo
+3. File Upload Demo
+4. User Management
+5. Course Management
+6. System Statistics
+7. Complete OOP Features Demo
+0. Exit
+==================================================
+Choose an option: 1
+
+=== ROLE-BASED ACCESS DEMONSTRATION ===
+Select a role to demonstrate:
+1. Principal
+2. Admin
+3. Teacher
+4. Student
+Choose role: 2
+
+--- Admin Access Mode ---
+Would you like to:
+1. Run Quick Demo (automated)
+2. Interactive Admin Menu
+Choose: 2
+
+=== Select Admin Account ===
+1. Alice Smith (ID: 1001, Email: alice.smith@lms.edu)
+Enter selection number (1, 2, etc.) to login, or 0 to cancel: 1
+
+============================================================
+   Welcome, Alice Smith - Admin Account
+   User ID: 1001
+   All operations work directly with persistent storage
+============================================================
+
+==================================================
+                ADMIN MENU
+==================================================
+1. Student Management
+2. Teacher Management
+3. Course Management
+4. View Reports
+5. View Messages
+0. Logout
+==================================================
+Choose an option: 1
+
+==================================================
+            STUDENT MANAGEMENT
+==================================================
+1. Register New Student
+2. Update Student Details
+3. Remove Student
+4. Search Students
+5. Enroll Student in Course
+6. View All Students
+0. Back to Main Menu
+==================================================
+Choose option: 1
+
+--- EXCEPTION 1: VALIDATION ERROR - BLANK NAME ---
+Enter Student ID: 2001
+Enter Name: 
+⚠️ Invalid input: Name cannot be empty
+Enter Name: 
+
+⚠️ Invalid input: Name cannot be empty
+Enter Name: Test Student
+
+Enter Email: invalid-email
+⚠️ Invalid input: Email must contain @ symbol
+Enter Email: test@student.edu
+
+Enter Username: 
+⚠️ Invalid input: Username cannot be empty
+Enter Username: testuser
+
+Enter Password: 123
+⚠️ Invalid input: Password must be at least 6 characters
+Enter Password: test123
+
+✓ Student registered successfully!
+Student Details:
+  ID: 2001
+  Name: Test Student
+  Email: test@student.edu
+  Username: testuser
+✓ Data saved to students.json
+
+==================================================
+            STUDENT MANAGEMENT
+==================================================
+1. Register New Student
+2. Update Student Details
+3. Remove Student
+4. Search Students
+5. Enroll Student in Course
+6. View All Students
+0. Back to Main Menu
+==================================================
+Choose option: 1
+
+--- EXCEPTION 2: VALIDATION ERROR - NEGATIVE ID ---
+Enter Student ID: -500
+⚠️ Invalid ID: ID must be a positive number. Please try again.
+Enter Student ID: 0
+⚠️ Invalid ID: ID must be a positive number. Please try again.
+Enter Student ID: abc
+⚠️ Invalid ID: ID must be a number. Please try again.
+Enter Student ID: 2002
+
+Enter Name: Another Student
+Enter Email: another@student.edu
+Enter Username: another
+Enter Password: pass123
+
+✓ Student registered successfully!
+✓ Data saved to students.json
+
+==================================================
+            STUDENT MANAGEMENT
+==================================================
+1. Register New Student
+2. Update Student Details
+3. Remove Student
+4. Search Students
+5. Enroll Student in Course
+6. View All Students
+0. Back to Main Menu
+==================================================
+Choose option: 1
+
+--- EXCEPTION 3: DUPLICATE ID ERROR ---
+Enter Student ID: 1
+
+⚠️ ValidationException: Student with ID 1 already exists!
+Registration failed. Please use a different ID.
+
+==================================================
+            STUDENT MANAGEMENT
+==================================================
+1. Register New Student
+2. Update Student Details
+3. Remove Student
+4. Search Students
+5. Enroll Student in Course
+6. View All Students
+0. Back to Main Menu
+==================================================
+Choose option: 3
+
+--- EXCEPTION 4: ENTITY NOT FOUND ERROR ---
+Enter Student ID to remove: 9999
+
+⚠️ NotFoundException: Student with ID 9999 not found in the system.
+Entity Type: Student
+Search Criteria: ID = 9999
+
+==================================================
+            STUDENT MANAGEMENT
+==================================================
+1. Register New Student
+2. Update Student Details
+3. Remove Student
+4. Search Students
+5. Enroll Student in Course
+6. View All Students
+0. Back to Main Menu
+==================================================
+Choose option: 0
+
+==================================================
+                ADMIN MENU
+==================================================
+1. Student Management
+2. Teacher Management
+3. Course Management
+4. View Reports
+5. View Messages
+0. Logout
+==================================================
+Choose an option: 3
+
+==================================================
+            COURSE MANAGEMENT
+==================================================
+1. Add New Course
+2. Update Course Details
+3. Remove Course
+4. Search Courses
+5. View All Courses
+0. Back to Main Menu
+==================================================
+Choose option: 3
+
+--- EXCEPTION 5: REPOSITORY EXCEPTION - COURSE IN USE ---
+Enter Course ID to remove: CS201
+
+⚠️ RepositoryException: Cannot remove course CS201. 
+Reason: 5 students are currently enrolled.
+Please unenroll all students before removing the course.
+
+==================================================
+            COURSE MANAGEMENT
+==================================================
+1. Add New Course
+2. Update Course Details
+3. Remove Course
+4. Search Courses
+5. View All Courses
+0. Back to Main Menu
+==================================================
+Choose option: 0
+
+==================================================
+                ADMIN MENU
+==================================================
+1. Student Management
+2. Teacher Management
+3. Course Management
+4. View Reports
+5. View Messages
+0. Logout
+==================================================
+Choose an option: xyz
+
+--- EXCEPTION 6: INVALID MENU OPTION ---
+Please enter a valid number.
+
+==================================================
+                ADMIN MENU
+==================================================
+1. Student Management
+2. Teacher Management
+3. Course Management
+4. View Reports
+5. View Messages
+0. Logout
+==================================================
+Choose an option: 99
+
+Invalid option. Please try again.
+
+==================================================
+                ADMIN MENU
+==================================================
+1. Student Management
+2. Teacher Management
+3. Course Management
+4. View Reports
+5. View Messages
+0. Logout
+==================================================
+Choose an option: 0
+
+Logging out from Admin account...
+
+
+================================================================================
+          PART 8: SEARCH & SORT AND FILE UPLOAD DEMONSTRATIONS
+================================================================================
+
+==================================================
+         LMS MAIN MENU
+==================================================
+1. Role-based Access Demo
+2. Search & Sort Demo
+3. File Upload Demo
+4. User Management
+5. Course Management
+6. System Statistics
+7. Complete OOP Features Demo
+0. Exit
+==================================================
+Choose an option: 2
+
+=== SEARCH & SORT DEMONSTRATION ===
+Demonstrating role-based search and sort capabilities...
+Admin searching for 'Demo': 0 results
+Admin sorting by name: 7 items
+
+==================================================
+         LMS MAIN MENU
+==================================================
+1. Role-based Access Demo
+2. Search & Sort Demo
+3. File Upload Demo
+4. User Management
+5. Course Management
+6. System Statistics
+7. Complete OOP Features Demo
+0. Exit
+==================================================
+Choose an option: 3
+
+=== FILE UPLOAD DEMONSTRATION ===
+Creating test file: demo_upload.txt
+Student attempting to upload file...
+Validating file: demo_upload.txt
+File type: txt
+File size: 245 bytes
+✓ File validation successful
+Uploading file to: uploads/student_10001_demo_upload.txt
+✓ File uploaded successfully!
+✓ Upload record saved to database
+Cleaning up test file...
+
+
+================================================================================
+                        PART 9: PROGRAM EXIT
+================================================================================
+
+==================================================
+         LMS MAIN MENU
+==================================================
+1. Role-based Access Demo
+2. Search & Sort Demo
+3. File Upload Demo
+4. User Management
+5. Course Management
+6. System Statistics
+7. Complete OOP Features Demo
+0. Exit
+==================================================
+Choose an option: 0
+
+Thank you for using the Learning Management System!
+
+All data has been persisted to JSON files:
+  ✓ students.json - 6 students
+  ✓ teachers.json - 4 teachers
+  ✓ admins.json - 1 admin
+  ✓ courses.json - 4 courses
+  ✓ assignments.json - 4 assignments
+  ✓ grades.json - 3 grades
+  ✓ messages.json - 5 messages
+
+System shutdown complete.
+
+
+================================================================================
+                              SUMMARY
+================================================================================
+
+This complete simulation demonstrated:
+
+✓ OBJECT-ORIENTED PROGRAMMING CONCEPTS:
+  - Inheritance: User hierarchy (Admin, Teacher, Student, Principal)
+  - Polymorphism: Method overriding and dynamic binding
+  - Encapsulation: Private fields with getters/setters
+  - Generics: Type-safe Repository<T> interface
+  
+✓ FILE PERSISTENCE:
+  - Loading data from JSON files on startup
+  - Saving data to JSON files after operations
+  - Multiple data files (students, teachers, admins, courses, etc.)
+  
+✓ ROLE-BASED ACCESS CONTROL:
+  - Admin: Full CRUD on students, teachers, courses
+  - Teacher: Manage assignments, grades, view students
+  - Student: View assignments, submit work, view grades
+  - Principal: Oversee all system operations and reports
+  
+✓ EXCEPTION HANDLING:
+  - ValidationException: Invalid inputs (blank names, invalid emails, etc.)
+  - NotFoundException: Entity not found errors
+  - RepositoryException: Data integrity errors
+  - NumberFormatException: Invalid numeric inputs
+  - General exception handling with try-catch-finally blocks
+  
+✓ MAJOR FUNCTIONALITIES:
+  - Adding, updating, searching, and deleting users
+  - Course enrollment and assignment
+  - Assignment creation and submission
+  - Grade management and viewing
+  - System reports and statistics
+  - File upload capabilities
+  - Search and sort operations
+  - Message management
+
+✓ DATA VALIDATION:
+  - ID validation (positive numbers only)
+  - Name validation (non-empty)
+  - Email validation (must contain @)
+  - Username validation (non-empty)
+  - Password validation (minimum length)
+  - Duplicate ID prevention
+
+The system successfully demonstrates a complete, working Learning Management 
+System with proper OOP principles, exception handling, file persistence, and 
+comprehensive user role management.
+
+================================================================================
+                            END OF SIMULATION
+================================================================================
