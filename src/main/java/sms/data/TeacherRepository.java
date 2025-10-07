@@ -123,4 +123,18 @@ public class TeacherRepository implements Repository<Teacher> {
     public long count() {
         return teachers.size();
     }
+
+    public List<Teacher> sort(String criteria) throws RepositoryException {
+        List<Teacher> sortedList = new ArrayList<>(teachers);
+        
+        if ("name".equalsIgnoreCase(criteria)) {
+            sortedList.sort((t1, t2) -> t1.getName().compareToIgnoreCase(t2.getName()));
+        } else if ("id".equalsIgnoreCase(criteria)) {
+            sortedList.sort((t1, t2) -> Integer.compare(t1.getUserId(), t2.getUserId()));
+        } else {
+            sortedList.sort((t1, t2) -> t1.getName().compareToIgnoreCase(t2.getName()));
+        }
+        
+        return sortedList;
+    }
 }
