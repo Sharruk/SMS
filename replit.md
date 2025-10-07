@@ -37,7 +37,10 @@ Preferred communication style: Simple, everyday language.
 - **Centralized Input Validation**: Robust validation system with clear error messages for all user inputs.
 - **Role-based Access Control (RBAC)**: Differentiates capabilities for Principal, Admin, Teacher, and Student roles.
 - **Search and Sort**: Role-specific search and sort functionalities for system entities.
-- **Upload Service**: Handles file uploads with validation.
+- **Upload Service with Visibility Control**: Handles file uploads with role-based visibility management.
+  - Teachers can upload files visible only to their assigned students
+  - Admins can upload files visible to everyone or specific users
+  - Students can upload files visible to their teachers
 - **Interactive Console Menu**: A complete menu system for all features.
 - **Custom Exception Hierarchy**: Structured exception handling for robust error management.
 
@@ -56,6 +59,30 @@ Preferred communication style: Simple, everyday language.
 - **File System**: For JSON file persistence and upload directory management.
 
 ## Recent Changes
+
+### 2025-10-07: Role-Based File Visibility System
+- **Implemented comprehensive file visibility control** for uploads
+- **Added `visibleTo` field to UploadMetadata**:
+  - Stores list of email addresses who can view the file
+  - Special value `["ALL"]` for public visibility to everyone
+- **New FileUploadService methods**:
+  - `uploadFile(filePath, userName, role, visibleTo)` - Upload with custom visibility
+  - `uploadFileForStudents(filePath, teacherEmail, studentEmails)` - Teacher uploads visible to specific students
+  - `uploadFileForTeachers(filePath, studentEmail, teacherEmails)` - Student uploads visible to their teachers
+  - `uploadFileForAll(filePath, adminEmail)` - Admin uploads visible to everyone
+  - `uploadFileForSpecificUsers(filePath, adminEmail, emails)` - Admin uploads to specific users
+  - `getFilesVisibleToUser(userEmail, userRole)` - Get files a user can see
+  - `displayFilesVisibleToUser(userEmail, userName, userRole)` - Display user-specific files
+- **Visibility rules implemented**:
+  - Admin can see ALL files (administrative privilege)
+  - Users can see files they uploaded
+  - Users can see files where `visibleTo` contains "ALL"
+  - Users can see files where `visibleTo` contains their email
+- **Example scenarios**:
+  - Teacher uploads Assignment1.pdf → visible only to [john.smith@uni.edu, sarah.johnson@uni.edu]
+  - Admin uploads announcement → visible to ALL
+  - Student uploads homework → visible only to their teacher
+- **Created FILE_VISIBILITY_DEMO.java** with comprehensive examples
 
 ### 2025-10-05: Loop-Based Validation with Retry Logic
 - **Implemented loop-based validation with retry** for all registration workflows
