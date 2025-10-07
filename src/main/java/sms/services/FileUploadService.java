@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,19 @@ public class FileUploadService implements UploadService<File> {
      * @throws UploadException if upload fails
      */
     public String uploadFile(String filePath, String userName, String role) throws UploadException {
+        return uploadFile(filePath, userName, role, new ArrayList<>());
+    }
+    
+    /**
+     * Role-based file upload method with visibility control
+     * @param filePath Path to the file to upload
+     * @param userName Name of the user uploading the file
+     * @param role Role of the user (admin, teacher, student)
+     * @param visibleTo List of emails who can see this file, or ["ALL"] for everyone
+     * @return The full path where the file was uploaded
+     * @throws UploadException if upload fails
+     */
+    public String uploadFile(String filePath, String userName, String role, List<String> visibleTo) throws UploadException {
         try {
             File sourceFile = new File(filePath);
             
@@ -94,15 +108,19 @@ public class FileUploadService implements UploadService<File> {
                 userName,
                 role,
                 targetPath,
-                sourceFile.length()
+                sourceFile.length(),
+                visibleTo
             );
             
             uploadRepository.add(metadata);
             
             // Display success message
             String roleDisplay = role.substring(0, 1).toUpperCase() + role.substring(1);
+            String visibilityMsg = visibleTo != null && visibleTo.contains("ALL") ? 
+                "Visible to: ALL" : 
+                (visibleTo != null && !visibleTo.isEmpty() ? "Visible to: " + visibleTo.size() + " user(s)" : "Private");
             System.out.println("\n✓ File uploaded successfully by " + roleDisplay + ": " + userName + 
-                             " → " + targetPath);
+                             " → " + targetPath + " (" + visibilityMsg + ")");
             
             return targetPath;
             
