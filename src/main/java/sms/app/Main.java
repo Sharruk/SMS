@@ -2113,7 +2113,7 @@ public class Main {
             
             Assignment assignment = availableAssignments.get(choice - 1);
             
-            System.out.print("Enter file name to upload: ");
+            System.out.print("Enter file path to upload: ");
             String fileName = scanner.nextLine();
             
             try {

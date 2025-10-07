@@ -25,4 +25,13 @@
   "timestamp" : "2025-10-07 18:31:08",
   "fileSize" : 76,
   "visibleTo" : [ ]
+}, {
+  "id" : 4,
+  "fileName" : "PROJECT_REPORT.pdf",
+  "uploadedBy" : "r.johnson@university.edu",
+  "role" : "teacher",
+  "filePath" : "uploads/teachers/PROJECT_REPORT.pdf",
+  "timestamp" : "2025-10-07 18:35:59",
+  "fileSize" : 46947,
+  "visibleTo" : [ "john.smith@student.edu" ]
 } ]
