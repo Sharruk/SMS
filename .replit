@@ -32,3 +32,7 @@ args = "mvn exec:java"
 [deployment]
 deploymentTarget = "vm"
 run = ["mvn", "exec:java", "-Dexec.mainClass=sms.app.Main"]
+
+[[ports]]
+localPort = 44051
+externalPort = 80
