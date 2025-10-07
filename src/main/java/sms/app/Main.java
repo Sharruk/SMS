@@ -2581,14 +2581,60 @@ public class Main {
 
     private static void demonstrateSearchSort() {
         System.out.println("\n=== SEARCH & SORT DEMONSTRATION ===");
-        System.out.println("Demonstrating role-based search and sort capabilities...");
+        System.out.println("Demonstrating repository-based search and sort capabilities...\n");
         
         try {
-            Admin admin = new Admin(9001, "Search Admin", "search@lms.edu", "search", "pass123");
-            System.out.println("Admin searching for 'Demo': " + admin.search("Demo").size() + " results");
-            System.out.println("Admin sorting by name: " + admin.sort("name").size() + " items");
-        } catch (ValidationException e) {
-            System.out.println(e.getMessage());
+            // Sort and display Teachers by Name
+            System.out.println("--- Teachers Sorted by Name ---");
+            List<Teacher> sortedTeachers = teacherRepository.sort("name");
+            if (sortedTeachers.isEmpty()) {
+                System.out.println("No teachers found.");
+            } else {
+                for (Teacher t : sortedTeachers) {
+                    System.out.println("  - " + t.getName() + " (ID: " + t.getUserId() + ", Email: " + t.getEmail() + ")");
+                }
+                System.out.println("Total: " + sortedTeachers.size() + " teachers");
+            }
+            
+            // Sort and display Students by Name
+            System.out.println("\n--- Students Sorted by Name ---");
+            List<Student> sortedStudentsByName = studentRepository.sort("name");
+            if (sortedStudentsByName.isEmpty()) {
+                System.out.println("No students found.");
+            } else {
+                for (Student s : sortedStudentsByName) {
+                    System.out.println("  - " + s.getName() + " (ID: " + s.getUserId() + ", Email: " + s.getEmail() + ")");
+                }
+                System.out.println("Total: " + sortedStudentsByName.size() + " students");
+            }
+            
+            // Sort and display Students by ID
+            System.out.println("\n--- Students Sorted by ID ---");
+            List<Student> sortedStudentsById = studentRepository.sort("id");
+            if (sortedStudentsById.isEmpty()) {
+                System.out.println("No students found.");
+            } else {
+                for (Student s : sortedStudentsById) {
+                    System.out.println("  - ID: " + s.getUserId() + " - " + s.getName());
+                }
+                System.out.println("Total: " + sortedStudentsById.size() + " students");
+            }
+            
+            // Sort and display Courses by Code
+            System.out.println("\n--- Courses Sorted by Code ---");
+            List<Course> sortedCourses = courseRepository.sort("code");
+            if (sortedCourses.isEmpty()) {
+                System.out.println("No courses found.");
+            } else {
+                for (Course c : sortedCourses) {
+                    System.out.println("  - " + c.getCourseId() + ": " + c.getCourseName() + 
+                                     " (" + c.getCreditHours() + " credits)");
+                }
+                System.out.println("Total: " + sortedCourses.size() + " courses");
+            }
+            
+        } catch (RepositoryException e) {
+            System.out.println("Error during search/sort: " + e.getMessage());
             e.log();
         }
     }
