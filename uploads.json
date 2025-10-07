@@ -6,4 +6,12 @@
   "filePath" : "uploads/teachers/PROJECT_REPORT.docx",
   "timestamp" : "2025-10-07 18:02:12",
   "fileSize" : 50647
+}, {
+  "id" : 2,
+  "fileName" : "Mini_Project_Report.docx",
+  "uploadedBy" : "Dr. Robert Johnson",
+  "role" : "teacher",
+  "filePath" : "uploads/teachers/Mini_Project_Report.docx",
+  "timestamp" : "2025-10-07 18:15:21",
+  "fileSize" : 64719
 } ]
