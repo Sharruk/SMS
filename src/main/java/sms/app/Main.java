@@ -1210,6 +1210,17 @@ public class Main {
             }
             
             Teacher teacher = allTeachers.get(teacherChoice - 1);
+            
+            // Password authentication
+            System.out.print("Enter password: ");
+            String enteredPassword = scanner.nextLine();
+            
+            if (!enteredPassword.equals(teacher.getPasswordForAuth())) {
+                System.out.println("❌ Invalid password. Access denied.");
+                return;
+            }
+            
+            System.out.println("✓ Authentication successful!");
             loadTeacherCourses(teacher);
             loadStudentsForTeacher(teacher);
             
@@ -1916,6 +1927,17 @@ public class Main {
             }
             
             Student student = allStudents.get(studentChoice - 1);
+            
+            // Password authentication
+            System.out.print("Enter password: ");
+            String enteredPassword = scanner.nextLine();
+            
+            if (!enteredPassword.equals(student.getPasswordForAuth())) {
+                System.out.println("❌ Invalid password. Access denied.");
+                return;
+            }
+            
+            System.out.println("✓ Authentication successful!");
             loadStudentCourses(student);
             
             System.out.println("\n" + "=".repeat(60));
@@ -2751,6 +2773,17 @@ public class Main {
             }
             
             Admin admin = allAdmins.get(adminChoice - 1);
+            
+            // Password authentication
+            System.out.print("Enter password: ");
+            String enteredPassword = scanner.nextLine();
+            
+            if (!enteredPassword.equals(admin.getPasswordForAuth())) {
+                System.out.println("❌ Invalid password. Access denied.");
+                return;
+            }
+            
+            System.out.println("✓ Authentication successful!");
             
             System.out.println("\n" + "=".repeat(60));
             System.out.println("   Welcome, " + admin.getName() + " - Admin Account");

@@ -25,7 +25,7 @@
     "classDates" : "Fall 2025"
   } ],
   "role" : "STUDENT",
-  "passwordForAuth" : null
+  "passwordForAuth" : "student123"
 }, {
   "type" : "student",
   "userId" : 1002,
@@ -45,7 +45,7 @@
     "classDates" : "Fall 2025"
   } ],
   "role" : "STUDENT",
-  "passwordForAuth" : null
+  "passwordForAuth" : "student123"
 }, {
   "type" : "student",
   "userId" : 888,

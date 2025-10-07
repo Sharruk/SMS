@@ -17,7 +17,7 @@
   "batches" : [ ],
   "students" : [ ],
   "role" : "TEACHER",
-  "passwordForAuth" : null
+  "passwordForAuth" : "teacher123"
 }, {
   "type" : "teacher",
   "userId" : 2002,
@@ -37,7 +37,7 @@
   "batches" : [ ],
   "students" : [ ],
   "role" : "TEACHER",
-  "passwordForAuth" : null
+  "passwordForAuth" : "teacher123"
 }, {
   "type" : "teacher",
   "userId" : 999,
