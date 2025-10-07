@@ -1,5 +1,4 @@
 [ {
-  "type" : "admin",
   "userId" : 101,
   "name" : "Admin",
   "email" : "admin@gmail.com",
@@ -9,5 +8,16 @@
   "managedCourses" : [ ],
   "managedBatches" : [ ],
   "role" : "ADMIN",
-  "passwordForAuth" : "Admin101"
+  "passwordForAuth" : null
+}, {
+  "userId" : 101,
+  "name" : "Admin",
+  "email" : "admin@gmail.com",
+  "username" : "admin",
+  "managedStudents" : [ ],
+  "managedTeachers" : [ ],
+  "managedCourses" : [ ],
+  "managedBatches" : [ ],
+  "role" : "ADMIN",
+  "passwordForAuth" : "admin"
 } ]
