@@ -5,7 +5,8 @@
   "role" : "teacher",
   "filePath" : "uploads/teachers/PROJECT_REPORT.docx",
   "timestamp" : "2025-10-07 18:02:12",
-  "fileSize" : 50647
+  "fileSize" : 50647,
+  "visibleTo" : [ ]
 }, {
   "id" : 2,
   "fileName" : "Mini_Project_Report.docx",
@@ -13,5 +14,15 @@
   "role" : "teacher",
   "filePath" : "uploads/teachers/Mini_Project_Report.docx",
   "timestamp" : "2025-10-07 18:15:21",
-  "fileSize" : 64719
+  "fileSize" : 64719,
+  "visibleTo" : [ ]
+}, {
+  "id" : 3,
+  "fileName" : "sample_assignment.txt",
+  "uploadedBy" : "Dr. Robert Johnson",
+  "role" : "teacher",
+  "filePath" : "uploads/teachers/sample_assignment.txt",
+  "timestamp" : "2025-10-07 18:31:08",
+  "fileSize" : 76,
+  "visibleTo" : [ ]
 } ]

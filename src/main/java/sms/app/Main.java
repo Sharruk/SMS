@@ -8,6 +8,7 @@ import sms.services.UploadService;
 import sms.validation.InputValidator;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -3678,11 +3679,131 @@ public class Main {
             }
             
             String role = user.getRole().toLowerCase();
-            ((FileUploadService) uploadService).uploadFile(filePath, user.getName(), role);
+            FileUploadService fileService = (FileUploadService) uploadService;
+            List<String> visibleTo = new ArrayList<>();
+            
+            // Handle visibility based on role
+            if ("teacher".equalsIgnoreCase(role)) {
+                Teacher teacher = (Teacher) user;
+                List<Student> students = teacher.getStudents();
+                
+                System.out.println("\n=== Set File Visibility ===");
+                System.out.println("1. Visible to ALL students");
+                System.out.println("2. Visible to MY students only");
+                System.out.println("3. Visible to SPECIFIC students");
+                System.out.println("4. Private (only me and admins)");
+                System.out.print("Choose option: ");
+                
+                String choice = scanner.nextLine();
+                
+                switch (choice) {
+                    case "1":
+                        visibleTo.add("ALL");
+                        break;
+                    case "2":
+                        if (students.isEmpty()) {
+                            System.out.println("You have no assigned students. File will be private.");
+                        } else {
+                            for (Student student : students) {
+                                visibleTo.add(student.getEmail());
+                            }
+                            System.out.println("File will be visible to your " + students.size() + " student(s)");
+                        }
+                        break;
+                    case "3":
+                        if (students.isEmpty()) {
+                            System.out.println("You have no assigned students. File will be private.");
+                        } else {
+                            System.out.println("\nYour Students:");
+                            for (int i = 0; i < students.size(); i++) {
+                                System.out.println((i + 1) + ". " + students.get(i).getName() + 
+                                                 " (" + students.get(i).getEmail() + ")");
+                            }
+                            System.out.print("Enter student numbers (comma-separated, e.g., 1,3,5): ");
+                            String input = scanner.nextLine();
+                            String[] indices = input.split(",");
+                            
+                            for (String idx : indices) {
+                                try {
+                                    int index = Integer.parseInt(idx.trim()) - 1;
+                                    if (index >= 0 && index < students.size()) {
+                                        visibleTo.add(students.get(index).getEmail());
+                                    }
+                                } catch (NumberFormatException e) {
+                                    // Skip invalid input
+                                }
+                            }
+                            System.out.println("File will be visible to " + visibleTo.size() + " student(s)");
+                        }
+                        break;
+                    case "4":
+                    default:
+                        System.out.println("File will be private (only you and admins can see it)");
+                        break;
+                }
+                
+                fileService.uploadFile(filePath, user.getEmail(), role, visibleTo);
+                
+            } else if ("student".equalsIgnoreCase(role)) {
+                Student student = (Student) user;
+                
+                System.out.println("\n=== Set File Visibility ===");
+                System.out.println("1. Visible to my teachers");
+                System.out.println("2. Private (only me and admins)");
+                System.out.print("Choose option: ");
+                
+                String choice = scanner.nextLine();
+                
+                if ("1".equals(choice)) {
+                    // Get teachers who teach this student's courses
+                    try {
+                        List<Teacher> allTeachers = teacherRepository.getAll();
+                        for (Teacher teacher : allTeachers) {
+                            for (Course teacherCourse : teacher.getCourses()) {
+                                for (Course studentCourse : student.getCourses()) {
+                                    if (teacherCourse.getCourseId().equals(studentCourse.getCourseId())) {
+                                        if (!visibleTo.contains(teacher.getEmail())) {
+                                            visibleTo.add(teacher.getEmail());
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (!visibleTo.isEmpty()) {
+                            System.out.println("File will be visible to " + visibleTo.size() + " teacher(s)");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Could not load teachers. File will be private.");
+                    }
+                }
+                
+                fileService.uploadFile(filePath, user.getEmail(), role, visibleTo);
+                
+            } else if ("admin".equalsIgnoreCase(role)) {
+                System.out.println("\n=== Set File Visibility ===");
+                System.out.println("1. Visible to ALL users");
+                System.out.println("2. Private (only admins)");
+                System.out.print("Choose option: ");
+                
+                String choice = scanner.nextLine();
+                
+                if ("1".equals(choice)) {
+                    visibleTo.add("ALL");
+                    System.out.println("File will be visible to all users");
+                } else {
+                    System.out.println("File will be private (only admins can see it)");
+                }
+                
+                fileService.uploadFile(filePath, user.getEmail(), role, visibleTo);
+                
+            } else {
+                // Default behavior for other roles
+                fileService.uploadFile(filePath, user.getName(), role);
+            }
             
             // Display uploaded files for this role
             System.out.println("\n--- Uploaded Files for " + user.getRole() + " ---");
-            ((FileUploadService) uploadService).displayUploadedFilesByRole(role);
+            fileService.displayUploadedFilesByRole(role);
             
         } catch (Exception e) {
             System.out.println("Error uploading file: " + e.getMessage());
