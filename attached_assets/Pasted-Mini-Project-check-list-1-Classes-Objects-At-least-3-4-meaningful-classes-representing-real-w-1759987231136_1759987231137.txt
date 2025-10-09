@@ -1,0 +1,52 @@
+Mini Project check list
+
+1. Classes & Objects
+At least 3–4 meaningful classes representing real-world entities.
+Each class should have attributes (fields) and behaviors (methods).
+Objects should be created and used in the main program.
+2. Encapsulation
+Use private fields to protect data.
+Provide getters and setters (or other methods) to control access.
+Demonstrate validation logic in setters (e.g., not allowing negative values for marks, balance, etc.).
+3. Inheritance
+At least one base class and two derived classes.
+Show method overriding (child class providing its own version of a method).
+Use super keyword where relevant.
+4. Polymorphism
+Demonstrate compile-time polymorphism (method overloading).
+Demonstrate runtime polymorphism (method overriding + dynamic method dispatch).
+Use a common reference type (parent/interface) to point to different objects.
+5. Abstraction
+Use abstract classes with at least one abstract method.
+Or define a Java interface and have one or more classes implement it.
+Show how abstraction hides details but exposes behavior.
+6. Constructors
+Provide default and parameterized constructors.
+Demonstrate constructor overloading.
+Use constructor chaining (this( ) / super( )) where appropriate.
+7. Access Modifiers
+Use all four (public, private, protected, and default).
+Show how access modifiers affect visibility across classes and packages.
+8. Packages
+Organize the project into user-defined packages (e.g., bank.accounts, bank.transactions).
+Import and use classes across different packages.
+9. Exception Handling
+Include at least one try-catch-finally block.
+Demonstrate throwing a custom exception class.
+10. Generics
+Create at least one generic class (e.g., Box<T>, Pair<K, V>).
+Use bounded generics (<T extends Number>) where possible.
+Show a method that accepts a generic parameter (public <T> void printData(T data)).
+11. Collections Framework
+Use at least one List implementation (ArrayList, LinkedList).
+Use at least one Set (HashSet, TreeSet) to store unique elements or one Map (HashMap, TreeMap) to store key-value pairs.
+Demonstrate use of iterators or enhanced for-loop.
+Perform operations like sorting, searching, or filtering (possibly with lambda expressions).
+12. File Handling (Optional but Recommended)
+Read or write some data to a file to make the project realistic.
+________________________________________
+Before submission, ensure:
+All OOP features, generics, and collections are explicitly demonstrated.
+Code is modular, with separate classes in separate files.
+Include a README/documentation showing where each feature is implemented.
+
