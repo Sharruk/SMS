@@ -1,0 +1,58 @@
+I want you to generate a markdown file named `CHECKLIST_IMPLEMENTATION.md` for my Java mini project.
+
+📌 At the very top of the markdown file, before the concept sections, add a **short explanation about Maven**:
+
+```
+## Why Maven is Used
+
+- Maven (Apache Maven) is a build automation and project management tool.  
+- It simplifies compiling, packaging, running, and managing dependencies — so I don’t need to manually compile multiple `.java` files.  
+- Instead of remembering many commands, I can use:
+  `mvn compile` and `mvn exec:java -Dexec.mainClass="..."`.
+- It ensures the same build works on every machine (clean and portable).  
+- Dependencies (like external libraries) are managed through `pom.xml` instead of manual jar handling.
+```
+
+---
+
+## 📌 CHECKLIST SECTION
+
+1. Scan the entire project folder and identify where each of the following Java concepts is implemented:
+   - Classes & Objects  
+   - Encapsulation  
+   - Inheritance  
+   - Polymorphism  
+   - Abstraction  
+   - Constructors (default, parameterized, overloading, chaining)  
+   - Access Modifiers (public, private, protected, default)  
+   - Packages (project structure)  
+   - Exception Handling (try-catch-finally, custom exception)  
+   - Generics  
+   - Collections Framework (List, Set, Map, Iterators, Lambda if used)  
+   - File Handling (if present)
+
+2. For each concept found, create a **separate markdown section** in the following format:
+
+````markdown
+## [Concept Name]
+
+| Concept | File Name | Class/Method | How it is implemented | Why it is used | What role it plays | Other files using it |
+|---------|-----------|--------------|------------------------|----------------|---------------------|-----------------------|
+| [Concept] | [filename.java] | [method/class name] | [Short explanation of how this code implements the concept] | [Why you used it here] | [Its role in the project] | [Other related files] |
+
+### 🧾 Code Snippet:
+```java
+// paste the relevant code snippet (5–10 lines max)
+```
+Make sure the code snippet comes directly from the file (not just a description).
+
+If a concept appears in multiple files, make multiple rows for that concept.
+
+At the end of the markdown file, add a:
+
+markdown
+Copy code
+## Quick Links
+- [Concept Name](#concept-name) — filename.java (method / line)
+- [Concept Name](#concept-name) — filename2.java (method / line)
+Format the markdown cleanly and in a structured way so I can show it during viva and directly jump to the file if needed.
