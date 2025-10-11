@@ -1,4 +1,3 @@
-sms/app/menus/StudentMenuHandler.class
 sms/data/AdminRepository.class
 sms/domain/Course.class
 sms/exceptions/ValidationException.class
@@ -6,6 +5,7 @@ sms/data/CourseRepository$1.class
 sms/domain/Message.class
 sms/domain/Department.class
 sms/exceptions/AuthenticationException.class
+sms/app/StudentMenuHandler.class
 sms/domain/Attendance.class
 sms/app/menus/PrincipalMenuHandler.class
 sms/sort/Sortable.class
@@ -17,6 +17,7 @@ sms/data/UploadRepository.class
 sms/exceptions/BaseException.class
 sms/domain/StudentTable.class
 sms/data/UploadRepository$1.class
+sms/app/PrincipalMenuHandler.class
 sms/exceptions/UploadException.class
 sms/data/StudentRepository.class
 sms/data/MessageRepository$1.class
@@ -43,9 +44,10 @@ sms/app/Main.class
 sms/data/AdminRepository$1.class
 sms/data/GradeRepository.class
 sms/data/CourseRepository.class
-sms/data/SubmissionRepository.class
 sms/data/StudentRepository$1.class
-sms/app/menus/TeacherMenuHandler.class
+sms/data/SubmissionRepository.class
+sms/app/TeacherMenuHandler.class
 sms/domain/UploadMetadata.class
 sms/exceptions/NotFoundException.class
+sms/app/AdminMenuHandler.class
 sms/app/menus/AdminMenuHandler.class
