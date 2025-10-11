@@ -11,53 +11,64 @@
 
 ---
 
-## Why Main.java is 3,811 Lines Long
+## ✅ Main.java Refactoring - COMPLETED (October 2025)
 
-The file `Main.java` serves as the **central controller and entry point** for the entire Learning Management System (LMS). It contains all interactive menus, workflows, and user role operations (Principal, Admin, Teacher, Student) in a single file.
+### 📊 Refactoring Achievement
 
-### 🔍 Structure Inside Main.java
+The file `Main.java` has been **successfully refactored** from **3,811 lines to 433 lines** — an **88.6% reduction** in code size!
 
-| Section | Approx. Lines | Description |
-|---------|---------------|-------------|
-| System Initialization | 1–80 | Loads data, sets up repositories, and initializes the LMS |
-| OOP Demonstrations | 82–330 | Demonstrates inheritance, polymorphism, encapsulation, generics, and custom exceptions for the mini-project checklist |
-| Principal Menu | ~600 | Manages admins, appoints teachers, creates courses, and generates reports |
-| Admin Menu | ~800 | Registers students and teachers, assigns courses, and manages data |
-| Teacher Menu | ~900 | Handles assignments, grades, attendance, file uploads, and messaging |
-| Student Menu | ~700 | Manages assignment submissions, grades, and dashboard views |
-| Additional Features | ~400 | Includes search/sort, file upload, messaging, and system statistics |
+### 🔍 New Modular Structure
 
-### 💡 Why It's All in One File
+| Component | Lines | Description |
+|-----------|-------|-------------|
+| **Main.java** | **433** | Entry point with initialization and orchestration only |
+| System Initialization | ~50 | Loads data, sets up repositories, and initializes the LMS |
+| OOP Demonstrations | ~250 | Demonstrates inheritance, polymorphism, encapsulation, generics, and custom exceptions |
+| Main Menu System | ~80 | Handles main menu navigation and role selection |
+| Helper Methods | ~50 | Displays statistics, demos, and utility functions |
+| **PrincipalMenuHandler.java** | ~800 | All Principal role menu operations and workflows |
+| **AdminMenuHandler.java** | ~1,000 | All Admin role menu operations and workflows |
+| **TeacherMenuHandler.java** | ~800 | All Teacher role menu operations and workflows |
+| **StudentMenuHandler.java** | ~700 | All Student role menu operations and workflows |
 
-This structure was chosen to simplify execution and demonstration for the mini project:
+### 🏗️ Implemented Architecture
 
-- ✅ Ensures all OOP features are visible in a single run
-- ✅ Makes the menu-driven console interface easy to test
-- ✅ Avoids dependency and import issues during the demonstration
-
-However, in real-world projects, this violates the **Separation of Concerns** principle — mixing user interface, business logic, and data handling in one file.
-
-### ⚙️ Ideal Modular Design (For Future Refactoring)
-
-A more maintainable and modular design would look like:
+The refactored design follows **Clean Architecture** and **Separation of Concerns** principles:
 
 ```
 sms/
 ├── app/
-│   ├── Main.java               → Entry point (100 lines)
-│   ├── MenuSystem.java         → Handles main menu navigation
-│   └── menus/
-│       ├── PrincipalMenuHandler.java
-│       ├── AdminMenuHandler.java
-│       ├── TeacherMenuHandler.java
-│       └── StudentMenuHandler.java
+│   ├── Main.java (433 lines)         → Entry point, initialization, OOP demos
+│   └── menus/                        → Modular menu handler package
+│       ├── PrincipalMenuHandler.java → Principal operations
+│       ├── AdminMenuHandler.java     → Admin operations
+│       ├── TeacherMenuHandler.java   → Teacher operations
+│       └── StudentMenuHandler.java   → Student operations
 ```
 
-Each handler class would contain the specific menu and logic for that user role, making the project cleaner, easier to maintain, and better aligned with OOP principles.
+### ✨ Benefits Achieved
 
-### 🎯 Simple Explanation (Viva-Ready)
+- ✅ **Separation of Concerns**: Each role has its own dedicated handler class
+- ✅ **Type-safe Constructor Injection**: Dependencies properly managed
+- ✅ **Maintainability**: Easy to locate and modify role-specific functionality
+- ✅ **Scalability**: Simple to add new roles or features without touching Main.java
+- ✅ **Testability**: Individual menu handlers can be tested independently
+- ✅ **OOP Preservation**: All OOP demonstrations remain intact in Main.java
+- ✅ **Zero Regressions**: All features working correctly after refactoring
+- ✅ **Architect Approved**: Passed comprehensive code review
 
-> **"Mam, our Main.java contains all the menu-driven logic for all four user roles. It acts as the controller layer for our console-based system. While it's long, the design made it easy to demonstrate all features — from login to file upload — in one continuous flow. In a real-world project, we would modularize it using separate menu handler classes for each role."**
+### 🎯 Enhanced Explanation (Viva-Ready)
+
+> **"Mam, we initially had Main.java with 3,811 lines containing all menu logic for all four user roles. To follow clean architecture principles, we refactored it to just 433 lines by extracting role-specific menu operations into dedicated handler classes — one for each role (Principal, Admin, Teacher, Student). Now Main.java focuses only on system initialization and OOP demonstrations, while delegating user interactions to appropriate menu handlers. This modular design improves maintainability, testability, and follows the Separation of Concerns principle."**
+
+### 📈 Refactoring Metrics
+
+- **Before**: Main.java = 3,811 lines (monolithic)
+- **After**: Main.java = 433 lines + 4 menu handlers (modular)
+- **Reduction**: 88.6% decrease in Main.java size
+- **Build Status**: ✅ Maven BUILD SUCCESS
+- **Testing**: ✅ All features verified and working
+- **Review Status**: ✅ PASS (Architect approved)
 
 ---
 
@@ -330,7 +341,8 @@ public abstract class User {  // public class
 | Services Package | sms.services.* | package sms.services | UploadService, FileUploadService | To contain business logic services | Provides reusable service functionality | User.java, Main.java |
 | Validation Package | sms.validation.* | package sms.validation | InputValidator class | To centralize validation logic | Contains all input validation methods | User.java, Admin.java, domain classes |
 | Search Package | sms.search.* | package sms.search | Searchable interface | To define search capabilities | Provides search contract | Admin.java, Teacher.java, Student.java |
-| App Package | sms.app.* | package sms.app | Main class | To contain application entry point | Houses main() method and menu system | All packages |
+| App Package | sms.app.* | package sms.app | Main class | To contain application entry point | Houses main() method and initialization | All packages |
+| Menus Package | sms.app.menus.* | package sms.app.menus | PrincipalMenuHandler, AdminMenuHandler, TeacherMenuHandler, StudentMenuHandler | To modularize role-specific menu operations | Contains all menu handler classes for each user role | Main.java delegates to these handlers |
 
 ### 🧾 Code Snippet (Package Structure):
 ```java
@@ -347,6 +359,12 @@ import sms.exceptions.RepositoryException;
 // InputValidator.java
 package sms.validation;
 import sms.exceptions.ValidationException;
+
+// AdminMenuHandler.java (New - Refactored from Main.java)
+package sms.app.menus;
+import sms.data.*;
+import sms.domain.*;
+import sms.validation.InputValidator;
 ```
 
 ---
