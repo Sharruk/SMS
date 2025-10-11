@@ -1,6 +1,6 @@
 sms/data/AdminRepository.class
-sms/domain/Course.class
 sms/exceptions/ValidationException.class
+sms/domain/Course.class
 sms/data/CourseRepository$1.class
 sms/domain/Message.class
 sms/domain/Department.class
@@ -30,8 +30,8 @@ sms/services/UploadService.class
 sms/search/Searchable.class
 sms/domain/Batch.class
 sms/data/MessageRepository.class
-sms/data/AssignmentRepository$1.class
 sms/exceptions/AuthorizationException.class
+sms/data/AssignmentRepository$1.class
 sms/data/Repository.class
 sms/services/FileUploadService.class
 sms/validation/InputValidator.class
