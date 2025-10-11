@@ -60,6 +60,26 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+### 2025-10-11: Main.java Refactoring - Modular Menu Architecture
+- **Completed major refactoring of Main.java** from 3,811 lines to 433 lines (88.6% reduction)
+- **Created modular menu handler architecture** with dedicated classes in `sms.app.menus` package:
+  - `PrincipalMenuHandler.java` - Principal role menu and operations
+  - `AdminMenuHandler.java` - Admin role menu and operations
+  - `TeacherMenuHandler.java` - Teacher role menu and operations
+  - `StudentMenuHandler.java` - Student role menu and operations
+- **Main.java now focuses only on core responsibilities**:
+  - Application initialization and repository setup
+  - Comprehensive OOP features demonstration (preserved)
+  - Main menu orchestration and role selection
+  - Clean delegation to appropriate menu handlers
+- **Architecture improvements**:
+  - Separation of concerns - each role has dedicated handler class
+  - Type-safe constructor injection for dependencies
+  - No functionality regressions - all features working correctly
+  - Passed architect review with PASS status
+- **Build status**: ✅ Maven BUILD SUCCESS with zero compilation errors
+- **Testing**: Application tested successfully with all menu systems functional
+
 ### 2025-10-07: Role-Based File Visibility System
 - **Implemented comprehensive file visibility control** for uploads
 - **Added `visibleTo` field to UploadMetadata**:
