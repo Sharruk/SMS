@@ -377,14 +377,18 @@ public class Main {
     }
 
     private static void displaySystemStatistics() {
-        System.out.println("\n=== LMS SYSTEM STATISTICS ===");
-        System.out.println("Total Students: " + studentRepository.getAll().size());
-        System.out.println("Total Teachers: " + teacherRepository.getAll().size());
-        System.out.println("Total Admins: " + adminRepository.getAll().size());
-        System.out.println("Total Courses: " + courseRepository.getAll().size());
-        System.out.println("Data files: students.json, teachers.json, admins.json, courses.json");
-        System.out.println("Upload directory: uploads/");
-        System.out.println("==============================\n");
+        try {
+            System.out.println("\n=== LMS SYSTEM STATISTICS ===");
+            System.out.println("Total Students: " + studentRepository.getAll().size());
+            System.out.println("Total Teachers: " + teacherRepository.getAll().size());
+            System.out.println("Total Admins: " + adminRepository.getAll().size());
+            System.out.println("Total Courses: " + courseRepository.getAll().size());
+            System.out.println("Data files: students.json, teachers.json, admins.json, courses.json");
+            System.out.println("Upload directory: uploads/");
+            System.out.println("==============================\n");
+        } catch (RepositoryException e) {
+            System.out.println("Error retrieving statistics: " + e.getMessage());
+        }
     }
 
     private static void demonstrateSearchSort() {
