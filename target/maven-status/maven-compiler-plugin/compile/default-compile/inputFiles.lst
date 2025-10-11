@@ -1,7 +1,9 @@
 /home/runner/workspace/src/main/java/sms/data/CourseRepository.java
 /home/runner/workspace/src/main/java/sms/data/StudentRepository.java
 /home/runner/workspace/src/main/java/sms/services/FileUploadService.java
+/home/runner/workspace/src/main/java/sms/app/menus/StudentMenuHandler.java
 /home/runner/workspace/src/main/java/sms/exceptions/AuthenticationException.java
+/home/runner/workspace/src/main/java/sms/app/menus/PrincipalMenuHandler.java
 /home/runner/workspace/src/main/java/sms/exceptions/UploadException.java
 /home/runner/workspace/src/main/java/sms/data/AdminRepository.java
 /home/runner/workspace/src/main/java/sms/exceptions/AuthorizationException.java
@@ -33,6 +35,8 @@
 /home/runner/workspace/src/main/java/sms/data/UploadRepository.java
 /home/runner/workspace/src/main/java/sms/domain/Admin.java
 /home/runner/workspace/src/main/java/sms/domain/User.java
+/home/runner/workspace/src/main/java/sms/app/menus/TeacherMenuHandler.java
 /home/runner/workspace/src/main/java/sms/exceptions/NotFoundException.java
+/home/runner/workspace/src/main/java/sms/app/menus/AdminMenuHandler.java
 /home/runner/workspace/src/main/java/sms/domain/Batch.java
 /home/runner/workspace/src/main/java/sms/sort/Sortable.java
