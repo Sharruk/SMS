@@ -1,0 +1,2 @@
+1,Dr Emma Davis,emma@lms.edu,emma,teach123,Computer Science
+2,Prof John Miller,john@lms.edu,john,teach123,Information Technology

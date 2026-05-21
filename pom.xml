@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.sms</groupId>
-    <artifactId>student-management-system</artifactId>
-    <version>1.0.0</version>
+    <artifactId>learning-management-system</artifactId>
+    <version>2.0.0</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -15,13 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.15.2</version>
-        </dependency>
-    </dependencies>
+    <!-- No external dependencies — uses only Java standard library -->
 
     <build>
         <plugins>
@@ -39,7 +33,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>sms.app.Main</mainClass>
+                    <mainClass>sms.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>

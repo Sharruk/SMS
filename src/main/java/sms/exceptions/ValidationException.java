@@ -1,36 +1,19 @@
 package sms.exceptions;
 
-public class ValidationException extends BaseException {
-    private String fieldName;
-    private String invalidValue;
+/**
+ * Thrown when user input fails a validation rule.
+ * Extends AppException (demonstrates EXCEPTION HIERARCHY / INHERITANCE).
+ */
+public class ValidationException extends AppException {
 
-    public ValidationException(String message) {
-        super(message);
-    }
+    private String fieldName; // which field failed validation
 
-    public ValidationException(String message, String fieldName, String invalidValue) {
-        super(message);
+    public ValidationException(String message, String fieldName) {
+        super("Invalid " + fieldName + ": " + message);
         this.fieldName = fieldName;
-        this.invalidValue = invalidValue;
-    }
-
-    public ValidationException(String message, Throwable cause) {
-        super(message, cause);
     }
 
     public String getFieldName() {
         return fieldName;
-    }
-
-    public String getInvalidValue() {
-        return invalidValue;
-    }
-
-    @Override
-    public void log() {
-        super.log();
-        if (fieldName != null) {
-            System.err.println("Invalid field: " + fieldName + " = '" + invalidValue + "'");
-        }
     }
 }
