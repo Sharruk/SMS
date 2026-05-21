@@ -1,0 +1,169 @@
+I want to generate an accurate UML Class Diagram for this project.
+
+IMPORTANT:
+Do NOT generate PlantUML yet.
+
+First, analyze the REAL codebase and give me the ACTUAL class structure in a clean format so I can verify it.
+
+Please inspect ALL Java classes and return the following:
+
+=================================================
+
+1. CLASS LIST
+   =================================================
+
+For every class provide:
+
+Class Name:
+Package:
+Purpose:
+Type:
+
+* normal class
+* abstract class
+* utility class
+* exception class
+
+=================================================
+2. ATTRIBUTES (FIELDS)
+======================
+
+For every class list:
+
+* field name
+* data type
+* access modifier
+  (+ public, - private, # protected)
+
+Example:
+
+## User
+
+* id : int
+* name : String
+* email : String
+* username : String
+* password : String
+
+=================================================
+3. METHODS
+==========
+
+For every class list:
+
+* method name
+* return type
+* parameters
+* access modifier
+
+Example:
+
+* login() : void
+* logout() : void
+* getRole() : String
+* displayMenu() : void
+
+=================================================
+4. INHERITANCE RELATIONSHIPS
+============================
+
+Clearly show:
+
+Example:
+Student extends User
+Teacher extends User
+Admin extends User
+
+ValidationException extends AppException
+RecordNotFoundException extends AppException
+
+Mention ALL inheritance relationships.
+
+=================================================
+5. ASSOCIATION / DEPENDENCY RELATIONSHIPS
+=========================================
+
+Show how classes interact.
+
+Example:
+
+Main → StudentManager
+Main → TeacherManager
+Main → CourseManager
+
+StudentManager → Student
+TeacherManager → Teacher
+CourseManager → Course
+
+FileHandler used by:
+
+* StudentManager
+* TeacherManager
+* CourseManager
+* GradeManager
+
+InputValidator used by:
+
+* Main
+
+Mention:
+
+* uses
+* has-a
+* composition
+* aggregation
+  (if applicable)
+
+=================================================
+6. COLLECTION RELATIONSHIPS
+===========================
+
+Mention List relationships.
+
+Example:
+
+Student
+
+* enrolledCourseIds : List<String>
+
+StudentManager
+
+* students : List<Student>
+
+CourseManager
+
+* courses : List<Course>
+
+=================================================
+7. UML READY SUMMARY
+====================
+
+At the end give a SHORT UML-ready structure in this exact format:
+
+Class: User
+Type: abstract
+Fields:
+
+* id : int
+* name : String
+
+Methods:
+
+* login() : void
+* logout() : void
+* getRole() : String
+
+Relationships:
+
+* Parent of Student
+* Parent of Teacher
+* Parent of Admin
+
+Repeat for ALL classes.
+
+IMPORTANT:
+Only use the REAL codebase.
+Do not invent relationships.
+Do not simplify.
+Do not generate PlantUML yet.
+I will use your output to create an accurate class diagram later.
