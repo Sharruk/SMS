@@ -4,9 +4,25 @@ A console-based Learning Management System built in **Java**, demonstrating core
 
 ---
 
+## Table of Contents
+
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [OOP Concepts Demonstrated](#oop-concepts-demonstrated)
+- [Technologies Used](#technologies-used)
+- [Project Structure](#project-structure)
+- [UML Class Diagram](#uml-class-diagram)
+- [How to Run](#how-to-run)
+- [Demo Login Credentials](#demo-login-credentials)
+- [Sample Workflow](#sample-workflow)
+- [Data File Format](#data-file-format)
+- [Future Improvements](#future-improvements)
+
+---
+
 ## Project Overview
 
-This system manages the day-to-day operations of an educational institution. It supports three user roles — **Admin**, **Teacher**, and **Student** — each with their own login and dedicated menu. All data is stored in plain `.txt` files using Java's built-in file I/O classes (`BufferedReader`, `BufferedWriter`) — no external libraries or database required.
+This system manages the day-to-day operations of an educational institution. It supports three user roles — **Admin**, **Teacher**, and **Student** — each with their own login and dedicated menu. All data is stored in plain `.txt` files using Java's built-in file I/O (`BufferedReader`, `BufferedWriter`) — no external libraries or database required.
 
 ---
 
@@ -34,19 +50,19 @@ This system manages the day-to-day operations of an educational institution. It 
 ### 1. Encapsulation
 All fields in model classes (`Student`, `Teacher`, `Course`, etc.) are `private`. Access is only through `public` getters and setters.
 ```java
-// In User.java
+// User.java
 private int    id;
 private String name;
 private String password;
 
-public String getName() { return name; }
-public void   setName(String n) { this.name = n; }
+public String getName()        { return name; }
+public void   setName(String n){ this.name = n; }
 ```
 
 ### 2. Inheritance
 `Student`, `Teacher`, and `Admin` all extend the abstract `User` class and inherit common fields (`id`, `name`, `email`) and methods (`login()`, `logout()`).
 ```
-User (abstract)
+User  (abstract)
  ├── Student
  ├── Teacher
  └── Admin
@@ -56,15 +72,15 @@ User (abstract)
 `User` is an **abstract class** — it cannot be instantiated directly. It declares two abstract methods that every subclass **must** implement:
 ```java
 public abstract String getRole();
-public abstract void displayMenu();
+public abstract void   displayMenu();
 ```
 
 ### 4. Polymorphism
-The login system calls `login()` and `displayMenu()` through a `User` reference. The correct subclass method runs at runtime:
+The login system calls `login()` and `displayMenu()` through a `User` reference. The correct subclass method executes at runtime:
 ```java
 User[] users = { admin, teacher, student };
 for (User u : users) {
-    u.displayMenu(); // calls Admin's, Teacher's, Student's menu automatically
+    u.displayMenu(); // calls Admin's, Teacher's, or Student's version automatically
 }
 ```
 
@@ -86,20 +102,20 @@ public String getRole() { return "TEACHER"; }
 // With teacher assigned
 Course(String id, String name, int credits, String teacherName)
 
-// Without teacher (defaults to "Not Assigned")
+// Without teacher — defaults to "Not Assigned"
 Course(String id, String name, int credits)
 ```
 
 ### 7. Custom Exception Handling
-A clean exception hierarchy for meaningful error messages:
+A clean exception hierarchy for meaningful, role-specific error messages:
 ```
-AppException (base)
- ├── ValidationException      — thrown when input is invalid
- └── RecordNotFoundException  — thrown when a record doesn't exist
+AppException  (base)
+ ├── ValidationException      — thrown when input fails validation
+ └── RecordNotFoundException  — thrown when a record does not exist
 ```
 
 ### 8. File Handling
-Data is read and written using `BufferedReader`/`BufferedWriter`:
+All data is persisted using standard Java I/O — no external dependencies:
 ```java
 BufferedReader reader = new BufferedReader(new FileReader("data/students.txt"));
 BufferedWriter writer = new BufferedWriter(new FileWriter("data/students.txt"));
@@ -109,14 +125,16 @@ BufferedWriter writer = new BufferedWriter(new FileWriter("data/students.txt"));
 
 ## Technologies Used
 
-- **Java 17**
-- **Maven** — build and run
-- **Java Collections Framework** — `ArrayList`, `List`
-- **Stream API** — for search and filter operations
-- **Lambda Expressions** — for sorting with `Comparator`
-- **File I/O** — `BufferedReader`, `BufferedWriter`, `FileReader`, `FileWriter`
-- **Custom Exception Handling** — `throws`, `try-catch-finally`
-- **Regex** — for input validation (`Pattern.matches`)
+| Technology | Purpose |
+|---|---|
+| **Java 17** | Core language |
+| **Maven** | Build and run |
+| **Java Collections Framework** | `ArrayList`, `List` for in-memory storage |
+| **Stream API** | Search and filter operations |
+| **Lambda Expressions** | Sorting with `Comparator` |
+| **File I/O** | `BufferedReader`, `BufferedWriter` for `.txt` persistence |
+| **Custom Exceptions** | `throws`, `try-catch` for structured error handling |
+| **Regex** | Input validation via `Pattern.matches` |
 
 ---
 
@@ -126,35 +144,35 @@ BufferedWriter writer = new BufferedWriter(new FileWriter("data/students.txt"));
 learning-management-system/
 │
 ├── src/main/java/sms/
-│   ├── Main.java                   # Entry point — login system + all menus
+│   ├── Main.java                       # Entry point — login system + all menus
 │   │
-│   ├── models/                     # Entity classes (what things ARE)
-│   │   ├── User.java               # Abstract base class
-│   │   ├── Student.java            # Extends User
-│   │   ├── Teacher.java            # Extends User
-│   │   ├── Admin.java              # Extends User
+│   ├── models/                         # Entity classes (what things ARE)
+│   │   ├── User.java                   # Abstract base class
+│   │   ├── Student.java                # Extends User
+│   │   ├── Teacher.java                # Extends User
+│   │   ├── Admin.java                  # Extends User
 │   │   ├── Course.java
 │   │   ├── Grade.java
 │   │   └── Assignment.java
 │   │
-│   ├── managers/                   # Data managers (what the app can DO)
-│   │   ├── StudentManager.java     # CRUD + search + sort
-│   │   ├── TeacherManager.java     # CRUD for teachers
-│   │   ├── CourseManager.java      # Course operations
-│   │   ├── GradeManager.java       # Grade recording
-│   │   ├── AssignmentManager.java  # Assignment management
-│   │   └── AdminManager.java       # Admin login
+│   ├── managers/                       # Business logic (what the app can DO)
+│   │   ├── StudentManager.java         # CRUD + search + sort
+│   │   ├── TeacherManager.java         # CRUD for teachers
+│   │   ├── CourseManager.java          # Course operations
+│   │   ├── GradeManager.java           # Grade recording
+│   │   ├── AssignmentManager.java      # Assignment management
+│   │   └── AdminManager.java           # Admin login
 │   │
 │   ├── utils/
-│   │   ├── FileHandler.java        # Reads and writes .txt files
-│   │   └── InputValidator.java     # Input validation with regex
+│   │   ├── FileHandler.java            # Reads and writes .txt files
+│   │   └── InputValidator.java         # Input validation with regex
 │   │
 │   └── exceptions/
-│       ├── AppException.java           # Base exception
+│       ├── AppException.java           # Base custom exception
 │       ├── ValidationException.java    # For invalid input
 │       └── RecordNotFoundException.java # For missing records
 │
-├── data/                           # Plain text data files (CSV format)
+├── data/                               # Plain text data files (CSV format)
 │   ├── students.txt
 │   ├── teachers.txt
 │   ├── admins.txt
@@ -162,9 +180,22 @@ learning-management-system/
 │   ├── grades.txt
 │   └── assignments.txt
 │
-├── pom.xml                         # Maven build file
+├── docs/
+│   └── diagram.png                     # UML class diagram
+│
+├── pom.xml                             # Maven build file
 └── README.md
 ```
+
+---
+
+## UML Class Diagram
+
+This diagram shows the full architecture of the system — including model inheritance, manager aggregations, utility classes, and exception hierarchy.
+
+![LMS UML Class Diagram](docs/diagram.png)
+
+> The system is built on four OOP pillars: **Abstraction** (`User` abstract class), **Encapsulation** (private fields with getters/setters), **Inheritance** (`Student`, `Teacher`, `Admin` extend `User`), and **Polymorphism** (`getRole()`, `displayMenu()` resolved at runtime). Manager classes own the business logic and delegate all file I/O to `FileHandler`. Custom exceptions (`ValidationException`, `RecordNotFoundException`) extend a common `AppException` base, keeping error handling structured and reusable.
 
 ---
 
@@ -192,14 +223,14 @@ mvn compile
 mvn exec:java
 ```
 
-The app starts, loads data from the `data/` folder, and shows the login screen.
+The app starts, loads all data from the `data/` folder, and displays the login screen.
 
 ---
 
 ## Demo Login Credentials
 
-| Role    | Username | Password  |
-|---------|----------|-----------|
+| Role    | Username | Password   |
+|---------|----------|------------|
 | Admin   | `admin`  | `admin123` |
 | Teacher | `emma`   | `teach123` |
 | Teacher | `john`   | `teach123` |
@@ -235,17 +266,17 @@ ADMIN MENU
   0. Logout
 
 Any data change → saved instantly to .txt file
-Next login → data reloaded from file automatically
+Next login      → data reloaded from file automatically
 ```
 
 ---
 
 ## Data File Format
 
-Each entity is stored as one line per record in CSV format:
+Each entity is stored as one record per line in CSV format:
 
 | File | Format |
-|------|--------|
+|---|---|
 | `students.txt` | `id,name,email,username,password,department,batch,courseId1;courseId2` |
 | `teachers.txt` | `id,name,email,username,password,department` |
 | `admins.txt` | `id,name,email,username,password` |
@@ -259,9 +290,9 @@ Each entity is stored as one line per record in CSV format:
 
 - **Password hashing** — store hashed passwords instead of plain text
 - **Database integration** — replace `.txt` files with SQLite or MySQL
-- **GUI version** — build a Swing or JavaFX interface
-- **Student enrollment file** — separate `student_courses.txt` for many-to-many relationships
-- **Attendance tracking** — add an attendance module
+- **GUI version** — build a Swing or JavaFX front-end
+- **Attendance tracking** — add a dedicated attendance module
+- **Student enrollment file** — separate `student_courses.txt` for a clean many-to-many relationship
 
 ---
 
