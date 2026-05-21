@@ -1,188 +1,270 @@
 # Learning Management System (LMS)
 
-A comprehensive Java-based Learning Management System that demonstrates object-oriented programming principles through a complete class hierarchy implementation.
+A console-based Learning Management System built in **Java**, demonstrating core **Object-Oriented Programming** concepts through a practical, real-world application.
 
-## Overview
+---
 
-This LMS provides a console-based interface for managing students, courses, teachers, admins, and principals with JSON file persistence. The system showcases comprehensive OOP concepts including inheritance, polymorphism, encapsulation, generics, custom exception handling, search/sort interfaces, upload services, and role-based access control.
+## Project Overview
 
-## Technology Stack
+This system manages the day-to-day operations of an educational institution. It supports three user roles — **Admin**, **Teacher**, and **Student** — each with their own login and dedicated menu. All data is stored in plain `.txt` files using Java's built-in file I/O classes (`BufferedReader`, `BufferedWriter`) — no external libraries or database required.
 
-- **Java 17+**: Core programming language
-- **Maven**: Build system and dependency management
-- **Jackson Databind**: JSON serialization/deserialization with polymorphic type handling
-- **Console Interface**: Text-based user interaction with comprehensive menu system
+---
 
 ## Features
 
-### Core OOP Demonstrations
-- **Inheritance**: Complete User hierarchy (Admin, Teacher, Student, Principal)
-- **Polymorphism**: Overridden methods called via User reference
-- **Encapsulation**: Private fields with public getters/setters
-- **Generics**: Repository<T> interface with type safety
-- **Exception Handling**: Custom exception hierarchy with try-catch-finally blocks
+| Feature | Description |
+|---|---|
+| Role-based Login | Admin, Teacher, and Student each see their own menu |
+| Student Management | Add, update, delete, search, and sort students |
+| Teacher Management | Register teachers, assign courses |
+| Course Management | Create courses, assign teachers, sort by name |
+| Student Enrollment | Enroll students in specific courses |
+| Grade Management | Assign and view grades per student and per course |
+| Assignment Management | Create and manage assignments per course |
+| Search | Case-insensitive partial name search using Stream API |
+| Sorting | Sort students by name or ID using lambda Comparators |
+| File Persistence | All data saved to `.txt` files, loaded on startup |
+| Input Validation | Centralized validation with custom exceptions |
+| System Reports | View total counts of all entities |
 
-### System Capabilities
-- **Role-based Access Control**: Each user role has specific capabilities and access levels
-- **Search and Sort Interfaces**: Role-based search and sort capabilities
-- **Upload Service**: File upload with validation, storage, and metadata management
-- **Interactive Console Menu**: Complete menu system for testing all features
-- **JSON Persistence**: Data storage with error recovery and graceful handling
+---
 
-### User Roles and Access
-- **Principal**: Add and manage admins, appoint teachers, assign courses, view reports
-- **Admin**: Register students, manage teachers/courses, assign batches, search all entities
-- **Teacher**: Create assignments, mark attendance, view students, search assigned students
-- **Student**: View assignments/grades, mark attendance, search enrolled courses
+## OOP Concepts Demonstrated
 
-## Prerequisites
+### 1. Encapsulation
+All fields in model classes (`Student`, `Teacher`, `Course`, etc.) are `private`. Access is only through `public` getters and setters.
+```java
+// In User.java
+private int    id;
+private String name;
+private String password;
 
-- Java 17 or higher
-- Maven 3.6 or higher
+public String getName() { return name; }
+public void   setName(String n) { this.name = n; }
+```
 
-## How to Run in Terminal
+### 2. Inheritance
+`Student`, `Teacher`, and `Admin` all extend the abstract `User` class and inherit common fields (`id`, `name`, `email`) and methods (`login()`, `logout()`).
+```
+User (abstract)
+ ├── Student
+ ├── Teacher
+ └── Admin
+```
 
-### Option 1: Using Maven (Recommended)
+### 3. Abstraction
+`User` is an **abstract class** — it cannot be instantiated directly. It declares two abstract methods that every subclass **must** implement:
+```java
+public abstract String getRole();
+public abstract void displayMenu();
+```
 
-1. **Compile the project:**
-   ```bash
-   mvn clean compile
-   ```
+### 4. Polymorphism
+The login system calls `login()` and `displayMenu()` through a `User` reference. The correct subclass method runs at runtime:
+```java
+User[] users = { admin, teacher, student };
+for (User u : users) {
+    u.displayMenu(); // calls Admin's, Teacher's, Student's menu automatically
+}
+```
 
-2. **Run the application:**
-   ```bash
-   mvn exec:java -Dexec.mainClass="sms.app.Main"
-   ```
+### 5. Method Overriding
+Every subclass overrides `getRole()` and `displayMenu()` with its own implementation:
+```java
+// Student.java
+@Override
+public String getRole() { return "STUDENT"; }
 
-### Option 2: Using Java directly
+// Teacher.java
+@Override
+public String getRole() { return "TEACHER"; }
+```
 
-1. **Compile all Java files:**
-   ```bash
-   mvn clean compile
-   ```
+### 6. Method Overloading
+`Course` has two constructors — same name, different parameters:
+```java
+// With teacher assigned
+Course(String id, String name, int credits, String teacherName)
 
-2. **Run with classpath:**
-   ```bash
-   java -cp "target/classes:target/dependency/*" sms.app.Main
-   ```
+// Without teacher (defaults to "Not Assigned")
+Course(String id, String name, int credits)
+```
 
-### Option 3: Build and run JAR
+### 7. Custom Exception Handling
+A clean exception hierarchy for meaningful error messages:
+```
+AppException (base)
+ ├── ValidationException      — thrown when input is invalid
+ └── RecordNotFoundException  — thrown when a record doesn't exist
+```
 
-1. **Build the JAR file:**
-   ```bash
-   mvn clean package
-   ```
+### 8. File Handling
+Data is read and written using `BufferedReader`/`BufferedWriter`:
+```java
+BufferedReader reader = new BufferedReader(new FileReader("data/students.txt"));
+BufferedWriter writer = new BufferedWriter(new FileWriter("data/students.txt"));
+```
 
-2. **Run the JAR:**
-   ```bash
-   java -jar target/student-management-system-1.0.0.jar
-   ```
+---
+
+## Technologies Used
+
+- **Java 17**
+- **Maven** — build and run
+- **Java Collections Framework** — `ArrayList`, `List`
+- **Stream API** — for search and filter operations
+- **Lambda Expressions** — for sorting with `Comparator`
+- **File I/O** — `BufferedReader`, `BufferedWriter`, `FileReader`, `FileWriter`
+- **Custom Exception Handling** — `throws`, `try-catch-finally`
+- **Regex** — for input validation (`Pattern.matches`)
+
+---
 
 ## Project Structure
 
 ```
-src/
-├── main/java/sms/
-│   ├── app/                 # Main application entry point
-│   │   └── Main.java
-│   ├── data/                # Data access layer with repositories
-│   │   ├── Repository.java
-│   │   ├── StudentRepository.java
-│   │   ├── TeacherRepository.java
-│   │   ├── AdminRepository.java
-│   │   └── CourseRepository.java
-│   ├── domain/              # Core entities and domain models
-│   │   ├── User.java        # Abstract base class
-│   │   ├── Admin.java
-│   │   ├── Teacher.java
-│   │   ├── Student.java
-│   │   ├── Principal.java
+learning-management-system/
+│
+├── src/main/java/sms/
+│   ├── Main.java                   # Entry point — login system + all menus
+│   │
+│   ├── models/                     # Entity classes (what things ARE)
+│   │   ├── User.java               # Abstract base class
+│   │   ├── Student.java            # Extends User
+│   │   ├── Teacher.java            # Extends User
+│   │   ├── Admin.java              # Extends User
 │   │   ├── Course.java
-│   │   ├── Department.java
-│   │   ├── Batch.java
-│   │   ├── Attendance.java
-│   │   └── StudentTable.java
-│   ├── exceptions/          # Custom exception hierarchy
-│   │   ├── BaseException.java
-│   │   ├── AuthenticationException.java
-│   │   ├── ValidationException.java
-│   │   ├── NotFoundException.java
-│   │   ├── RepositoryException.java
-│   │   ├── UploadException.java
-│   │   └── AuthorizationException.java
-│   ├── search/              # Search capability interfaces
-│   │   └── Searchable.java
-│   ├── services/            # Business logic layer
-│   │   ├── UploadService.java
-│   │   └── FileUploadService.java
-│   └── sort/                # Sort capability interfaces
-│       └── Sortable.java
+│   │   ├── Grade.java
+│   │   └── Assignment.java
+│   │
+│   ├── managers/                   # Data managers (what the app can DO)
+│   │   ├── StudentManager.java     # CRUD + search + sort
+│   │   ├── TeacherManager.java     # CRUD for teachers
+│   │   ├── CourseManager.java      # Course operations
+│   │   ├── GradeManager.java       # Grade recording
+│   │   ├── AssignmentManager.java  # Assignment management
+│   │   └── AdminManager.java       # Admin login
+│   │
+│   ├── utils/
+│   │   ├── FileHandler.java        # Reads and writes .txt files
+│   │   └── InputValidator.java     # Input validation with regex
+│   │
+│   └── exceptions/
+│       ├── AppException.java           # Base exception
+│       ├── ValidationException.java    # For invalid input
+│       └── RecordNotFoundException.java # For missing records
+│
+├── data/                           # Plain text data files (CSV format)
+│   ├── students.txt
+│   ├── teachers.txt
+│   ├── admins.txt
+│   ├── courses.txt
+│   ├── grades.txt
+│   └── assignments.txt
+│
+├── pom.xml                         # Maven build file
+└── README.md
 ```
 
-## Data Files
+---
 
-The application automatically creates and manages these JSON files:
-- `students.json` - Student data
-- `teachers.json` - Teacher data  
-- `admins.json` - Admin data
-- `courses.json` - Course data
-- `uploads/` - Directory for file uploads
+## How to Run
 
-## Usage
+### Prerequisites
+- Java 17 or higher
+- Maven 3.6 or higher
 
-When you run the application, it will:
+### Steps
 
-1. **Automatically demonstrate OOP features** - Shows inheritance, polymorphism, encapsulation, generics, and exception handling
-2. **Display an interactive menu** with options for:
-   - Role-based Access Demo
-   - Search & Sort Demo
-   - File Upload Demo
-   - User Management
-   - Course Management
-   - System Statistics
-   - Complete OOP Features Demo
-
-3. **Navigate the menu** by entering the corresponding number
-
-## Example Commands
-
+**1. Clone the repository:**
 ```bash
-# Quick start
-mvn exec:java -Dexec.mainClass="sms.app.Main"
-
-# Clean build and run
-mvn clean compile exec:java -Dexec.mainClass="sms.app.Main"
-
-# Build for distribution
-mvn clean package
+git clone https://github.com/your-username/learning-management-system.git
+cd learning-management-system
 ```
 
-## Dependencies
-
-The project uses minimal dependencies for maximum compatibility:
-
-```xml
-<dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-databind</artifactId>
-    <version>2.15.2</version>
-</dependency>
+**2. Compile the project:**
+```bash
+mvn compile
 ```
 
-## Troubleshooting
+**3. Run the application:**
+```bash
+mvn exec:java
+```
 
-- **Java version error**: Ensure you have Java 17 or higher installed
-- **Maven not found**: Install Maven or use the Maven wrapper if provided
-- **JSON parsing errors**: The application will gracefully handle corrupted JSON files by initializing empty repositories
-- **Permission errors**: Ensure write permissions for JSON files and uploads directory
+The app starts, loads data from the `data/` folder, and shows the login screen.
 
-## Learning Objectives
+---
 
-This project demonstrates:
-- Advanced object-oriented programming concepts
-- Design patterns (Repository, Strategy, Template Method, Factory)
-- Exception handling best practices
-- Generic programming with type safety
-- JSON serialization with polymorphic types
-- Role-based access control implementation
-- Interactive console application development
+## Demo Login Credentials
+
+| Role    | Username | Password  |
+|---------|----------|-----------|
+| Admin   | `admin`  | `admin123` |
+| Teacher | `emma`   | `teach123` |
+| Teacher | `john`   | `teach123` |
+| Student | `alice`  | `stud123`  |
+| Student | `bob`    | `stud123`  |
+| Student | `carol`  | `stud123`  |
+
+---
+
+## Sample Workflow
+
+```
+App starts → Loads all .txt files into memory
+
+LOGIN
+  Enter username: admin
+  Enter password: admin123
+  → "Welcome, System Admin! Logged in as ADMIN."
+
+ADMIN MENU
+  1. Manage Students
+     → Add / Update / Delete / Search / Sort / Enroll in course
+  2. Manage Teachers
+     → Add teacher / Assign course to teacher
+  3. Manage Courses
+     → Add course / Sort courses
+  4. Manage Grades
+     → Assign grade / View by student or course
+  5. Manage Assignments
+     → Create / Delete assignments
+  6. View Reports
+     → Total students, teachers, courses, grades, assignments
+  0. Logout
+
+Any data change → saved instantly to .txt file
+Next login → data reloaded from file automatically
+```
+
+---
+
+## Data File Format
+
+Each entity is stored as one line per record in CSV format:
+
+| File | Format |
+|------|--------|
+| `students.txt` | `id,name,email,username,password,department,batch,courseId1;courseId2` |
+| `teachers.txt` | `id,name,email,username,password,department` |
+| `admins.txt` | `id,name,email,username,password` |
+| `courses.txt` | `courseId,courseName,creditHours,teacherName` |
+| `grades.txt` | `studentId,courseId,studentName,courseName,grade` |
+| `assignments.txt` | `id,courseId,courseName,title,dueDate` |
+
+---
+
+## Future Improvements
+
+- **Password hashing** — store hashed passwords instead of plain text
+- **Database integration** — replace `.txt` files with SQLite or MySQL
+- **GUI version** — build a Swing or JavaFX interface
+- **Student enrollment file** — separate `student_courses.txt` for many-to-many relationships
+- **Attendance tracking** — add an attendance module
+
+---
+
+## Author
+
+*5th Semester Java OOP Project*

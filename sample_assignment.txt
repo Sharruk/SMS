@@ -1,1 +1,0 @@
-This is a sample assignment submission for testing the file upload feature.

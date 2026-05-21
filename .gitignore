@@ -1,14 +1,10 @@
-# Java
+# Java compiled files
 *.class
 *.jar
 *.war
 *.ear
-*.log
-*.ctxt
-.mtj.tmp/
-hs_err_pid*
 
-# Maven
+# Maven build output
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -20,7 +16,7 @@ buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
 
-# IDE
+# IDE files
 .idea/
 *.iml
 *.iws
@@ -30,10 +26,17 @@ buildNumber.properties
 *.swo
 *~
 
-# OS
+# OS files
 .DS_Store
 Thumbs.db
 
-# Project specific
-uploads/
-*.json.bak
+# Replit-specific (not needed on GitHub)
+.replit
+.local/
+.cache/
+.agents
+uv.lock
+pyproject.toml
+
+# Log files
+*.log
