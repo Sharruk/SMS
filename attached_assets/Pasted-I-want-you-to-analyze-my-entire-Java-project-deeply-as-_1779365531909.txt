@@ -1,0 +1,105 @@
+I want you to analyze my entire Java project deeply as if I am preparing for a technical interview.
+
+Please inspect ALL files, classes, methods, packages, workflows, and architecture.
+
+Give me a COMPLETE explanation in the following structure:
+
+1. PROJECT OVERVIEW
+
+* What is this project?
+* What problem does it solve?
+* What are the major functionalities?
+* What is the workflow from start to finish?
+
+2. SYSTEM ARCHITECTURE
+
+* Explain how the project is structured
+* Folder structure
+* File structure
+* How classes interact with each other
+* Execution flow from main() method
+
+3. CLASS-BY-CLASS EXPLANATION
+   For every class:
+
+* Class name
+* Purpose of the class
+* Responsibilities
+* Variables/attributes used
+* Constructors
+* Methods/functions and what they do
+* Relationships with other classes
+* Why this class exists
+
+4. OOPS CONCEPTS USED
+   Identify ALL OOP concepts used in this project.
+
+For each concept:
+
+* Where exactly it is used
+* Which class/method demonstrates it
+* Why it was used
+* Real project benefit
+
+Cover:
+
+* Encapsulation
+* Inheritance
+* Polymorphism
+* Abstraction
+* Method Overriding
+* Method Overloading
+* Constructor Overloading
+* Interfaces
+* Abstract Classes
+* Access Modifiers
+* Composition
+* Aggregation
+* Association
+* Static keyword
+* Final keyword
+* Exception Handling
+* File Handling
+* Collections Framework
+* Generics (if used)
+
+5. DESIGN DECISIONS
+
+* Why this structure was chosen
+* Why certain classes were separated
+* Better alternatives that could have been used
+
+6. INTERVIEW QUESTIONS
+   Generate technical interview questions specifically for THIS project.
+
+Include:
+
+* Beginner questions
+* Intermediate questions
+* Deep technical questions
+* OOP-based questions
+* “Why did you choose this?” questions
+* “What challenges did you face?” questions
+
+For every question:
+
+* Give a strong sample answer based on my actual code.
+
+7. PROJECT LIMITATIONS
+
+* Weaknesses of this project
+* Missing features
+* Technical limitations
+* What could be improved
+
+8. RESUME EXPLANATION
+   Give me a strong 60-second explanation of this project for interviews:
+   “Tell me about your project.”
+
+9. PROJECT DEFENSE MODE
+   Act like an interviewer and ask me difficult follow-up questions after I explain the project.
+
+10. SKILLS EXTRACTED
+    Tell me what technical skills from this project I can honestly mention in my resume.
+
+Please analyze the REAL codebase, not generic explanations.

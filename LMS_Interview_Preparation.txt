@@ -1,0 +1,1512 @@
+================================================================================
+        LMS PROJECT - COMPLETE TECHNICAL INTERVIEW PREPARATION GUIDE
+        Based on real codebase analysis of all 42 Java source files
+================================================================================
+
+
+================================================================================
+SECTION 1: PROJECT OVERVIEW
+================================================================================
+
+WHAT IS THIS PROJECT?
+---------------------
+This is a Java-based Learning Management System (LMS) — a console application
+that simulates the digital management of an educational institution. It manages
+students, teachers, admins, and principals through a role-based menu system,
+with all data saved to and loaded from JSON files.
+
+WHAT PROBLEM DOES IT SOLVE?
+-----------------------------
+Educational institutions need a central system to:
+- Register and manage students and teachers
+- Assign courses and track enrollment
+- Handle assignments, submissions, and grading
+- Communicate internally between roles
+- Upload and share files securely with role-based visibility
+- Track attendance
+
+Without a system like this, all of this work is done manually on paper or
+scattered across spreadsheets with no access control.
+
+MAJOR FUNCTIONALITIES:
+-----------------------
+1. Role-based Access Control (Principal > Admin > Teacher > Student)
+2. Student registration, batch assignment, course enrollment
+3. Teacher appointment, course assignment, grade management
+4. Assignment creation, submission, and grading workflow
+5. Internal messaging system between roles
+6. File upload service with role-based visibility control
+7. Search and sort for each role (students search courses, teachers search
+   students, admins search everything)
+8. JSON file persistence (all data survives restarts)
+9. Comprehensive OOP demonstration on every startup
+
+WORKFLOW FROM START TO FINISH:
+--------------------------------
+1. App starts -> Main.java initializes all repositories
+2. Repositories load data from JSON files (students.json, teachers.json, etc.)
+3. OOP features demo runs automatically (shows inheritance, polymorphism, etc.)
+4. Main menu appears with 7 options
+5. User picks a role (Principal / Admin / Teacher / Student)
+6. Each role gets its own menu handler with full CRUD operations
+7. Every data change is immediately saved back to JSON
+8. User types 0 at any menu to go back or exit
+
+
+================================================================================
+SECTION 2: SYSTEM ARCHITECTURE
+================================================================================
+
+HOW THE PROJECT IS STRUCTURED:
+--------------------------------
+The project follows a layered architecture with clear separation of concerns:
+
+  Presentation Layer   --> sms.app (Main.java + menus package)
+  Domain/Business Layer --> sms.domain (all entity classes)
+  Data Access Layer    --> sms.data (Repository interface + implementations)
+  Service Layer        --> sms.services (FileUploadService)
+  Cross-cutting        --> sms.exceptions, sms.validation, sms.search, sms.sort
+
+FOLDER STRUCTURE:
+-----------------
+src/
+└── main/
+    └── java/
+        └── sms/
+            ├── app/
+            │   ├── Main.java                   (Entry point)
+            │   └── menus/
+            │       ├── AdminMenuHandler.java
+            │       ├── PrincipalMenuHandler.java
+            │       ├── TeacherMenuHandler.java
+            │       └── StudentMenuHandler.java
+            ├── domain/
+            │   ├── User.java (abstract)
+            │   ├── Student.java
+            │   ├── Teacher.java
+            │   ├── Admin.java
+            │   ├── Principal.java
+            │   ├── Course.java
+            │   ├── Assignment.java
+            │   ├── Grade.java
+            │   ├── Message.java
+            │   ├── Attendance.java
+            │   ├── Batch.java
+            │   ├── Department.java
+            │   ├── Submission.java
+            │   ├── UploadMetadata.java
+            │   └── StudentTable.java
+            ├── data/
+            │   ├── Repository.java (generic interface)
+            │   ├── StudentRepository.java
+            │   ├── TeacherRepository.java
+            │   ├── AdminRepository.java
+            │   ├── CourseRepository.java
+            │   ├── MessageRepository.java
+            │   ├── AssignmentRepository.java
+            │   ├── GradeRepository.java
+            │   ├── SubmissionRepository.java
+            │   └── UploadRepository.java
+            ├── services/
+            │   ├── UploadService.java (generic interface)
+            │   └── FileUploadService.java
+            ├── exceptions/
+            │   ├── BaseException.java (abstract)
+            │   ├── ValidationException.java
+            │   ├── AuthenticationException.java
+            │   ├── AuthorizationException.java
+            │   ├── NotFoundException.java
+            │   ├── RepositoryException.java
+            │   └── UploadException.java
+            ├── search/
+            │   └── Searchable.java (generic interface)
+            ├── sort/
+            │   └── Sortable.java (generic interface)
+            └── validation/
+                └── InputValidator.java
+
+Data files (in project root):
+  students.json, teachers.json, admins.json, courses.json,
+  messages.json, assignments.json, grades.json, submissions.json, uploads.json
+
+HOW CLASSES INTERACT WITH EACH OTHER:
+---------------------------------------
+- Main.java creates all Repository objects and passes them to menu handlers
+- Menu handlers (AdminMenuHandler etc.) hold references to repositories and call
+  repository methods for all CRUD operations
+- Domain classes (Student, Teacher, etc.) inherit from User
+- Student and Teacher implement Searchable<T> and Sortable<T> interfaces
+- Admin implements Searchable<Object> and Sortable<Object> (full access)
+- Every repository implements Repository<T> interface
+- FileUploadService implements UploadService<File>
+- All exceptions extend BaseException which extends Exception
+- InputValidator is called from User's constructor and Admin methods
+- Jackson ObjectMapper in each repository handles JSON read/write
+
+EXECUTION FLOW FROM main() METHOD:
+------------------------------------
+main()
+  └─> initializeSystem()
+       ├─> new StudentRepository()  --> loads students.json
+       ├─> new TeacherRepository()  --> loads teachers.json
+       ├─> new AdminRepository()    --> loads admins.json
+       ├─> new CourseRepository()   --> loads courses.json
+       ├─> new MessageRepository()  --> loads messages.json
+       ├─> new AssignmentRepository() --> loads assignments.json
+       ├─> new GradeRepository()    --> loads grades.json
+       ├─> new SubmissionRepository() --> loads submissions.json
+       └─> new FileUploadService()  --> creates uploads/ directory
+  └─> demonstrateOopFeatures()
+       ├─> Creates User hierarchy objects (Admin, Teacher, Student, Principal)
+       ├─> Calls login()/logout() through User reference (polymorphism)
+       ├─> Demonstrates encapsulation via getters/setters
+       ├─> Shows generic repository usage
+       ├─> Tests ValidationException, NotFoundException, AuthenticationException
+       ├─> Tests search/sort interfaces
+       └─> Tests file upload with UploadException handling
+  └─> runMainMenu()
+       └─> loop: show menu, read input, route to handler
+
+
+================================================================================
+SECTION 3: CLASS-BY-CLASS EXPLANATION
+================================================================================
+
+---[ USER.JAVA ]---
+Package: sms.domain
+Purpose: Abstract base class for all users in the system.
+Responsibilities:
+  - Holds common user data: userId, name, email, username, password
+  - Enforces validation on construction via InputValidator
+  - Provides login() and logout() behavior
+  - Provides upload() behavior using FileUploadService
+  - Defines getRole() as abstract (forces every subclass to declare its role)
+  - Supports JSON polymorphism via @JsonTypeInfo and @JsonSubTypes annotations
+
+Key Attributes:
+  - private int userId
+  - private String name, email, username
+  - private String password  (@JsonIgnore - never written to JSON)
+  - private static final FileUploadService uploadService  (shared across all users)
+
+Constructors:
+  - User() -- default, for Jackson deserialization only
+  - User(int userId, String name, String email, String username, String password)
+    -- calls InputValidator.validateAllUserFields() before assigning
+
+Key Methods:
+  - abstract String getRole()  -- each subclass returns "STUDENT", "TEACHER", etc.
+  - login() throws AuthenticationException  -- checks username/password not empty
+  - logout()  -- prints logout message
+  - upload(File) throws UploadException, ValidationException
+  - getters/setters for all fields
+
+Jackson Annotations:
+  - @JsonTypeInfo: tells Jackson to add a "type" field in JSON
+  - @JsonSubTypes: maps "student" -> Student.class, etc.
+  - @JsonIgnore on getPassword(): password is never serialized
+  - @JsonProperty("passwordForAuth") on getPasswordForAuth(): used for storage
+
+Relationships:
+  - Superclass to: Student, Teacher, Admin, Principal
+  - Uses: InputValidator, FileUploadService
+
+Why it exists: Centralizes all common user logic. Without this, you would
+repeat userId, name, email, login/logout in every role class (DRY violation).
+
+---
+
+---[ STUDENT.JAVA ]---
+Package: sms.domain
+Purpose: Represents a student user with course enrollment capabilities.
+Responsibilities:
+  - Tracks enrolled courses
+  - Implements Searchable<Course> -- can search own courses
+  - Implements Sortable<Course> -- can sort own courses by name/id/credits
+  - Views assignments, grades, attendance
+
+Key Attributes:
+  - private String id  (format: "S" + userId)
+  - private Department dept
+  - private Batch batch
+  - private List<Course> courses  (student's enrolled courses)
+
+Constructors:
+  - Student()  -- default for Jackson
+  - Student(int userId, String name, String email, String username, String password)
+    -- calls super(), sets id = "S" + userId
+
+Key Methods:
+  - getRole() returns "STUDENT"
+  - changePassword(String) throws ValidationException
+  - viewAssignment(), viewGrades(), viewAttendance()
+  - markOwnAttendance() throws ValidationException
+  - addCourse(Course), removeCourse(Course)
+  - search(String criteria) -- filters own courses by name/id/faculty
+  - sort(String criteria) -- sorts by "name", "id", or "credits"
+  - showMenu(), showDashboard() -- console UI methods
+
+Relationships:
+  - Extends User
+  - Has-many: Course (List<Course>)
+  - Has-one: Department, Batch (optional)
+  - Implements: Searchable<Course>, Sortable<Course>
+
+---
+
+---[ TEACHER.JAVA ]---
+Package: sms.domain
+Purpose: Represents a teacher who manages courses and students.
+Responsibilities:
+  - Tracks assigned courses, batches, and students
+  - Implements Searchable<Student> -- can search own students
+  - Implements Sortable<Student> -- can sort own students
+  - Creates assignments, marks attendance, views submissions
+
+Key Attributes:
+  - private String id  (format: "T" + userId)
+  - private List<Course> courses
+  - private List<Batch> batches
+  - private List<Student> students  (students taught by this teacher)
+
+Key Methods:
+  - getRole() returns "TEACHER"
+  - createAssignment() throws ValidationException
+  - markAttendance() throws ValidationException
+  - viewStudents(), viewSubmittedAssignments(), viewAllAttendance()
+  - addCourse(Course), addBatch(Batch), addStudent(Student)
+  - search(String) -- filters students by name/email/id
+  - sort(String) -- sorts students by "name", "id", or "email"
+
+Relationships:
+  - Extends User
+  - Has-many: Course, Batch, Student
+  - Implements: Searchable<Student>, Sortable<Student>
+
+---
+
+---[ ADMIN.JAVA ]---
+Package: sms.domain
+Purpose: Administrative user who manages students, teachers, and courses.
+Responsibilities:
+  - Registers students, assigns batches/courses
+  - Manages teachers and course assignments
+  - Implements Searchable<Object> -- can search ALL entity types
+  - Implements Sortable<Object> -- can sort across all entities
+
+Key Attributes:
+  - private List<Student> managedStudents
+  - private List<Teacher> managedTeachers
+  - private List<Course> managedCourses
+  - private List<Batch> managedBatches
+
+Key Methods:
+  - getRole() returns "ADMIN"
+  - registerStudent(String name, String email) throws ValidationException
+  - assignBatch(Student, Batch) throws NotFoundException
+  - assignCourse(Student, Course) throws NotFoundException  [OVERLOADED]
+  - assignCourse(Teacher, Course) throws NotFoundException  [OVERLOADED - same name, different params]
+  - setDefaultPassword(User) throws ValidationException
+  - verifyAdmission(Student) throws ValidationException
+  - createCredentials(User, String, String) throws ValidationException
+  - search(String) -- searches students + teachers + courses
+  - sort(String) -- sorts combined list by name
+  - showMenu(), showStudentManagementMenu(), etc.
+
+Relationships:
+  - Extends User
+  - Manages: Student, Teacher, Course, Batch
+  - Implements: Searchable<Object>, Sortable<Object>
+  - Uses: InputValidator
+
+---
+
+---[ PRINCIPAL.JAVA ]---
+Package: sms.domain
+Purpose: Highest-authority user. Manages admins, teachers, and courses at the
+         institutional level.
+Responsibilities:
+  - Appoint/remove admins and teachers
+  - Create courses and assign them to teachers
+  - View institution-wide reports
+
+Key Attributes:
+  - private List<Admin> managedAdmins
+  - private List<Teacher> appointedTeachers
+  - private List<Course> managedCourses
+
+Key Methods:
+  - getRole() returns "PRINCIPAL"
+  - addAdmin(Admin), removeAdmin(int userId)
+  - appointTeacher(Teacher), removeTeacher(int userId)
+  - createCourse(Course), removeCourse(String courseId)
+  - assignCourse(Teacher, Course) -- only works if teacher is already appointed
+  - viewAdmins(), viewTeachers(), viewCourses(), viewReports()
+
+Relationships:
+  - Extends User
+  - Manages: Admin, Teacher, Course
+  - Note: Does NOT implement Searchable/Sortable (not required for this role)
+
+---
+
+---[ COURSE.JAVA ]---
+Package: sms.domain
+Purpose: Represents an academic course.
+Key Attributes:
+  - private String courseId, courseName
+  - private int creditHours
+  - private String facultyName, classDays, classTimes, classDates
+Constructors:
+  - Course() -- default
+  - Course(String, String, int, String, String, String, String) -- @JsonCreator
+  - Course(String, String, int) -- simplified constructor (OVERLOADED)
+Key Methods:
+  - displayCourseInfo()
+  - getters/setters
+  - equals() and hashCode() based on courseId (important for List.contains())
+  - toString()
+
+---
+
+---[ ASSIGNMENT.JAVA ]---
+Package: sms.domain
+Purpose: Represents a homework/assignment given by a teacher for a course.
+Key Attributes:
+  - int id, courseId, teacherId
+  - String title, description, dueDate
+Constructors: default + @JsonCreator full constructor (OVERLOADED)
+
+---
+
+---[ GRADE.JAVA ]---
+Package: sms.domain
+Purpose: Stores a student's grade for a specific course from a specific teacher.
+Key Attributes:
+  - int studentId, teacherId
+  - String courseId, grade  (e.g., "A", "B+")
+
+---
+
+---[ MESSAGE.JAVA ]---
+Package: sms.domain
+Purpose: Internal communication between users of different roles.
+Key Attributes:
+  - int messageId, fromUserId, toUserId
+  - String fromUserName, fromRole, toUserName, toRole
+  - String message, timestamp
+  - boolean isRead
+Constructors:
+  - Message() -- sets timestamp to now, isRead to false (OVERLOADED)
+  - Message(int, int, String, String, int, String, String, String) -- full
+Key note: Uses LocalDateTime for automatic timestamp generation.
+
+---
+
+---[ ATTENDANCE.JAVA ]---
+Package: sms.domain
+Purpose: Tracks a student's attendance for a specific course on specific dates.
+Key Attributes:
+  - String studentRegNo, courseCode, classDates
+  - String status  ("Present", "Absent", "Late")
+Key Methods:
+  - markPresent(), markAbsent(), markLate() -- semantic setters
+  - isPresent() -- returns boolean
+
+---
+
+---[ BATCH.JAVA ]---
+Package: sms.domain
+Purpose: Represents a student cohort (e.g., "2024-2028").
+Key Methods:
+  - getStartYear(), getEndYear() -- parses the yearRange string
+  - equals() and hashCode() -- based on yearRange
+
+---
+
+---[ DEPARTMENT.JAVA ]---
+Package: sms.domain
+Purpose: Represents an academic department that a student belongs to.
+Simple class with just a name field, equals/hashCode, toString.
+
+---
+
+---[ SUBMISSION.JAVA ]---
+Package: sms.domain
+Purpose: Records when a student submits a file for an assignment.
+Key Attributes:
+  - int submissionId, assignmentId, studentId
+  - String fileName, filePath, timestamp
+Constructors: OVERLOADED
+  - Full constructor with explicit timestamp (from JSON)
+  - Constructor without timestamp (auto-generates it using LocalDateTime.now())
+
+---
+
+---[ UPLOADMETADATA.JAVA ]---
+Package: sms.domain
+Purpose: Records metadata about every uploaded file including who can see it.
+Key Attributes:
+  - int id
+  - String fileName, uploadedBy, role, filePath, timestamp
+  - long fileSize
+  - List<String> visibleTo  -- ["ALL"] = public, [emails] = restricted
+Constructors: OVERLOADED (3 constructors)
+  - default, basic (no visibility), full (with visibility)
+
+---
+
+---[ REPOSITORY.JAVA ]---
+Package: sms.data
+Purpose: Generic interface defining standard CRUD operations for any entity type.
+Type Parameter: <T> -- the entity type (Student, Teacher, Course, etc.)
+Methods:
+  - void add(T item) throws RepositoryException, ValidationException
+  - void update(T item) throws RepositoryException, NotFoundException
+  - void delete(T item) throws RepositoryException, NotFoundException
+  - List<T> getAll() throws RepositoryException
+  - List<T> find(String criteria) throws RepositoryException
+  - List<T> sort(String criteria) throws RepositoryException
+
+Why it exists: This interface lets Main.java and menu handlers work with
+Repository<Student> or Repository<Teacher> without knowing the implementation.
+This is the Open/Closed principle -- add a new entity type by creating a new
+repository class, not by changing existing code.
+
+---
+
+---[ STUDENTREPOSITORY.JAVA ]---
+Package: sms.data
+Purpose: Concrete implementation of Repository<Student> using JSON persistence.
+Key Attributes:
+  - static final String DATA_FILE = "students.json"
+  - List<Student> students  -- in-memory list
+  - ObjectMapper objectMapper  -- Jackson for JSON read/write
+How it works:
+  - Constructor calls loadAll() which reads students.json into memory
+  - Every add/update/delete calls saveAll() to write the updated list back to JSON
+  - find() uses Java Streams with filter() for search
+  - sort() uses Comparator lambdas
+Note: All other repositories (TeacherRepository, CourseRepository, etc.) follow
+the exact same pattern -- only the entity type and file name differ.
+
+---
+
+---[ BASEEXCEPTION.JAVA ]---
+Package: sms.exceptions
+Purpose: Abstract base class for all custom exceptions in the system.
+Key Attributes:
+  - String message
+  - LocalDateTime timestamp  -- set automatically on creation
+Key Methods:
+  - log() -- prints "[timestamp] ExceptionType: message" to System.err
+  - Two constructors: with message only, with message + cause (OVERLOADED)
+
+---
+
+---[ VALIDATIONEXCEPTION.JAVA ]---
+Package: sms.exceptions
+Purpose: Thrown when user input fails validation rules.
+Extra attributes: String fieldName, String invalidValue
+Extra in log(): prints "Invalid field: fieldName = 'value'"
+Constructors: OVERLOADED (3 constructors)
+  - ValidationException(String message)
+  - ValidationException(String message, String fieldName, String invalidValue)
+  - ValidationException(String message, Throwable cause)
+
+---
+
+---[ AUTHENTICATIONEXCEPTION.JAVA ]---
+Package: sms.exceptions
+Purpose: Thrown when login fails (bad credentials, empty fields).
+Extra attributes: String errorCode, String username
+Constructors: OVERLOADED (4 constructors)
+
+---
+
+---[ AUTHORIZATIONEXCEPTION.JAVA ]---
+Package: sms.exceptions
+Purpose: Thrown when a user tries to do something outside their role.
+Extra attributes: String userRole, String requiredPermission
+
+---
+
+---[ NOTFOUNDEXCEPTION.JAVA ]---
+Package: sms.exceptions
+Purpose: Thrown when searching for an entity that doesn't exist.
+Extra attributes: String entityType, String searchCriteria
+
+---
+
+---[ REPOSITORYEXCEPTION.JAVA ]---
+Package: sms.exceptions
+Purpose: Thrown when file I/O operations fail in a repository.
+Extra attributes: String operation ("LOAD", "SAVE"), String entityType
+Constructors: OVERLOADED (4 constructors)
+
+---
+
+---[ UPLOADEXCEPTION.JAVA ]---
+Package: sms.exceptions
+Purpose: Thrown when file upload validation or storage fails.
+Extra attributes: String fileName, String fileType
+Constructors: OVERLOADED (4 constructors)
+
+---
+
+---[ SEARCHABLE.JAVA ]---
+Package: sms.search
+Purpose: Generic interface that forces implementing classes to support search.
+  List<T> search(String criteria)
+Implemented by: Student (T=Course), Teacher (T=Student), Admin (T=Object)
+
+---
+
+---[ SORTABLE.JAVA ]---
+Package: sms.sort
+Purpose: Generic interface that forces implementing classes to support sorting.
+  List<T> sort(String criteria)
+Implemented by: Student (T=Course), Teacher (T=Student), Admin (T=Object)
+
+---
+
+---[ INPUTVALIDATOR.JAVA ]---
+Package: sms.validation
+Purpose: Utility class with static methods for validating all user inputs.
+Key Attributes (static constants):
+  - NAME_PATTERN = "^[a-zA-Z\\s]+$"
+  - EMAIL_PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+  - USERNAME_PATTERN = "^[^\\s]+$"
+  - MIN_PASSWORD_LENGTH = 4
+Key Methods (all static, all throw ValidationException):
+  - validateName(String)
+  - validateEmail(String)
+  - validateUsername(String)
+  - validatePassword(String)
+  - validateUserId(int)
+  - validateNumericId(String)
+  - validateCourseId(String)
+  - validateCourseName(String)
+  - validateCreditHours(String)
+  - validateAllUserFields(int, String, String, String, String) -- master validator
+
+Note: Uses java.util.regex.Pattern for compiled, reusable regex patterns.
+All methods are static -- no need to instantiate the class.
+
+---
+
+---[ UPLOADSERVICE.JAVA ]---
+Package: sms.services
+Purpose: Generic interface for any file upload service.
+Type Parameter: <T>
+Methods:
+  - boolean validate(T file) throws ValidationException
+  - void store(T file) throws UploadException
+  - void saveMetadata(T file) throws UploadException
+  - String getUploadDirectory()
+
+---
+
+---[ FILEUPLOADSERVICE.JAVA ]---
+Package: sms.services
+Purpose: Concrete implementation of UploadService<File> with role-based
+         visibility control.
+Key Constants:
+  - MAX_FILE_SIZE = 10MB
+  - ALLOWED_EXTENSIONS = {".csv", ".json", ".txt", ".xlsx", ".pdf", ".doc", ".docx"}
+Key Attributes:
+  - String uploadDirectory ("uploads/")
+  - Map<String, String> fileMetadata  -- in-memory cache
+  - UploadRepository uploadRepository  -- persists to uploads.json
+Constructors: OVERLOADED (2 constructors -- default and custom directory)
+Role-specific methods:
+  - uploadFileForStudents(filePath, teacherEmail, studentEmails) -- teacher uploads
+  - uploadFileForTeachers(filePath, studentEmail, teacherEmails) -- student uploads
+  - uploadFileForAll(filePath, adminEmail) -- admin broadcast
+  - uploadFileForSpecificUsers(filePath, adminEmail, emails) -- targeted upload
+Visibility logic:
+  - Admin sees everything
+  - Users see files they uploaded
+  - Users see files where visibleTo contains "ALL"
+  - Users see files where visibleTo contains their email
+
+---
+
+---[ MENU HANDLERS (AdminMenuHandler, TeacherMenuHandler, etc.) ]---
+Package: sms.app.menus
+Purpose: Separated menu classes -- each handles all console interactions for
+         one role. This was the result of a major refactor that reduced
+         Main.java from 3,811 lines to 433 lines.
+Each handler:
+  - Receives all needed repositories via constructor (dependency injection)
+  - Runs the role's menu loop
+  - Reads user input with Scanner
+  - Calls repository and domain methods
+  - Uses InputValidator for all user-entered data
+  - Handles all exceptions and prints friendly error messages
+
+---
+
+---[ MAIN.JAVA ]---
+Package: sms.app
+Purpose: Application entry point and orchestrator.
+Responsibilities:
+  - Initialize all 9 repositories
+  - Create the FileUploadService
+  - Run the OOP features demonstration
+  - Run the main menu loop
+  - Route to appropriate menu handler based on role selection
+  - Gracefully close Scanner in finally block
+
+
+================================================================================
+SECTION 4: OOP CONCEPTS USED (WITH EXACT LOCATIONS)
+================================================================================
+
+1. ENCAPSULATION
+-----------------
+Where: Every domain class (User, Student, Teacher, Course, etc.)
+Example: In User.java -- all fields are private:
+    private int userId;
+    private String name;
+    private String password;
+  Accessed only through public getters/setters.
+  Special case: password is annotated @JsonIgnore so it's never written to JSON,
+  and getPasswordForAuth() is a separate method with @JsonProperty to allow
+  controlled serialization.
+Why used: Protects data integrity. Nobody can set userId = -1 directly.
+  The constructor routes through InputValidator first.
+Real benefit: Centralized control. Change password rules in one place.
+
+2. INHERITANCE
+--------------
+Where: User.java -> Student.java, Teacher.java, Admin.java, Principal.java
+Example:
+    public abstract class User { ... }
+    public class Student extends User { ... }
+    public class Teacher extends User { ... }
+    public class Admin extends User { ... }
+    public class Principal extends User { ... }
+Also: BaseException -> ValidationException, AuthenticationException, etc.
+Why used: All users share userId, name, email, login(), logout(), upload().
+  Without inheritance this code would be duplicated 4 times.
+Real benefit: One change in User (e.g., new field) automatically applies to
+  all 4 role classes.
+
+3. POLYMORPHISM
+---------------
+Where: Main.java lines 85-95 (OOP demo section)
+Example:
+    User[] users = {admin, teacher, student, principal};
+    for (User user : users) {
+        System.out.println("Role: " + user.getRole());
+        user.login();  // calls Admin.login(), Teacher.login(), etc.
+    }
+Also: Repository<T> -- the same variable type Repository<Student> can hold
+  a StudentRepository object.
+Why used: Lets you write code that works for all user types without knowing
+  the exact type at compile time.
+Real benefit: The menu handler code that calls user.getRole() works for every
+  role without type-checking.
+
+4. ABSTRACTION
+--------------
+Where: User.java (abstract class), Repository<T> interface, UploadService<T>
+  interface, Searchable<T> interface, Sortable<T> interface
+Example:
+    public abstract class User {
+        public abstract String getRole();  // abstract method
+    }
+Why used: Defines a contract. Every class that extends User MUST implement
+  getRole(). The compiler enforces this -- you cannot forget.
+Real benefit: When you add a new role (e.g., Vice Principal), you cannot
+  accidentally create it without specifying its role string.
+
+5. METHOD OVERRIDING
+--------------------
+Where: getRole() in all four role classes, toString() in every class,
+  log() in exception classes, search() and sort() in Student/Teacher/Admin
+Example:
+    // In User:
+    public abstract String getRole();
+    
+    // In Student:
+    @Override
+    public String getRole() { return "STUDENT"; }
+    
+    // In Teacher:
+    @Override
+    public String getRole() { return "TEACHER"; }
+    
+    // In ValidationException:
+    @Override
+    public void log() {
+        super.log();  // calls BaseException.log()
+        System.err.println("Invalid field: " + fieldName + " = '" + invalidValue + "'");
+    }
+Why used: Each subclass needs its own specific behavior for these methods.
+
+6. METHOD OVERLOADING
+---------------------
+Where: Admin.java -- assignCourse() method
+Example:
+    public void assignCourse(Student student, Course course) throws NotFoundException { ... }
+    public void assignCourse(Teacher teacher, Course course) throws NotFoundException { ... }
+Same method name, different parameter types. Java calls the right one based
+on the argument type.
+Also: FileUploadService constructors, UploadMetadata constructors,
+  Submission constructors, Course constructors.
+Why used: Cleaner API -- callers don't need to remember assignCourseToStudent()
+  vs assignCourseToTeacher(). One name, Java figures out which to call.
+
+7. CONSTRUCTOR OVERLOADING
+--------------------------
+Where: Nearly every class in the project.
+Best example -- UploadMetadata:
+    public UploadMetadata() { ... }           // default
+    public UploadMetadata(id, fileName, uploadedBy, role, filePath, fileSize) { ... }
+    public UploadMetadata(id, fileName, uploadedBy, role, filePath, fileSize, visibleTo) { ... }
+Also: Course (3 constructors), Submission (3 constructors),
+  AuthenticationException (4 constructors), RepositoryException (4 constructors)
+Why used: Flexibility. Different callers may have different amounts of
+  information available. Jackson needs a no-arg constructor. App code needs
+  the full constructor.
+
+8. INTERFACES
+-------------
+Where: Repository<T>, UploadService<T>, Searchable<T>, Sortable<T>
+All are generic interfaces that define contracts without implementation.
+Example:
+    public interface Repository<T> {
+        void add(T item) throws RepositoryException, ValidationException;
+        void update(T item) throws RepositoryException, NotFoundException;
+        void delete(T item) throws RepositoryException, NotFoundException;
+        List<T> getAll() throws RepositoryException;
+        List<T> find(String criteria) throws RepositoryException;
+        List<T> sort(String criteria) throws RepositoryException;
+    }
+Why used: Decoupling. Main.java stores repositories as Repository<Student>
+  not StudentRepository. You could swap the implementation (e.g., to a
+  database) without changing Main.java.
+
+9. ABSTRACT CLASSES
+-------------------
+Where: User.java, BaseException.java
+User.java has abstract method getRole() but also has concrete methods
+  (login, logout, upload) -- this is the key difference from an interface.
+BaseException.java has concrete log() method shared by all exceptions.
+Why used: When you want partial implementation + forced contract.
+  Interfaces are all contract, no implementation.
+
+10. ACCESS MODIFIERS
+--------------------
+Where: Throughout the project.
+- private: all entity fields (userId, name, email, password, etc.)
+- public: all getters, setters, constructors, interface methods
+- private: helper methods like saveAll(), loadAll(), getRoleDirectory()
+- static final: constants (DATA_FILE, MAX_FILE_SIZE, ALLOWED_EXTENSIONS,
+  regex patterns in InputValidator)
+- static: all methods in InputValidator (utility class pattern)
+Example of good private usage:
+    private void saveAll() throws RepositoryException { ... }  // internal only
+    private void loadAll() throws RepositoryException { ... }  // internal only
+
+11. COMPOSITION
+---------------
+Where: User has-a FileUploadService (static field)
+    private static final FileUploadService uploadService = new FileUploadService();
+Where: Student has-a Department, has-a Batch
+    private Department dept;
+    private Batch batch;
+Where: FileUploadService has-a UploadRepository
+    private UploadRepository uploadRepository;
+Why used: Composition ("has-a") is used when one object owns or controls
+  another. The FileUploadService is created by User -- User controls its
+  lifecycle.
+
+12. AGGREGATION
+---------------
+Where: Teacher has-many Students (List<Student> students)
+       Admin has-many Students, Teachers, Courses
+       Principal has-many Admins, Teachers, Courses
+These are aggregation because the Students exist independently of the Teacher.
+If you delete a Teacher, the Students still exist in StudentRepository.
+Why used: Reflects real-world relationships without tight coupling.
+
+13. ASSOCIATION
+---------------
+Where: Assignment links Course (courseId) and Teacher (teacherId) via IDs
+       Grade links Student, Course, and Teacher via IDs
+       Submission links Assignment and Student via IDs
+These use ID references rather than object references, demonstrating loose
+association -- the entities know about each other by ID, not by holding
+object references.
+
+14. STATIC KEYWORD
+------------------
+Where: InputValidator -- all methods and constants are static
+    private static final Pattern NAME_PATTERN = ...
+    public static void validateName(String name) throws ValidationException { ... }
+
+Where: Repository classes -- DATA_FILE constant
+    private static final String DATA_FILE = "students.json";
+
+Where: User -- uploadService is static
+    private static final FileUploadService uploadService = new FileUploadService();
+    (One shared instance for ALL users, created once)
+
+Why used: InputValidator is a utility class with no instance state. Static
+  methods don't require creating an object -- you call
+  InputValidator.validateEmail(email) directly.
+
+15. FINAL KEYWORD
+-----------------
+Where: All static constants
+    static final String DATA_FILE = "students.json";
+    static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
+    static final String[] ALLOWED_EXTENSIONS = {...};
+    static final Pattern NAME_PATTERN = Pattern.compile("...");
+Why used: Prevents accidental reassignment of constants. If someone writes
+  DATA_FILE = "other.json" the compiler catches it immediately.
+
+16. EXCEPTION HANDLING
+----------------------
+Where: Demonstrated exhaustively in Main.java demonstrateOopFeatures()
+    try {
+        admin.registerStudent("", "invalid-email");
+    } catch (ValidationException e) {
+        System.out.println("Field: " + e.getFieldName());
+        e.log();  // prints with timestamp to stderr
+    } finally {
+        System.out.println("Validation test completed");
+    }
+Full exception hierarchy:
+    Exception
+    └─> BaseException (abstract)
+        ├─> ValidationException  (bad input)
+        ├─> AuthenticationException  (login failed)
+        ├─> AuthorizationException  (not allowed)
+        ├─> NotFoundException  (entity not found)
+        ├─> RepositoryException  (file I/O failed)
+        └─> UploadException  (file upload failed)
+Every exception carries extra context (fieldName, errorCode, entityType, etc.)
+All exceptions have a log() method that prints to System.err with timestamp.
+
+17. FILE HANDLING
+-----------------
+Where: Every repository class (StudentRepository, TeacherRepository, etc.)
+       and FileUploadService.java
+Repositories:
+    private void loadAll() {
+        File file = new File(DATA_FILE);  // java.io.File
+        List<Student> list = objectMapper.readValue(file, new TypeReference<>(){});
+    }
+    private void saveAll() {
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(DATA_FILE), students);
+    }
+FileUploadService:
+    Files.copy(sourceFile.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
+    path.toFile().mkdirs();  // creates uploads/ and subdirectories
+Uses both java.io.File (old API) and java.nio.file.Files/Paths (new API).
+
+18. COLLECTIONS FRAMEWORK
+--------------------------
+Where: Throughout the project.
+List<Student>, List<Course>, List<Batch> -- ArrayList implementations
+Map<String, String> fileMetadata in FileUploadService -- HashMap
+Stream API with filter(), collect(), sort() in repositories and domain classes
+Example from StudentRepository.find():
+    return students.stream()
+        .filter(s -> s.getName().toLowerCase().contains(criteria.toLowerCase()))
+        .collect(Collectors.toList());
+Lambda comparators in sort():
+    sortedList.sort((s1, s2) -> s1.getName().compareToIgnoreCase(s2.getName()));
+
+19. GENERICS
+------------
+Where: Repository<T>, UploadService<T>, Searchable<T>, Sortable<T>
+Usage example:
+    Repository<Student> studentRepo = new StudentRepository();
+    Repository<Teacher> teacherRepo = new TeacherRepository();
+    // Both are typed -- no casting needed, compile-time type safety
+Jackson TypeReference:
+    objectMapper.readValue(file, new TypeReference<List<Student>>() {});
+Why used: Type safety at compile time. Without generics:
+    Repository studentRepo = new StudentRepository();
+    Student s = (Student) studentRepo.getAll().get(0);  // cast required
+With generics:
+    Repository<Student> studentRepo = new StudentRepository();
+    Student s = studentRepo.getAll().get(0);  // no cast needed
+
+
+================================================================================
+SECTION 5: DESIGN DECISIONS
+================================================================================
+
+WHY THIS STRUCTURE WAS CHOSEN:
+--------------------------------
+1. Layered architecture (domain, data, service, presentation) -- separates
+   concerns so you can change the JSON storage to a real database without
+   touching domain classes.
+
+2. Repository Pattern -- instead of putting file I/O in domain classes,
+   each entity has a dedicated repository. This is testable and replaceable.
+
+3. Generic interfaces (Repository<T>, Searchable<T>, Sortable<T>) -- enables
+   writing code that works with any type without duplication.
+
+4. Abstract User class instead of interface -- because User has real shared
+   logic (login, logout, upload, validation). An interface can't hold this.
+
+5. Custom exception hierarchy rooted at BaseException -- all exceptions carry
+   context (field name, entity type, etc.) and have a log() method. Better
+   than throwing raw RuntimeExceptions with string messages.
+
+6. Centralized InputValidator with static methods -- one place to update
+   validation rules. Called from User constructor so every user object is
+   always valid at creation time.
+
+7. Modular menu handlers -- before the refactor, Main.java was 3,811 lines.
+   Splitting into AdminMenuHandler, TeacherMenuHandler, etc. reduced Main.java
+   to 433 lines and made each menu independently maintainable.
+
+WHY CERTAIN CLASSES WERE SEPARATED:
+-------------------------------------
+- InputValidator is separate from User: validation logic can be reused
+  anywhere (menu handlers, admin registration), not just in constructors.
+- FileUploadService is separate from domain classes: upload logic is complex
+  (file I/O, metadata, visibility rules). Domain classes should not handle I/O.
+- Searchable and Sortable are separate interfaces in separate packages:
+  clean separation of behaviors. A class can implement one without the other.
+- Menu handlers are separate from domain classes: domain objects (Student,
+  Teacher) should not know about Scanner or System.in. That's UI logic.
+
+BETTER ALTERNATIVES THAT COULD HAVE BEEN USED:
+------------------------------------------------
+1. Database (SQLite or PostgreSQL) instead of JSON files
+   - JSON files have no concurrent access, no queries, no transactions
+   - A database would solve all of these with proper ACID properties
+
+2. Spring Framework instead of manual wiring
+   - Spring Boot would handle dependency injection automatically
+   - @Autowired instead of manually passing repositories to constructors
+
+3. JUnit for automated testing
+   - Currently no tests. Each feature works but is verified by running the app.
+   - JUnit + Mockito would allow unit testing each method in isolation.
+
+4. Enum for roles instead of String
+   - getRole() returns a String. This allows typos ("STUDNET").
+   - An enum Role { STUDENT, TEACHER, ADMIN, PRINCIPAL } would be type-safe.
+
+5. Builder pattern for complex objects like Course and UploadMetadata
+   - These have many fields (7 for Course). A builder reads cleaner:
+     new Course.Builder().courseId("CS101").courseName("Java").build()
+
+6. Password hashing
+   - Passwords are stored as plain text in memory. Real systems use BCrypt.
+
+7. DAO pattern instead of Repository pattern
+   - Very similar, but DAO is more aligned with traditional Java EE patterns.
+   - The Repository pattern is more modern (used in Spring Data).
+
+
+================================================================================
+SECTION 6: INTERVIEW QUESTIONS WITH STRONG SAMPLE ANSWERS
+================================================================================
+
+--- BEGINNER QUESTIONS ---
+
+Q1: What is this project?
+ANSWER:
+"This is a Java-based Learning Management System -- a console application that
+manages educational institution operations. It handles students, teachers,
+admins, and principals with role-based access. All data is persisted in JSON
+files using the Jackson library. The project is primarily built to demonstrate
+Object-Oriented Programming concepts in a real, working application."
+
+Q2: What does the main() method do?
+ANSWER:
+"The main() method in Main.java does three things: first it calls
+initializeSystem() which creates all nine repository objects -- each repository
+loads its data from a JSON file. Then it calls demonstrateOopFeatures() which
+runs a live demonstration of all OOP concepts using actual objects. Finally it
+calls runMainMenu() which starts the interactive console loop. There's a
+try-catch-finally around everything so the Scanner is always closed cleanly
+even if an exception occurs."
+
+Q3: How does data persist between runs?
+ANSWER:
+"Each entity has a repository class -- for example StudentRepository. When the
+app starts, the repository reads students.json into a List<Student> in memory
+using Jackson's ObjectMapper. Whenever a student is added, updated, or deleted,
+the entire list is written back to students.json. So the next time the app
+starts, the repository reads the updated file and the data is still there.
+This pattern repeats for all nine JSON files."
+
+Q4: What is the Repository interface?
+ANSWER:
+"Repository<T> is a generic interface in the sms.data package. It defines six
+operations: add, update, delete, getAll, find, and sort -- all typed to T, the
+entity type. Each concrete repository like StudentRepository implements this
+interface for a specific type. This design means Main.java can declare
+Repository<Student> studentRepository without knowing whether the underlying
+storage is JSON, a database, or anything else. It's an example of programming
+to an interface, not an implementation."
+
+--- INTERMEDIATE QUESTIONS ---
+
+Q5: Explain the exception hierarchy in your project.
+ANSWER:
+"I built a custom exception hierarchy where all exceptions extend an abstract
+BaseException class, which itself extends Java's Exception class -- making all
+my exceptions checked exceptions. BaseException has two fields: the message and
+a LocalDateTime timestamp that is set automatically when the exception is
+created. It also has a log() method that prints to System.err with the
+timestamp and class name.
+
+Each subclass adds its own context:
+- ValidationException adds fieldName and invalidValue
+- AuthenticationException adds errorCode and username
+- NotFoundException adds entityType and searchCriteria
+- RepositoryException adds operation and entityType
+- UploadException adds fileName and fileType
+
+Each subclass overrides log() and calls super.log() first, then prints its
+extra context. This means all exceptions have consistent logging but each one
+carries the right information for debugging."
+
+Q6: How did you implement role-based search and sort?
+ANSWER:
+"I created two generic interfaces: Searchable<T> with one method search(String)
+that returns List<T>, and Sortable<T> with one method sort(String) that returns
+List<T>.
+
+The type parameter T differs by role:
+- Student implements Searchable<Course> -- students can only search their
+  own enrolled courses
+- Teacher implements Searchable<Student> -- teachers can only search their
+  own students
+- Admin implements Searchable<Object> -- admin can search all entity types
+  combined (students + teachers + courses returned as List<Object>)
+
+The implementations use Java Streams with filter() and Comparator lambdas.
+In Teacher.search(), it filters the students list by name, email, or ID. In
+Student.sort(), it switches on the criteria string ('name', 'id', 'credits')
+and uses different Comparators. This design enforces access control at the
+object level -- a student literally cannot call search on teachers because
+Student only holds a List<Course>."
+
+Q7: How does the file visibility system work?
+ANSWER:
+"Every uploaded file gets an UploadMetadata object with a List<String> visibleTo
+field. This list contains either the special value 'ALL' (meaning everyone can
+see it) or a list of specific email addresses.
+
+When a user calls getFilesVisibleToUser(email, role), the FileUploadService
+iterates all uploads and applies four rules:
+1. If the user is an admin -- return true (admins see everything)
+2. If the user's email matches the uploadedBy field -- return true (own files)
+3. If visibleTo contains 'ALL' -- return true (public files)
+4. If visibleTo contains the user's email -- return true (targeted files)
+
+There are also convenience methods for common scenarios:
+- uploadFileForStudents() sets visibleTo to a list of student emails (teacher use)
+- uploadFileForAll() sets visibleTo to ['ALL'] (admin use)
+- uploadFileForTeachers() sets visibleTo to teacher emails (student use)
+This encapsulates the visibility rules so callers don't need to manage the
+list themselves."
+
+Q8: What is method overloading and where is it used in your project?
+ANSWER:
+"Method overloading means having multiple methods with the same name but
+different parameter lists. Java decides which one to call based on the argument
+types at compile time.
+
+In my project, Admin.java has two versions of assignCourse():
+    assignCourse(Student student, Course course) -- enrolls a student in a course
+    assignCourse(Teacher teacher, Course course) -- assigns a teacher to a course
+
+Same name, different first parameter type. This is cleaner than naming them
+assignCourseToStudent and assignCourseToTeacher.
+
+Constructor overloading is used heavily -- Course has three constructors, each
+accepting different amounts of information. This allows Jackson to use the
+default no-arg constructor, application code to use the simplified 3-parameter
+constructor, and full JSON deserialization to use the @JsonCreator constructor."
+
+--- DEEP TECHNICAL QUESTIONS ---
+
+Q9: How does Jackson handle polymorphic JSON serialization for User subclasses?
+ANSWER:
+"This was one of the trickier parts of the project. Since Admin, Teacher,
+Student, and Principal all extend User, Jackson needs to know which class to
+instantiate when deserializing. I solved this with two Jackson annotations on
+the User class:
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = 'type') -- tells Jackson
+to add a 'type' field in the JSON output. So when a Student is serialized,
+the JSON includes 'type': 'student'.
+
+@JsonSubTypes with four entries maps each name to its class:
+  @JsonSubTypes.Type(value = Student.class, name = 'student')
+  @JsonSubTypes.Type(value = Teacher.class, name = 'teacher')
+  etc.
+
+When Jackson reads the JSON and sees 'type': 'teacher', it instantiates a
+Teacher object. Without this, all users would deserialize as User, which fails
+because User is abstract.
+
+The @JsonCreator and @JsonProperty annotations on constructors in Course,
+Assignment, etc. handle another issue: Jackson needs to know which constructor
+parameter maps to which JSON field, since Java doesn't preserve parameter names
+at runtime."
+
+Q10: Why is the uploadService in User declared as static final?
+ANSWER:
+"There are two reasons. First, it's static -- meaning there is exactly ONE
+FileUploadService instance shared by ALL User objects. Since FileUploadService
+just validates, stores, and tracks files, there's no reason to create a new
+instance for every user. Creating it once saves memory and avoids loading
+uploads.json multiple times on startup.
+
+Second, it's final -- meaning the reference can never be changed after
+initialization. Nobody can accidentally do uploadService = null or replace it
+with a different implementation. This makes the class thread-safe with respect
+to this field.
+
+In contrast, the repository objects in Main.java are not static -- they're
+instance variables that get passed to menu handlers. This design choice means
+menu handlers receive their dependencies through their constructors (dependency
+injection pattern) rather than accessing global state."
+
+Q11: How do you ensure data integrity when creating a User?
+ANSWER:
+"I enforce it at construction time in the User constructor:
+    public User(int userId, String name, String email, String username, String password)
+        throws ValidationException {
+        InputValidator.validateAllUserFields(userId, name, email, username, password);
+        // only if validation passes:
+        this.userId = userId;
+        ...
+    }
+
+InputValidator.validateAllUserFields() calls five individual validators in
+sequence. If any of them fail -- for example validateEmail() finds no '@' -- it
+throws a ValidationException before ANY field gets assigned. This means you
+can never have a User object in memory with an invalid email. The object is
+either fully valid or it doesn't exist at all.
+
+The InputValidator uses pre-compiled regex Patterns (Pattern.compile() is
+called once at class loading time, not on every validation call). This is more
+efficient than calling String.matches() repeatedly, which recompiles the
+pattern each time."
+
+--- OOP-BASED QUESTIONS ---
+
+Q12: What is the difference between an abstract class and an interface in your project?
+ANSWER:
+"In my project, User is an abstract class and Repository<T> is an interface.
+The key difference is that User has concrete implemented methods (login,
+logout, upload, getters/setters) plus one abstract method (getRole). It can
+have state -- actual field values like userId and name.
+
+Repository<T> is a pure interface -- only method signatures, no implementation,
+no state. StudentRepository implements Repository<Student> and provides all the
+actual logic.
+
+I chose abstract class for User because the four role classes genuinely share
+behavior -- they all need the same login(), logout(), upload() code. Putting
+that in an interface would require default methods (Java 8+) or duplicating
+the code. I chose interface for Repository because there's no shared behavior
+to inherit -- StudentRepository and TeacherRepository are completely different
+implementations that happen to have the same contract."
+
+Q13: Can you explain composition vs inheritance in your project?
+ANSWER:
+"Inheritance is the 'is-a' relationship. Student IS-A User. Teacher IS-A User.
+This is correct because a student really is a type of user -- they share
+identity, login behavior, and common fields.
+
+Composition is the 'has-a' relationship. User HAS-A FileUploadService. Student
+HAS-A List<Course>. Teacher HAS-A List<Student>. FileUploadService HAS-A
+UploadRepository.
+
+I used inheritance where the relationship is truly taxonomic -- role classes
+are specializations of User. I used composition where one class needs the
+SERVICES of another class without being a type of it. A Student is not a
+Course, but a Student 'has' courses. A User is not a FileUploadService, but
+a User 'uses' the upload service to perform file operations.
+
+The general principle is: prefer composition over inheritance unless there
+truly is an is-a relationship. I believe my inheritance hierarchy is clean
+because all four role classes genuinely are users."
+
+--- "WHY DID YOU CHOOSE THIS?" QUESTIONS ---
+
+Q14: Why did you use JSON files instead of a database?
+ANSWER:
+"For this project, the primary goal was demonstrating OOP concepts rather than
+production-grade persistence. JSON files with Jackson were the right trade-off:
+they're human-readable (you can open students.json and see the data), they
+require no external setup (no database server to install), and Jackson's
+polymorphic type handling integrates directly with my User class hierarchy.
+
+The Repository pattern means switching to a database would not require changing
+domain classes at all -- I would just create a StudentDatabaseRepository that
+implements Repository<Student> and swap the implementation in Main.java. This
+is exactly the point of programming to an interface."
+
+Q15: Why did you create a custom exception hierarchy instead of using built-in exceptions?
+ANSWER:
+"Built-in exceptions like IllegalArgumentException are generic -- they only
+carry a message string. When a validation fails, I want to know WHICH field
+failed and WHAT the invalid value was. When a repository operation fails, I
+want to know WHICH operation (LOAD or SAVE) and for WHICH entity type.
+
+Custom exceptions also allow structured logging through the log() method on
+BaseException. Every exception in my system automatically prints a timestamp
+and its class name, and subclasses add their specific context. This makes
+debugging much faster.
+
+Finally, checked exceptions (extending Exception) force callers to handle them.
+Repository<T>.add() declares 'throws RepositoryException, ValidationException'.
+If a menu handler calls studentRepository.add() and doesn't handle these, the
+code won't compile. This is intentional -- I want to ensure errors are handled,
+not silently swallowed."
+
+--- CHALLENGES QUESTIONS ---
+
+Q16: What was the biggest challenge you faced building this project?
+ANSWER:
+"The biggest technical challenge was getting Jackson's polymorphic serialization
+to work correctly with the User hierarchy. When I stored all users in a single
+JSON file, Jackson would serialize them fine, but on deserialization it didn't
+know whether to create a Student or Teacher object.
+
+The solution was adding @JsonTypeInfo and @JsonSubTypes to the User class.
+This tells Jackson to embed a 'type' discriminator field in every JSON user
+object. But this also required adding default no-arg constructors to every
+subclass, because Jackson's default deserialization uses the no-arg constructor
+to create the object and then calls setters.
+
+The second challenge was the password field -- I didn't want passwords written
+to JSON files in plain text, so I used @JsonIgnore on getPassword() and created
+a separate getPasswordForAuth() with @JsonProperty for controlled access. This
+required careful thought about which getter Jackson uses for serialization."
+
+Q17: How did you refactor Main.java and why?
+ANSWER:
+"Main.java had grown to 3,811 lines because all menu logic for all four roles
+was inline in one file. It was impossible to navigate and violated the Single
+Responsibility Principle -- Main was responsible for initialization, OOP demo,
+AND all four role menus.
+
+I created four dedicated handler classes in the sms.app.menus package:
+AdminMenuHandler, TeacherMenuHandler, StudentMenuHandler, and
+PrincipalMenuHandler. Each one receives its required repositories through its
+constructor (constructor injection). Main.java instantiates the appropriate
+handler when the user selects a role and calls its run() method.
+
+The result was Main.java reduced to 433 lines -- an 88% reduction. Each handler
+is now independently readable, and changing the Teacher menu doesn't require
+opening a 3,811-line file."
+
+
+================================================================================
+SECTION 7: PROJECT LIMITATIONS
+================================================================================
+
+1. NO PASSWORD HASHING
+   Passwords are stored in memory as plain Strings. If the JVM heap was
+   dumped, passwords would be visible. Real systems use BCrypt or Argon2.
+
+2. NO AUTHENTICATION SYSTEM
+   There is no actual login screen. The app doesn't ask you to enter your
+   username/password when selecting a role. Anyone can access any role menu.
+   The login() method exists on User but is only called in the OOP demo.
+
+3. JSON FILE CONCURRENCY ISSUES
+   If two processes ran simultaneously and both tried to write to students.json,
+   data corruption could occur. JSON files have no locking mechanism.
+
+4. NO AUTOMATED TESTS
+   The project has zero unit tests. Every feature must be verified by running
+   the application manually. This makes refactoring risky.
+
+5. ROLES AS STRINGS NOT ENUMS
+   getRole() returns "STUDENT", "TEACHER", etc. as raw Strings. A typo
+   ("STUDNET") would not be caught at compile time. An enum would be safer.
+
+6. NO REAL ATTENDANCE TRACKING
+   Attendance.java exists, but there is no repository for it and no way
+   to persist attendance records. The Teacher.viewAllAttendance() just prints
+   course names -- it doesn't show actual attendance data.
+
+7. SEARCH IS IN-MEMORY ONLY
+   The Searchable/Sortable interfaces operate on the in-memory lists inside
+   each domain object (student's courses, teacher's students). They don't
+   search the repository (students.json). Admin search only searches entities
+   the admin has added to their local lists, not the full repository.
+
+8. GRADE DISPLAY IS HARDCODED
+   Student.viewGrades() always prints "Grade: A" regardless of actual grade
+   data. It doesn't read from GradeRepository.
+
+9. NO REAL FILE STORAGE VALIDATION
+   FileUploadService validates file extensions and size, but its store()
+   method just prints a success message without actually copying the file.
+   The real file copy only happens in uploadFile() which copies to uploads/.
+
+10. NO UI FRAMEWORK
+    The application is purely console-based. A web or GUI interface would
+    make it accessible without a terminal.
+
+
+================================================================================
+SECTION 8: RESUME EXPLANATION (60-SECOND PITCH)
+================================================================================
+
+"I built a console-based Learning Management System in Java that manages the
+complete workflow of an educational institution. The system supports four roles
+-- Principal, Admin, Teacher, and Student -- each with their own menu and
+access controls. All data is persisted in JSON files using the Jackson library,
+which also handles the polymorphic serialization of my user hierarchy.
+
+The project demonstrates every major OOP concept: I have an abstract User class
+with four concrete subclasses, a generic Repository<T> interface implemented by
+nine concrete repositories, custom exception hierarchy with six specialized
+exception types, generic Searchable<T> and Sortable<T> interfaces where each
+role searches and sorts different entity types, and a role-based file upload
+service with visibility control.
+
+The project was also a significant engineering exercise -- I refactored the
+application from a 3,811-line monolithic Main class to a modular architecture
+with dedicated menu handler classes, reducing Main.java by 88%. The build uses
+Maven and the application runs as an interactive console program."
+
+
+================================================================================
+SECTION 9: PROJECT DEFENSE MODE (TOUGH FOLLOW-UP QUESTIONS)
+================================================================================
+
+ACT AS IF AN INTERVIEWER IS ASKING THESE:
+
+Q: "You said you have a login() method but no actual authentication. Isn't
+   that a security flaw in your design?"
+A: "Yes, that is a valid limitation. The login() method demonstrates the concept
+   of authentication -- it checks that username and password are not empty and
+   throws AuthenticationException if they are. However, the application doesn't
+   present a login screen before granting role access. In a production system,
+   I would add a login flow in Main.java before showing any role menu, comparing
+   the entered credentials against the stored data in the repository. I would
+   also add password hashing with BCrypt since currently passwords are plain text."
+
+Q: "If Admin implements Searchable<Object>, what happens when you call
+   search() and get back a List<Object>? How do you use that?"
+A: "You cast at runtime. In AdminMenuHandler, when displaying search results,
+   I check the type with instanceof:
+     if (item instanceof Student) { ... }
+     else if (item instanceof Teacher) { ... }
+     else if (item instanceof Course) { ... }
+   This is not ideal -- it's a code smell. A better design would be to have
+   separate search methods for each type: searchStudents(), searchTeachers(),
+   searchCourses(). Or use the Visitor pattern. I chose Object for demonstration
+   purposes to show that Admin has unrestricted search scope."
+
+Q: "What happens if students.json is malformed JSON? Does the app crash?"
+A: "The StudentRepository constructor calls loadAll() inside a try-catch block.
+   If loadAll() throws a RepositoryException (which wraps the Jackson IOException),
+   the catch block in the constructor prints a warning message and the repository
+   starts with an empty list. The app continues running. However, if saveAll()
+   also fails (e.g., disk full), the RepositoryException propagates up to the
+   menu handler, which prints an error message. The app doesn't crash, but any
+   data changes in that session won't be persisted."
+
+Q: "Your Repository interface has a sort() method. But Student also has a
+   sort() method from Sortable<Course>. Aren't these the same thing?"
+A: "No, they serve different purposes. Repository<T>.sort() operates at the
+   data layer -- it sorts the data stored in the repository (all students sorted
+   by name for an admin view). Sortable<Course>.sort() in Student is a domain
+   operation -- it sorts a specific student's enrolled courses from their
+   personal List<Course>. One is system-wide data management, the other is
+   personal data navigation. They happen to share a method name because both
+   represent 'sorting', but the scope and data are completely different."
+
+Q: "Why does Course override equals() and hashCode() but User does not?"
+A: "Because courses are compared by value (courseId) while users are compared
+   by identity. In the code, I frequently check if a student is already enrolled
+   in a course with courses.contains(course) -- this requires equals() to work
+   by courseId, not by object reference. The same pattern appears in Batch and
+   Department.
+   
+   User objects, however, are never compared with contains() in a collection.
+   When I search for a student, I look by getUserId() manually. So User inherits
+   Object's default equals() (reference equality), which is fine for the current
+   use cases."
+
+Q: "Your FileUploadService has a store() method that says 'For this demo,
+   we'll just simulate storage'. But uploadFile() actually copies the file.
+   Isn't that inconsistent?"
+A: "Yes, that is a genuine inconsistency and a limitation. The store() method
+   is the one from the UploadService<T> interface -- it's called from User.upload()
+   in the demo. The uploadFile() method is a higher-level role-specific method
+   added directly to FileUploadService. In hindsight, store() should have been
+   refactored to do the actual file copy, and uploadFile() should call store()
+   internally. The current design has the same operation implemented twice with
+   different completeness levels, which violates the DRY principle."
+
+
+================================================================================
+SECTION 10: SKILLS TO LIST ON YOUR RESUME
+================================================================================
+
+CORE JAVA SKILLS (you can honestly claim these):
+--------------------------------------------------
+- Java 17: Object-Oriented Programming (Inheritance, Polymorphism, Encapsulation,
+           Abstraction, Interfaces, Abstract Classes)
+- Java Generics: Generic interfaces (Repository<T>, Searchable<T>, Sortable<T>),
+                 TypeReference for type-safe JSON deserialization
+- Java Exception Handling: Custom exception hierarchy, checked exceptions,
+                           try-catch-finally blocks, exception chaining
+- Java Collections Framework: ArrayList, HashMap, Streams API, Collectors,
+                               lambda expressions, method references
+- Java NIO (java.nio.file): File copy with StandardCopyOption, Path manipulation
+- Java Regex (java.util.regex): Pattern compilation and matching for input validation
+- Java I/O: File reading/writing, directory creation
+
+LIBRARIES AND TOOLS:
+---------------------
+- Jackson Databind 2.15.2: JSON serialization/deserialization, polymorphic
+  type handling (@JsonTypeInfo, @JsonSubTypes, @JsonCreator, @JsonProperty,
+  @JsonIgnore), ObjectMapper, TypeReference
+- Maven: Project build, dependency management, exec plugin for running
+
+DESIGN PATTERNS AND ARCHITECTURE:
+-----------------------------------
+- Repository Pattern: Generic CRUD abstraction over JSON file storage
+- Layered Architecture: Presentation / Domain / Data / Service layers
+- Dependency Injection: Constructor injection for menu handlers
+- Strategy Pattern (implicit): Different search/sort strategies per role
+- Template Method (implicit): BaseException.log() with subclass extensions
+
+SOFT SKILLS DEMONSTRABLE FROM THIS PROJECT:
+--------------------------------------------
+- Refactoring: Reduced Main.java from 3,811 to 433 lines (88% reduction)
+  by introducing modular architecture
+- Code organization: 8 packages, 42 classes, each with a single responsibility
+- Documentation: All interfaces have JavaDoc comments
+- Input validation: Centralized, reusable validation with clear error messages
+
+WHAT NOT TO OVERSTATE:
+------------------------
+- Do NOT claim "Spring Framework" -- this project does not use Spring
+- Do NOT claim "Database design" -- storage is JSON files
+- Do NOT claim "Security" or "Authentication" -- there is no real login flow
+- Do NOT claim "Unit Testing" -- there are no test files
+- DO say "familiar with Repository Pattern" not "experienced with JPA"
+- DO say "JSON persistence with Jackson" not "database persistence"
+
+================================================================================
+END OF LMS PROJECT INTERVIEW PREPARATION GUIDE
+================================================================================
