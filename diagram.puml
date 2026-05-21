@@ -1,0 +1,388 @@
+@startuml LMS_Class_Diagram
+
+skinparam classAttributeIconSize 0
+skinparam classFontSize 13
+skinparam classBackgroundColor #FAFAFA
+skinparam classBorderColor #555555
+skinparam arrowColor #333333
+skinparam arrowThickness 1.5
+skinparam packageBackgroundColor #F0F4FF
+skinparam packageBorderColor #7A8BBF
+skinparam packageFontStyle bold
+skinparam linetype ortho
+
+' ─────────────────────────────────────────
+' PACKAGE: sms.models
+' ─────────────────────────────────────────
+package "sms.models" {
+
+    abstract class User {
+        - id         : int
+        - name       : String
+        - email      : String
+        - username   : String
+        - password   : String
+        --
+        + User(int, String, String, String, String)
+        + {abstract} getRole()     : String
+        + {abstract} displayMenu() : void
+        + login()   : void
+        + logout()  : void
+        + getId()   : int
+        + getName() : String
+        + getEmail() : String
+        + getUsername() : String
+        + getPassword() : String
+        + toString() : String
+    }
+
+    class Student {
+        - department        : String
+        - batch             : String
+        - enrolledCourseIds : List<String>
+        --
+        + Student(int, String, String, String, String, String, String)
+        + getRole()                          : String
+        + displayMenu()                      : void
+        + enrollInCourse(String)             : void
+        + getDepartment()                    : String
+        + getBatch()                         : String
+        + getEnrolledCourseIds()             : List<String>
+        + setEnrolledCourseIds(List<String>) : void
+        + toFileString()                     : String
+        + {static} fromFileString(String)    : Student
+        + toString()                         : String
+    }
+
+    class Teacher {
+        - department : String
+        --
+        + Teacher(int, String, String, String, String, String)
+        + getRole()                       : String
+        + displayMenu()                   : void
+        + getDepartment()                 : String
+        + setDepartment(String)           : void
+        + toFileString()                  : String
+        + {static} fromFileString(String) : Teacher
+        + toString()                      : String
+    }
+
+    class Admin {
+        --
+        + Admin(int, String, String, String, String)
+        + getRole()                       : String
+        + displayMenu()                   : void
+        + toFileString()                  : String
+        + {static} fromFileString(String) : Admin
+    }
+
+    class Course {
+        - courseId    : String
+        - courseName  : String
+        - creditHours : int
+        - teacherName : String
+        --
+        + Course(String, String, int, String)
+        + Course(String, String, int)
+        + getCourseId()                   : String
+        + getCourseName()                 : String
+        + getCreditHours()                : int
+        + getTeacherName()                : String
+        + setTeacherName(String)          : void
+        + toFileString()                  : String
+        + {static} fromFileString(String) : Course
+        + toString()                      : String
+    }
+
+    class Grade {
+        - studentId   : int
+        - courseId    : String
+        - studentName : String
+        - courseName  : String
+        - grade       : String
+        --
+        + Grade(int, String, String, String, String)
+        + getStudentId()                  : int
+        + getCourseId()                   : String
+        + getStudentName()                : String
+        + getCourseName()                 : String
+        + getGrade()                      : String
+        + setGrade(String)                : void
+        + toFileString()                  : String
+        + {static} fromFileString(String) : Grade
+        + toString()                      : String
+    }
+
+    class Assignment {
+        - id         : int
+        - courseId   : String
+        - courseName : String
+        - title      : String
+        - dueDate    : String
+        --
+        + Assignment(int, String, String, String, String)
+        + getId()                         : int
+        + getCourseId()                   : String
+        + getCourseName()                 : String
+        + getTitle()                      : String
+        + getDueDate()                    : String
+        + toFileString()                  : String
+        + {static} fromFileString(String) : Assignment
+        + toString()                      : String
+    }
+
+}
+
+' ─────────────────────────────────────────
+' PACKAGE: sms.managers
+' ─────────────────────────────────────────
+package "sms.managers" {
+
+    class StudentManager {
+        - {static} FILE_PATH : String = "data/students.txt"
+        - students : List<Student>
+        --
+        + StudentManager()
+        - loadFromFile()          : void
+        - saveToFile()            : void
+        + addStudent(Student)     : void
+        + updateStudent(Student)  : void
+        + deleteStudent(int)      : void
+        + findById(int)           : Student
+        + findByLogin(String, String)  : Student
+        + searchByName(String)    : List<Student>
+        + sortByName()            : List<Student>
+        + sortById()              : List<Student>
+        + getAllStudents()         : List<Student>
+        + getCount()              : int
+        + getNextId()             : int
+    }
+
+    class TeacherManager {
+        - {static} FILE_PATH : String = "data/teachers.txt"
+        - teachers : List<Teacher>
+        --
+        + TeacherManager()
+        - loadFromFile()          : void
+        - saveToFile()            : void
+        + addTeacher(Teacher)     : void
+        + updateTeacher(Teacher)  : void
+        + deleteTeacher(int)      : void
+        + findById(int)           : Teacher
+        + findByLogin(String, String) : Teacher
+        + searchByName(String)    : List<Teacher>
+        + getAllTeachers()         : List<Teacher>
+        + getCount()              : int
+        + getNextId()             : int
+    }
+
+    class CourseManager {
+        - {static} FILE_PATH : String = "data/courses.txt"
+        - courses : List<Course>
+        --
+        + CourseManager()
+        - loadFromFile()               : void
+        - saveToFile()                 : void
+        + addCourse(Course)            : void
+        + deleteCourse(String)         : void
+        + findById(String)             : Course
+        + assignTeacher(String, String): void
+        + getCoursesByTeacher(String)  : List<Course>
+        + sortByName()                 : List<Course>
+        + getAllCourses()               : List<Course>
+        + getCount()                   : int
+    }
+
+    class GradeManager {
+        - {static} FILE_PATH : String = "data/grades.txt"
+        - grades : List<Grade>
+        --
+        + GradeManager()
+        - loadFromFile()               : void
+        - saveToFile()                 : void
+        + addGrade(Grade)              : void
+        + getGradesByStudent(int)      : List<Grade>
+        + getGradesByCourse(String)    : List<Grade>
+        + getAllGrades()                : List<Grade>
+        + getCount()                   : int
+    }
+
+    class AssignmentManager {
+        - {static} FILE_PATH : String = "data/assignments.txt"
+        - assignments : List<Assignment>
+        --
+        + AssignmentManager()
+        - loadFromFile()                   : void
+        - saveToFile()                     : void
+        + addAssignment(Assignment)        : void
+        + deleteAssignment(int)            : void
+        + getAssignmentsByCourse(String)   : List<Assignment>
+        + getAllAssignments()               : List<Assignment>
+        + getCount()                       : int
+        + getNextId()                      : int
+    }
+
+    class AdminManager {
+        - {static} FILE_PATH : String = "data/admins.txt"
+        - admins : List<Admin>
+        --
+        + AdminManager()
+        - loadFromFile()              : void
+        + findByLogin(String, String) : Admin
+        + getAllAdmins()               : List<Admin>
+        + getCount()                  : int
+    }
+
+}
+
+' ─────────────────────────────────────────
+' PACKAGE: sms.utils
+' ─────────────────────────────────────────
+package "sms.utils" {
+
+    class FileHandler {
+        --
+        + {static} readLines(String)           : List<String>
+        + {static} writeLines(String, List<String>) : void
+        + {static} appendLine(String, String)  : void
+    }
+
+    class InputValidator {
+        --
+        + {static} validateName(String)               : void
+        + {static} validateEmail(String)              : void
+        + {static} validateUsername(String)           : void
+        + {static} validatePassword(String)           : void
+        + {static} validatePositiveNumber(int, String): void
+    }
+
+}
+
+' ─────────────────────────────────────────
+' PACKAGE: sms.exceptions
+' ─────────────────────────────────────────
+package "sms.exceptions" {
+
+    class AppException {
+        --
+        + AppException(String message)
+    }
+
+    class ValidationException {
+        - fieldName : String
+        --
+        + ValidationException(String, String)
+        + getFieldName() : String
+    }
+
+    class RecordNotFoundException {
+        --
+        + RecordNotFoundException(String message)
+    }
+
+}
+
+' ─────────────────────────────────────────
+' PACKAGE: sms (entry point)
+' ─────────────────────────────────────────
+package "sms" {
+
+    class Main {
+        - {static} studentManager    : StudentManager
+        - {static} teacherManager    : TeacherManager
+        - {static} courseManager     : CourseManager
+        - {static} gradeManager      : GradeManager
+        - {static} assignmentManager : AssignmentManager
+        - {static} adminManager      : AdminManager
+        - {static} scanner           : Scanner
+        --
+        + {static} main(String[])           : void
+        - {static} printBanner()            : void
+        - {static} initializeManagers()     : void
+        - {static} runLoginLoop()           : void
+        - {static} runAdminMenu(Admin)      : void
+        - {static} manageStudents()         : void
+        - {static} manageTeachers()         : void
+        - {static} manageCourses()          : void
+        - {static} manageGrades()           : void
+        - {static} manageAssignments()      : void
+        - {static} showReports()            : void
+        - {static} runTeacherMenu(Teacher)  : void
+        - {static} runStudentMenu(Student)  : void
+    }
+
+}
+
+' ─────────────────────────────────────────
+' INHERITANCE
+' ─────────────────────────────────────────
+User        <|-- Student
+User        <|-- Teacher
+User        <|-- Admin
+
+Exception   <|-- AppException
+AppException <|-- ValidationException
+AppException <|-- RecordNotFoundException
+
+' ─────────────────────────────────────────
+' AGGREGATION: Managers own their model lists
+' ─────────────────────────────────────────
+StudentManager    "1" *-- "0..*" Student     : stores
+TeacherManager    "1" *-- "0..*" Teacher     : stores
+CourseManager     "1" *-- "0..*" Course      : stores
+GradeManager      "1" *-- "0..*" Grade       : stores
+AssignmentManager "1" *-- "0..*" Assignment  : stores
+AdminManager      "1" *-- "0..*" Admin       : stores
+
+' ─────────────────────────────────────────
+' MAIN uses all managers
+' ─────────────────────────────────────────
+Main ..> StudentManager    : uses
+Main ..> TeacherManager    : uses
+Main ..> CourseManager     : uses
+Main ..> GradeManager      : uses
+Main ..> AssignmentManager : uses
+Main ..> AdminManager      : uses
+
+' ─────────────────────────────────────────
+' MAIN uses utils
+' ─────────────────────────────────────────
+Main ..> InputValidator : validates input
+
+' ─────────────────────────────────────────
+' MAIN catches exceptions
+' ─────────────────────────────────────────
+Main ..> ValidationException      : catches
+Main ..> RecordNotFoundException  : catches
+
+' ─────────────────────────────────────────
+' MANAGERS use FileHandler
+' ─────────────────────────────────────────
+StudentManager    ..> FileHandler : reads/writes
+TeacherManager    ..> FileHandler : reads/writes
+CourseManager     ..> FileHandler : reads/writes
+GradeManager      ..> FileHandler : reads/writes
+AssignmentManager ..> FileHandler : reads/writes
+AdminManager      ..> FileHandler : reads
+
+' ─────────────────────────────────────────
+' MANAGERS throw exceptions
+' ─────────────────────────────────────────
+StudentManager    ..> RecordNotFoundException : throws
+TeacherManager    ..> RecordNotFoundException : throws
+CourseManager     ..> RecordNotFoundException : throws
+
+' ─────────────────────────────────────────
+' INPUTVALIDATOR throws ValidationException
+' ─────────────────────────────────────────
+InputValidator ..> ValidationException : throws
+
+' ─────────────────────────────────────────
+' ID-BASED LOGICAL REFERENCES (dashed notes)
+' ─────────────────────────────────────────
+Grade      ..> Student  : studentId (int)
+Grade      ..> Course   : courseId (String)
+Assignment ..> Course   : courseId (String)
+Student    ..> Course   : enrolledCourseIds (List<String>)
+
+@enduml
